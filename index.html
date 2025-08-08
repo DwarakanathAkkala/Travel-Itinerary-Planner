@@ -4,21 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Itinerary Planner</title>
-
+    <title>Wanderlust | Travel Planner</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <h1>Travel Itinerary Planner</h1>
-        </header>
-        <main class="app-main">
-            <div id="tripList"></div>
-        </main>
-    </div>
-    <script src="app.js"></script>
+    <header class="header">
+        <nav>
+            <h1 class="logo animate__animated animate__fadeInDown">Wanderlust</h1>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn-login animate__animated animate__fadeInDown">Login</a>
+                <a href="signup.html" class="btn-signup animate__animated animate__fadeInDown">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content animate__animated animate__fadeInUp">
+                <h2>Plan Your Dream Trip</h2>
+                <p>Create, share, and explore itineraries effortlessly.</p>
+                <button class="btn-primary">Get Started</button>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/travel-hero.svg" alt="Travel Illustration"
+                    class="animate__animated animate__zoomIn">
+            </div>
+        </section>
+    </main>
+
+    <!-- Add before your app.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>

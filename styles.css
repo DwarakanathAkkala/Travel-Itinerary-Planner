@@ -1,42 +1,233 @@
-/* Base Styles */
 :root {
-  --primary: #4361ee;
-  --secondary: #3f37c9;
+  --primary: #6C63FF;
+  --secondary: #FF6584;
+  --bg-gradient: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
-  padding: 0;
+  background: #f9f9f9;
 }
 
-.app-container {
-  max-width: 100%;
-  min-height: 100vh;
+.header {
+  padding: 1rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.app-header {
-  background: var(--primary);
-  color: white;
-  padding: 1rem;
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5%;
+  min-height: 80vh;
   text-align: center;
 }
 
-/* Trip List */
-#tripList {
-  padding: 1rem;
+.hero-content h2 {
+  font-size: 3.5rem;
+  background: var(--bg-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* Trip Cards */
-.trip-card {
+.btn-primary {
+  background: var(--bg-gradient);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.2);
+}
+
+/* Animation for floating elements */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Auth Pages */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+}
+
+.auth-card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
-  padding: 1rem;
-  transition: transform 0.2s;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.trip-card:hover {
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-login {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: var(--primary);
+  color: white;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+}
+
+/* Google Button Styles */
+.btn-google {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd !important;
+  border-radius: 50px;
+  background: white;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-google:hover {
+  background: #f5f5f5;
+  border-color: #ccc !important;
+  transform: translateY(-2px);
+}
+
+.btn-google img {
+  width: 20px;
+  height: 20px;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Signup button variant */
+.btn-signup {
+  background: var(--primary);
+  color: white;
+  border: 2px solid var(--primary);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-signup:hover {
+  background: transparent;
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* Make sure all buttons look consistent */
+.btn-login, 
+.btn-signup, 
+.btn-google {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.auth-divider {
+  margin: 1rem 0;
+  text-align: center;
+  color: #777;
+  position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+  position: absolute;
+  top: 50%;
+  width: 45%;
+}
+
+.auth-divider::before {
+  left: 0;
+}
+
+.auth-divider::after {
+  right: 0;
+}
+
+.auth-card button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row;
+    text-align: left;
+    justify-content: space-between;
+  }
+  .hero-content {
+    flex: 1;
+    padding-right: 2rem;
+  }
 }
