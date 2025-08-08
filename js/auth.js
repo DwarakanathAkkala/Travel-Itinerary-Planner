@@ -1,11 +1,19 @@
-// Google Sign-In
-document.getElementById('google-login').addEventListener('click', () => {
+function handleGoogleAuth() {
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+
     firebase.auth().signInWithPopup(provider)
-        .then(() => {
-            window.location.href = "dashboard.html"; // Redirect on success
+        .then((result) => {
+            console.log("Google Auth Success:", result.user); // Debug log
+            window.location.href = "dashboard.html";
         })
         .catch((error) => {
-            alert(error.message); // Handle errors (e.g., popup closed)
+            console.error("Google Auth Error:", error); // Detailed error
+            alert(`Google Auth Failed: ${error.message}\nCode: ${error.code}`);
         });
-});
+}
+
+// Attach to both buttons
+document.getElementById('google-login')?.addEventListener('click', handleGoogleAuth);
+document.getElementById('google-signup')?.addEventListener('click', handleGoogleAuth);
