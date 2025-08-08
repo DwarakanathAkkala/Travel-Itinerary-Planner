@@ -1,42 +1,66 @@
-/* Base Styles */
 :root {
-  --primary: #4361ee;
-  --secondary: #3f37c9;
+  --primary: #6C63FF;
+  --secondary: #FF6584;
+  --bg-gradient: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
-  padding: 0;
+  background: #f9f9f9;
 }
 
-.app-container {
-  max-width: 100%;
-  min-height: 100vh;
+.header {
+  padding: 1rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.app-header {
-  background: var(--primary);
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  padding: 5%;
+  min-height: 80vh;
+}
+
+.hero-content h2 {
+  font-size: 3.5rem;
+  background: var(--bg-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-primary {
+  background: var(--bg-gradient);
   color: white;
-  padding: 1rem;
-  text-align: center;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Trip List */
-#tripList {
-  padding: 1rem;
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.2);
 }
 
-/* Trip Cards */
-.trip-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
-  padding: 1rem;
-  transition: transform 0.2s;
+/* Animation for floating elements */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }
 
-.trip-card:hover {
-  transform: translateY(-2px);
+.hero-image img {
+  animation: float 6s ease-in-out infinite;
 }
