@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Wanderlust</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav>
+            <h1 class="logo">Wanderlust</h1>
+            <button id="logout-btn" class="btn-login">Logout</button>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <h2>Welcome to your Dashboard!</h2>
+            <p>Your itineraries will appear here soon.</p>
+            <!-- We'll add dynamic content in upcoming tasks -->
+        </div>
+    </main>
+
+    <!-- Firebase + Auth JS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        // Basic auth check (redirect if not logged in)
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) window.location.href = "login.html";
+        });
+
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            firebase.auth().signOut();
+        });
+    </script>
+</body>
+
+</html>
