@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Wanderlust</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <img src="assets/images/logo.svg" alt="Wanderlust" class="logo">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="user-email">user@example.com</span>
+                    <button id="logout-btn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="welcome-banner">
+                <h2>Welcome back, <span id="user-name">Traveler</span>!</h2>
+                <p>Your upcoming trips and plans</p>
+            </div>
+
+            <div class="trips-section">
+                <div class="section-header">
+                    <h3>Your Trips</h3>
+                    <button id="add-trip-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Trip
+                    </button>
+                </div>
+
+                <div class="trip-list" id="trip-list">
+                    <!-- Trips will be loaded here dynamically -->
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    <!-- Dashboard Logic -->
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
