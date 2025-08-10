@@ -1,0 +1,35 @@
+<!-- Add to your existing dashboard.html -->
+<div id="trip-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Plan New Trip</h3>
+        <form id="trip-form">
+            <div class="form-group">
+                <label for="trip-name">Trip Name</label>
+                <input type="text" id="trip-name" required>
+            </div>
+            <div class="form-group">
+                <label for="trip-destination">Destination</label>
+                <input type="text" id="trip-destination" required>
+            </div>
+            <div class="date-group">
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="date" id="end-date" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="trip-notes">Notes</label>
+                <textarea id="trip-notes" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">
+                <span class="btn-text">Create Trip</span>
+                <div class="spinner hidden"></div>
+            </button>
+        </form>
+    </div>
+</div>
