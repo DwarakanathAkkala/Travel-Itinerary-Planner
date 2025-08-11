@@ -266,6 +266,15 @@
   transform: translate(-50%, -50%);
 }
 
+.user-display-name {
+    font-weight: 600;
+    color: #333;
+}
+.user-email {
+    color: #777;
+    font-size: 0.9rem;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

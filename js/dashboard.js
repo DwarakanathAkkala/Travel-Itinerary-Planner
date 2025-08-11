@@ -1,43 +1,74 @@
 // js/dashboard.js
+// This script handles all functionality on the main user dashboard.
 
-// --- GLOBAL DOM REFERENCES ---
-const modalContainer = document.getElementById('trip-modal-container');
-const modalFormContent = document.getElementById('modal-form-content');
-const tripList = document.getElementById('trip-list');
-let tripsListener = null; // To hold a reference to our Firebase listener
+// --- GLOBAL VARIABLES ---
+// We declare them here but will ASSIGN them ONLY after the page has loaded.
+let modalContainer;
+let modalFormContent;
+let tripList;
+let tripsListener = null;
 
-// --- MAIN INITIALIZATION FUNCTION ---
-function initializeDashboard() {
-    console.log("Initializing Dashboard...");
+// --- MAIN INITIALIZATION ---
+// The script's execution starts here, after the HTML page is fully loaded.
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. First, find all our HTML elements. This is the critical fix to prevent null errors.
+    initializeDOMElements();
 
-    // Use onAuthStateChanged to get the current user
+    // 2. Now that we know the elements exist, check for user authentication.
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            // User is signed in.
-            console.log("User signed in, attaching trips listener for UID:", user.uid);
-            // Detach any old listeners before attaching a new one
-            if (tripsListener) {
-                firebase.database().ref('trips').off('value', tripsListener);
-            }
-            fetchUserTrips(user.uid);
+            // --- USER IS SIGNED IN ---
+            // This is the main success path. Initialize all dashboard features.
+            initializeDashboard(user);
         } else {
-            // User is signed out.
-            console.log("User is signed out.");
-            renderTrips([]); // Clear the UI
+            // --- USER IS NOT SIGNED IN ---
+            // If there's no user, they shouldn't be here. Redirect to login.
+            console.log("No user signed in on dashboard, redirecting to login.");
+            window.location.href = 'login.html';
         }
     });
+});
 
-    // Attach event listeners that only need to be set once
-    attachStaticEventListeners();
+/**
+ * Finds all necessary HTML elements and assigns them to our global variables.
+ */
+function initializeDOMElements() {
+    modalContainer = document.getElementById('trip-modal'); // Updated ID from your HTML
+    modalFormContent = document.getElementById('modal-form-content');
+    tripList = document.getElementById('trip-list');
 }
 
 /**
- * Attaches event listeners that do not need to be re-created.
+ * Sets up the dashboard for an authenticated user.
+ * @param {object} user The authenticated user object from Firebase.
+ */
+function initializeDashboard(user) {
+    console.log("User authenticated. Setting up dashboard for UID:", user.uid);
+    // Attach all the button and form listeners safely.
+    attachStaticEventListeners();
+    // Display user info in the header.
+    updateUserInfo(user);
+    // Fetch the user's trips from the database.
+    fetchUserTrips(user.uid);
+}
+
+/**
+ * Attaches all static event listeners for the dashboard page ONE TIME.
  */
 function attachStaticEventListeners() {
-    // Check if listeners are already attached to prevent duplicates
-    if (modalContainer.dataset.listenersAttached === 'true') return;
+    // Check if listeners are already attached to prevent duplicates.
+    if (document.body.dataset.dashboardListeners === 'true') {
+        return;
+    }
 
+    // Logout Button
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html';
+        });
+    });
+
+    // Add Trip Modal
     document.getElementById('add-trip-btn').addEventListener('click', openTripModal);
     modalContainer.querySelector('.close-modal').addEventListener('click', closeTripModal);
     modalContainer.addEventListener('click', (e) => {
@@ -45,38 +76,31 @@ function attachStaticEventListeners() {
     });
     modalFormContent.addEventListener('submit', handleTripFormSubmit);
 
-    modalContainer.dataset.listenersAttached = 'true';
+    document.body.dataset.dashboardListeners = 'true';
 }
 
 
-// --- FIREBASE DATA FUNCTIONS ---
+// --- DATA FETCHING & RENDERING ---
 
 function fetchUserTrips(userId) {
+    if (tripsListener) {
+        firebase.database().ref('trips').off('value', tripsListener);
+    }
     const tripsRef = firebase.database().ref('trips');
-
-    // Store the listener function in our global variable
     tripsListener = tripsRef.orderByChild('userId').equalTo(userId).on('value', snapshot => {
         const tripsData = snapshot.val();
-        const tripsArray = tripsData ? Object.keys(tripsData).map(key => ({
-            id: key,
-            ...tripsData[key]
-        })) : [];
-
+        const tripsArray = tripsData ? Object.keys(tripsData).map(key => ({ id: key, ...tripsData[key] })) : [];
         tripsArray.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
         renderTrips(tripsArray);
     }, error => {
         console.error("Error fetching trips:", error);
-        tripList.innerHTML = `<p class="error-message">Could not load trips. Please check your connection.</p>`;
+        tripList.innerHTML = `<p class="error-message">Could not load trips.</p>`;
     });
 }
 
-
-// --- RENDERING AND UI FUNCTIONS ---
-// (No changes to renderTrips, createTripCard, openTripModal, closeTripModal, 
-// handleTripFormSubmit, or setButtonLoadingState functions are needed)
-
 function renderTrips(trips) {
-    tripList.innerHTML = '';
+    if (!tripList) return; // Safety check
+    tripList.innerHTML = ''; // Clear previous content (including spinner)
     if (trips.length === 0) {
         tripList.innerHTML = `
             <div class="empty-state">
@@ -84,12 +108,12 @@ function renderTrips(trips) {
                 <h3>No Trips Yet</h3>
                 <p>Click "Add Trip" to start planning your next adventure!</p>
             </div>`;
-        return;
+    } else {
+        trips.forEach(trip => {
+            const tripCard = createTripCard(trip);
+            tripList.appendChild(tripCard);
+        });
     }
-    trips.forEach(trip => {
-        const tripCard = createTripCard(trip);
-        tripList.appendChild(tripCard);
-    });
 }
 
 function createTripCard(tripData) {
@@ -99,7 +123,7 @@ function createTripCard(tripData) {
     const startDate = new Date(tripData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     const endDate = new Date(tripData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     card.innerHTML = `
-        <div class="trip-card-image" style="background-image: url('https://source.unsplash.com/random/400x300/?${encodeURIComponent(tripData.destination)}')"></div>
+        <div class="trip-card-image" style="background-image: url('https://source.unsplash.com/random/400x300/?${encodeURIComponent(tripData.destination || 'travel')},travel')"></div>
         <div class="trip-card-content">
             <h4>${tripData.name}</h4>
             <p><i class="fas fa-map-marker-alt"></i> ${tripData.destination}</p>
@@ -111,15 +135,30 @@ function createTripCard(tripData) {
     return card;
 }
 
+function updateUserInfo(user) {
+    const userEmailSpan = document.getElementById('user-email');
+    const userNameSpan = document.getElementById('user-name'); // For welcome banner
+    const userDisplayNameSpan = document.getElementById('user-display-name');
+
+    if (userEmailSpan) userEmailSpan.textContent = user.email;
+    if (userNameSpan) userNameSpan.textContent = user.displayName || 'Traveler';
+    if (userDisplayNameSpan) userDisplayNameSpan.textContent = user.displayName || user.email.split('@')[0];
+}
+
+
+// --- MODAL & FORM HANDLING ---
+
 function openTripModal() {
     if (modalFormContent.getAttribute('data-loaded') !== 'true') {
         fetch('trip-form.html')
-            .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.text(); })
+            .then(response => response.text())
             .then(html => {
                 modalFormContent.innerHTML = html;
                 modalFormContent.setAttribute('data-loaded', 'true');
             })
-            .catch(error => { console.error('Error loading trip form:', error); modalFormContent.innerHTML = '<p>Sorry, the form could not be loaded.</p>'; });
+            .catch(error => {
+                modalFormContent.innerHTML = '<p>Sorry, the form could not be loaded.</p>';
+            });
     }
     modalContainer.classList.add('show');
 }
@@ -133,7 +172,6 @@ function handleTripFormSubmit(e) {
     const form = e.target;
     const submitButton = form.querySelector('button[type="submit"]');
     const user = firebase.auth().currentUser;
-    if (!user) { alert("Authentication error: You must be logged in to create a trip."); return; }
     setButtonLoadingState(submitButton, true);
     const tripData = {
         name: form.querySelector('#trip-name').value,
@@ -145,8 +183,11 @@ function handleTripFormSubmit(e) {
         createdAt: firebase.database.ServerValue.TIMESTAMP
     };
     firebase.database().ref('trips').push(tripData)
-        .then(() => { form.reset(); closeTripModal(); })
-        .catch(error => { console.error("Error saving trip:", error); alert(`Error: Could not save your trip. \n${error.message}`); })
+        .then(() => {
+            form.reset();
+            closeTripModal();
+        })
+        .catch(error => { alert(`Error: Could not save trip.`); })
         .finally(() => { setButtonLoadingState(submitButton, false); });
 }
 
@@ -163,18 +204,3 @@ function setButtonLoadingState(button, isLoading) {
         spinner.style.display = 'none';
     }
 }
-
-
-// --- PAGE LIFECYCLE EVENT LISTENERS ---
-
-// This event runs when the page is first loaded.
-window.addEventListener('DOMContentLoaded', initializeDashboard);
-
-// This event runs when the page is shown from the back/forward cache.
-window.addEventListener('pageshow', function (event) {
-    // The 'persisted' property is true if the page is from the bfcache.
-    if (event.persisted) {
-        console.log("Page shown from bfcache, re-initializing dashboard.");
-        initializeDashboard();
-    }
-});
