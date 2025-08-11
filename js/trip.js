@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(html => {
                     modalItemFormContent.innerHTML = html;
                     modalItemFormContent.setAttribute('data-loaded', 'true');
+
+                    const itineraryForm = modalItemFormContent.querySelector('#itinerary-form');
+                    if (itineraryForm) {
+                        itineraryForm.addEventListener('submit', handleItineraryFormSubmit);
+                    }
                 })
                 .catch(error => {
                     console.error('Error loading itinerary form:', error);
@@ -138,4 +143,71 @@ function renderTripDetails(tripData) {
             <p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
         </div>
     `;
+}
+
+/**
+ * Handles the form submission for creating a new itinerary item.
+ * @param {Event} e The form submission event.
+ */
+function handleItineraryFormSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const params = new URLSearchParams(window.location.search);
+    const tripId = params.get('id');
+
+    if (!tripId) {
+        alert("Error: Cannot save item without a valid trip ID.");
+        return;
+    }
+
+    setButtonLoadingState(submitButton, true);
+
+    // Construct the itinerary item data object
+    const itemData = {
+        title: form.querySelector('#item-title').value,
+        category: form.querySelector('#item-category').value,
+        date: form.querySelector('#item-date').value,
+        time: form.querySelector('#item-time').value,
+        notes: form.querySelector('#item-notes').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+    };
+
+    // Push the data to the 'itinerary' node under the specific trip
+    const itineraryRef = firebase.database().ref(`trips/${tripId}/itinerary`);
+    itineraryRef.push(itemData)
+        .then(() => {
+            console.log("Itinerary item saved successfully!");
+            form.reset();
+            // We need a function to close the modal, let's call it closeItemModal
+            const itemModalContainer = document.getElementById('item-modal-container');
+            itemModalContainer.classList.remove('show');
+        })
+        .catch(error => {
+            console.error("Error saving itinerary item:", error);
+            alert("Error: Could not save your item. Please try again.");
+        })
+        .finally(() => {
+            setButtonLoadingState(submitButton, false);
+        });
+}
+
+
+/**
+ * Toggles the loading state of a button (re-used from dashboard.js).
+ * @param {HTMLButtonElement} button The button element.
+ * @param {boolean} isLoading True to show spinner, false to show text.
+ */
+function setButtonLoadingState(button, isLoading) {
+    const btnText = button.querySelector('.btn-text');
+    const spinner = button.querySelector('.spinner');
+    if (isLoading) {
+        button.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+    } else {
+        button.disabled = false;
+        btnText.style.display = 'inline-block';
+        spinner.style.display = 'none';
+    }
 }
