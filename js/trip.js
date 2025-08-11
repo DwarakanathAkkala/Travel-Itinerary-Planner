@@ -473,38 +473,66 @@ function initializeMap() {
  * It will geocode the location string for each item.
  * @param {Array<object>} items An array of itinerary items.
  */
+// In js/trip.js, REPLACE the entire function
+
 async function addMarkersToMap(items) {
-    // 1. Clear any existing markers from the map
+    // 1. Clear existing markers
     mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 
-    // 2. Process each item with a location
+    // 2. Define settings for each category
+    const categorySettings = {
+        flight: { color: 'blue', icon: 'fa-plane' },
+        lodging: { color: 'purple', icon: 'fa-hotel' },
+        transport: { color: 'orange', icon: 'fa-car' },
+        dining: { color: 'red', icon: 'fa-utensils' },
+        activity: { color: 'green', icon: 'fa-ticket-alt' },
+        other: { color: 'gray', icon: 'fa-map-pin' }
+    };
+
+    // 3. Process each item
     for (const item of items) {
         if (item.location && item.location.trim() !== '') {
             try {
-                // 3. Use a free geocoding API to get coordinates
+                // Using Nominatim for geocoding
                 const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.location)}&format=json&limit=1`);
                 const data = await response.json();
 
                 if (data && data.length > 0) {
-                    const { lat, lon } = data[0]; // Note: It's 'lat' and 'lon' here
+                    const { lat, lon } = data[0];
 
-                    const marker = L.marker([lat, lon]) // Use lat, lon
+                    // 4. Get the correct setting, defaulting to 'other'
+                    const setting = categorySettings[item.category] || categorySettings.other;
+
+                    // 5. Create a custom HTML marker using L.divIcon
+                    const customIcon = L.divIcon({
+                        className: 'leaflet-div-icon', // Required by Leaflet
+                        html: `<div class="custom-marker marker-color-${setting.color}">
+                                   <i class="fas ${setting.icon}"></i>
+                               </div>`,
+                        iconSize: [35, 35],
+                        iconAnchor: [17, 35], // Point of the icon which will correspond to marker's location
+                        popupAnchor: [0, -35] // Point from which the popup should open relative to the iconAnchor
+                    });
+
+                    // 6. Add marker to the map
+                    const marker = L.marker([lat, lon], { icon: customIcon })
                         .addTo(window.mapInstance)
                         .bindPopup(`<b>${item.title}</b><br>${item.location}`);
 
                     mapMarkers.push(marker);
                 }
             } catch (error) {
+                // This will now only catch errors from the network fetch or JSON parsing
                 console.error("Geocoding error for:", item.location, error);
             }
         }
     }
 
-    // 5. Adjust map view to fit all markers
+    // 7. Adjust map view
     if (mapMarkers.length > 0) {
         const featureGroup = L.featureGroup(mapMarkers);
-        window.mapInstance.fitBounds(featureGroup.getBounds().pad(0.1)); // pad adds a nice margin
+        window.mapInstance.fitBounds(featureGroup.getBounds().pad(0.2));
     }
 }
 

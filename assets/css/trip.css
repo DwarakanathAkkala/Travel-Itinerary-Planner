@@ -414,6 +414,38 @@ body {
     z-index: 1; /* Ensures it sits correctly in the layout */
 }
 
+/* --- CUSTOM DIVICON MARKER STYLES --- */
+.leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.custom-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    color: white;
+    border-radius: 50% 50% 50% 0; /* Teardrop shape */
+    transform: rotate(-45deg); /* Point the teardrop down */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 2px solid white;
+}
+
+.custom-marker i {
+    transform: rotate(45deg); /* Counter-rotate the icon to be upright */
+    font-size: 16px;
+}
+
+/* Category-specific background colors */
+.marker-color-blue   { background-color: #3498db; }
+.marker-color-purple { background-color: #9b59b6; }
+.marker-color-orange { background-color: #f1c40f; }
+.marker-color-red    { background-color: #e74c3c; }
+.marker-color-green  { background-color: #2ecc71; }
+.marker-color-gray   { background-color: #95a5a6; }
+
 @media (max-width: 768px) {
 
     .trip-image-banner {
