@@ -378,6 +378,26 @@ body {
     transform: scale(1.1);
 }
 
+.btn-edit-item {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-edit-item:hover {
+    color: var(--primary); /* Blue on hover */
+    background-color: #e0e0ff; /* A very light blue background */
+    transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
 
     .trip-image-banner {

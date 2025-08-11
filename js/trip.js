@@ -15,30 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalItemFormContent = document.getElementById('modal-item-form-content');
 
     // Add Itinerary
-    document.getElementById('add-item-btn').addEventListener('click', () => {
-        // Fetch form content if it's not already loaded
-        if (modalItemFormContent.getAttribute('data-loaded') !== 'true') {
-            fetch('itinerary-form.html')
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.text();
-                })
-                .then(html => {
-                    modalItemFormContent.innerHTML = html;
-                    modalItemFormContent.setAttribute('data-loaded', 'true');
-
-                    const itineraryForm = modalItemFormContent.querySelector('#itinerary-form');
-                    if (itineraryForm) {
-                        itineraryForm.addEventListener('submit', handleItineraryFormSubmit);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading itinerary form:', error);
-                    modalItemFormContent.innerHTML = '<p>Sorry, the form could not be loaded.</p>';
-                });
-        }
-        itemModalContainer.classList.add('show');
-    });
+    document.getElementById('add-item-btn').addEventListener('click', openItemModalForCreate);
 
     // --- NEW: Attach listener for delete buttons ---
     const itineraryList = document.getElementById('itinerary-list');
@@ -163,41 +140,40 @@ function handleItineraryFormSubmit(e) {
     const submitButton = form.querySelector('button[type="submit"]');
     const params = new URLSearchParams(window.location.search);
     const tripId = params.get('id');
+    const editId = form.getAttribute('data-edit-id'); // Check for an edit ID
 
-    if (!tripId) {
-        alert("Error: Cannot save item without a valid trip ID.");
-        return;
-    }
-
+    if (!tripId) { alert("Error: Missing Trip ID."); return; }
     setButtonLoadingState(submitButton, true);
 
-    // Construct the itinerary item data object
     const itemData = {
         title: form.querySelector('#item-title').value,
         category: form.querySelector('#item-category').value,
         date: form.querySelector('#item-date').value,
         time: form.querySelector('#item-time').value,
-        notes: form.querySelector('#item-notes').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
+        notes: form.querySelector('#item-notes').value
     };
 
-    // Push the data to the 'itinerary' node under the specific trip
-    const itineraryRef = firebase.database().ref(`trips/${tripId}/itinerary`);
-    itineraryRef.push(itemData)
+    let promise;
+    if (editId) {
+        // --- UPDATE ---
+        // Get a reference to the specific item and update it
+        const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${editId}`);
+        promise = itemRef.update(itemData);
+    } else {
+        // --- CREATE ---
+        // Add createdAt timestamp only for new items
+        itemData.createdAt = firebase.database.ServerValue.TIMESTAMP;
+        const itineraryRef = firebase.database().ref(`trips/${tripId}/itinerary`);
+        promise = itineraryRef.push(itemData);
+    }
+
+    promise
         .then(() => {
-            console.log("Itinerary item saved successfully!");
-            form.reset();
-            // We need a function to close the modal, let's call it closeItemModal
-            const itemModalContainer = document.getElementById('item-modal-container');
-            itemModalContainer.classList.remove('show');
+            console.log(`Item ${editId ? 'updated' : 'saved'} successfully!`);
+            document.getElementById('item-modal-container').classList.remove('show');
         })
-        .catch(error => {
-            console.error("Error saving itinerary item:", error);
-            alert("Error: Could not save your item. Please try again.");
-        })
-        .finally(() => {
-            setButtonLoadingState(submitButton, false);
-        });
+        .catch(error => console.error("Error saving item:", error))
+        .finally(() => setButtonLoadingState(submitButton, false));
 }
 
 
@@ -320,6 +296,9 @@ function createItineraryItemCard(itemData) {
         </div>
 
         <div class="item-actions">
+            <button class="btn-edit-item" title="Edit Item">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
             <button class="btn-delete-item" title="Delete Item">
                 <i class="fas fa-trash-alt"></i>
             </button>
@@ -336,35 +315,114 @@ function createItineraryItemCard(itemData) {
  * @param {Event} e The click event.
  */
 function handleItineraryListClick(e) {
-    // Check if the clicked element (or its parent) is a delete button
+    const editButton = e.target.closest('.btn-edit-item');
     const deleteButton = e.target.closest('.btn-delete-item');
 
+    // --- HANDLE EDIT ---
+    if (editButton) {
+        const itemCard = editButton.closest('.itinerary-item');
+        const itemId = itemCard.getAttribute('data-item-id');
+        const params = new URLSearchParams(window.location.search);
+        const tripId = params.get('id');
+
+        // Fetch the specific item's data from Firebase
+        const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${itemId}`);
+        itemRef.once('value', snapshot => {
+            if (snapshot.exists()) {
+                const itemData = snapshot.val();
+                openItemModalForEdit(itemId, itemData); // Open modal and pass data
+            }
+        });
+    }
+
+    // --- HANDLE DELETE ---
     if (deleteButton) {
+        // ... (The existing delete logic remains unchanged here) ...
         const itemCard = deleteButton.closest('.itinerary-item');
         const itemId = itemCard.getAttribute('data-item-id');
         const params = new URLSearchParams(window.location.search);
         const tripId = params.get('id');
 
-        if (!tripId || !itemId) {
-            alert("Error: Missing ID for deletion.");
-            return;
-        }
-
-        // Ask for confirmation before deleting
+        if (!tripId || !itemId) { alert("Error: Missing ID for deletion."); return; }
         const isConfirmed = confirm("Are you sure you want to delete this itinerary item?");
-
         if (isConfirmed) {
-            // Remove the item from Firebase
             const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${itemId}`);
-            itemRef.remove()
-                .then(() => {
-                    console.log("Item deleted successfully.");
-                    // No need to remove from UI manually, the realtime listener will handle it!
-                })
-                .catch(error => {
-                    console.error("Error deleting item:", error);
-                    alert("There was an error deleting the item.");
-                });
+            itemRef.remove();
         }
+    }
+}
+
+// In js/trip.js, at the end of the file
+/**
+ * Populates the itinerary form with existing item data for editing.
+ * @param {object} itemData The data of the item to be edited.
+ */
+function populateItineraryForm(itemData) {
+    const form = document.querySelector('#itinerary-form');
+    if (!form) return;
+
+    form.querySelector('#item-title').value = itemData.title || '';
+    form.querySelector('#item-category').value = itemData.category || 'other';
+    form.querySelector('#item-date').value = itemData.date || '';
+    form.querySelector('#item-time').value = itemData.time || '';
+    form.querySelector('#item-notes').value = itemData.notes || '';
+}
+
+function openItemModalForCreate() {
+    const modalContainer = document.getElementById('item-modal-container');
+    const modalFormContent = document.getElementById('modal-item-form-content');
+
+    // Ensure the form is loaded
+    loadAndShowForm(() => {
+        // Set modal title and button text for "Create" mode
+        modalContainer.querySelector('h3').textContent = 'Add Itinerary Item';
+        const form = modalFormContent.querySelector('#itinerary-form');
+        form.querySelector('.btn-text').textContent = 'Add to Itinerary';
+        form.removeAttribute('data-edit-id'); // Ensure no edit ID is lingering
+        form.reset(); // Clear any previous data
+        modalContainer.classList.add('show');
+    });
+}
+
+/**
+ * Opens the item modal for editing an existing item.
+ * @param {string} itemId The ID of the item to edit.
+ * @param {object} itemData The existing data of the item.
+ */
+function openItemModalForEdit(itemId, itemData) {
+    const modalContainer = document.getElementById('item-modal-container');
+    const modalFormContent = document.getElementById('modal-item-form-content');
+
+    loadAndShowForm(() => {
+        // Set modal title and button text for "Edit" mode
+        modalContainer.querySelector('h3').textContent = 'Edit Itinerary Item';
+        const form = modalFormContent.querySelector('#itinerary-form');
+        form.querySelector('.btn-text').textContent = 'Save Changes';
+        form.setAttribute('data-edit-id', itemId); // Store the item's ID on the form
+        populateItineraryForm(itemData); // Fill the form with existing data
+        modalContainer.classList.add('show');
+    });
+}
+
+/**
+ * Helper function to ensure the itinerary form is loaded before showing the modal.
+ * @param {function} callback The function to run after the form is ready.
+ */
+function loadAndShowForm(callback) {
+    const modalFormContent = document.getElementById('modal-item-form-content');
+
+    if (modalFormContent.getAttribute('data-loaded') === 'true') {
+        callback(); // If already loaded, just run the callback
+    } else {
+        // If not loaded, fetch it first, then run the callback
+        fetch('itinerary-form.html')
+            .then(response => { if (!response.ok) throw new Error('Network response'); return response.text(); })
+            .then(html => {
+                modalFormContent.innerHTML = html;
+                modalFormContent.setAttribute('data-loaded', 'true');
+                modalFormContent.querySelector('#itinerary-form').addEventListener('submit', handleItineraryFormSubmit);
+                callback(); // Run the callback now that the form is ready
+            })
+            .catch(error => console.error('Error loading itinerary form:', error));
     }
 }
