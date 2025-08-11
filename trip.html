@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trip Details | Wanderlust</title>
-    <!-- Common Styles -->
+    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-    <!-- Page-Specific Styles -->
+    <!-- Page-Specific Stylesheets -->
     <link rel="stylesheet" href="assets/css/trip.css">
+    <link rel="stylesheet" href="assets/css/trip-form.css"> <!-- Crucial: Link to the modal/form styles -->
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -19,21 +20,48 @@
     <header class="header trip-header">
         <nav>
             <a href="dashboard.html" class="back-to-dash"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-            <div class="auth-buttons">
-                <!-- We can add user info or logout here later -->
-            </div>
         </nav>
     </header>
 
+    <!-- Main Content Container -->
     <main class="trip-detail-container">
-        <!-- Trip information will be loaded here -->
+        <!-- Section for the dynamic trip header (banner, info) -->
         <div id="trip-details-content">
             <div class="loading-spinner"></div>
         </div>
 
-        <!-- Future sections for Itinerary, Expenses, etc. will go here -->
+        <!-- Section for the itinerary list -->
+        <section class="itinerary-section-container">
+            <div class="section-header">
+                <h2>Your Itinerary</h2>
+                <button id="add-item-btn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </div>
+
+            <div class="itinerary-list" id="itinerary-list">
+                <!-- Itinerary items will be loaded here dynamically -->
+                <div class="itinerary-item-empty">
+                    <p>Your itinerary is empty. Add your first item to get started!</p>
+                </div>
+            </div>
+        </section>
 
     </main>
+
+    <!-- Modal for the "Add Itinerary Item" Form -->
+    <div id="item-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Add Itinerary Item</h3>
+                <div id="modal-item-form-content">
+                    <!-- The form from itinerary-form.html will be loaded here by JS -->
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

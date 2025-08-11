@@ -11,6 +11,40 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    const itemModalContainer = document.getElementById('item-modal-container');
+    const modalItemFormContent = document.getElementById('modal-item-form-content');
+
+    document.getElementById('add-item-btn').addEventListener('click', () => {
+        // Fetch form content if it's not already loaded
+        if (modalItemFormContent.getAttribute('data-loaded') !== 'true') {
+            fetch('itinerary-form.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(html => {
+                    modalItemFormContent.innerHTML = html;
+                    modalItemFormContent.setAttribute('data-loaded', 'true');
+                })
+                .catch(error => {
+                    console.error('Error loading itinerary form:', error);
+                    modalItemFormContent.innerHTML = '<p>Sorry, the form could not be loaded.</p>';
+                });
+        }
+        itemModalContainer.classList.add('show');
+    });
+
+    // Function to close the itinerary modal
+    function closeItemModal() {
+        itemModalContainer.classList.remove('show');
+    }
+
+    // Attach close listeners
+    itemModalContainer.querySelector('.close-modal').addEventListener('click', closeItemModal);
+    itemModalContainer.addEventListener('click', (e) => {
+        if (e.target === itemModalContainer) closeItemModal();
+    });
+
     // Use onAuthStateChanged to ensure user is logged in before fetching
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
