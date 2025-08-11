@@ -1,0 +1,35 @@
+<!-- expense-form.html -->
+
+<form id="expense-form" class="trip-form" novalidate>
+    <div class="form-group">
+        <label for="expense-description">Description</label>
+        <input type="text" id="expense-description" required placeholder="e.g., Museum tickets, Dinner at La Trattoria">
+    </div>
+
+    <div class="form-group">
+        <label for="expense-amount">Amount</label>
+        <input type="number" id="expense-amount" required placeholder="0.00" step="0.01">
+    </div>
+
+    <div class="form-group">
+        <label for="expense-category">Category</label>
+        <select id="expense-category" required>
+            <option value="food" selected>🍽️ Food & Dining</option>
+            <option value="transport">🚗 Transport</option>
+            <option value="lodging">🏨 Lodging</option>
+            <option value="activities">🎟️ Activities</option>
+            <option value="shopping">🛍️ Shopping</option>
+            <option value="other">📌 Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="expense-date">Date of Expense</label>
+        <input type="date" id="expense-date" required>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        <span class="btn-text">Add Expense</span>
+        <div class="spinner"></div>
+    </button>
+</form>

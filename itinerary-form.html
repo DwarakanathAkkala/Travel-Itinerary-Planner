@@ -1,0 +1,45 @@
+<form id="itinerary-form" class="trip-form" novalidate>
+    <div class="form-group">
+        <label for="item-title">Title</label>
+        <input type="text" id="item-title" required placeholder="e.g., Flight to Paris">
+    </div>
+
+    <div class="form-group">
+        <label for="item-category">Category</label>
+        <select id="item-category" required>
+            <option value="activity" selected>🎟️ Activity</option>
+            <option value="flight">✈️ Flight</option>
+            <option value="lodging">🏨 Lodging</option>
+            <option value="transport">🚗 Transport</option>
+            <option value="dining">🍽️ Dining</option>
+            <option value="other">📌 Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="item-location">Location / Address (for map)</label>
+        <input type="text" id="item-location" placeholder="e.g., Eiffel Tower, Paris">
+    </div>
+
+    <div class="date-group">
+        <div class="form-group">
+            <label for="item-date">Date</label>
+            <input type="date" id="item-date" required>
+        </div>
+        <div class="form-group">
+            <label for="item-time">Time (Optional)</label>
+            <input type="time" id="item-time">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="item-notes">Details / Confirmation #</label>
+        <textarea id="item-notes" rows="3"
+            placeholder="e.g., Confirmation #ABC123, meet at the main entrance..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        <span class="btn-text">Add to Itinerary</span>
+        <div class="spinner"></div>
+    </button>
+</form>

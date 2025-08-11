@@ -5,10 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trip Details | Wanderlust</title>
-    <!-- Common Styles -->
+    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-    <!-- Page-Specific Styles -->
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Leaflet Routing Machine CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <!-- Page-Specific Stylesheets -->
     <link rel="stylesheet" href="assets/css/trip.css">
+    <!-- Link to the expense-specific stylesheet -->
+    <link rel="stylesheet" href="assets/css/expense.css">
+    <link rel="stylesheet" href="assets/css/trip-form.css"> <!-- Crucial: Link to the modal/form styles -->
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -19,21 +27,91 @@
     <header class="header trip-header">
         <nav>
             <a href="dashboard.html" class="back-to-dash"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-            <div class="auth-buttons">
-                <!-- We can add user info or logout here later -->
-            </div>
         </nav>
     </header>
 
+    <!-- Main Content Container -->
     <main class="trip-detail-container">
-        <!-- Trip information will be loaded here -->
+        <!-- Section for the dynamic trip header (banner, info) -->
         <div id="trip-details-content">
             <div class="loading-spinner"></div>
         </div>
 
-        <!-- Future sections for Itinerary, Expenses, etc. will go here -->
+        <!-- Interactive Map Section -->
+        <section class="map-section-container">
+            <div id="map"></div>
+        </section>
+
+        <!-- Section for the itinerary list -->
+        <section class="itinerary-section-container">
+            <div class="section-header">
+                <h2>Your Itinerary</h2>
+                <button id="add-item-btn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </div>
+
+            <div class="itinerary-list" id="itinerary-list">
+                <!-- Itinerary items will be loaded here dynamically -->
+                <div class="itinerary-item-empty">
+                    <p>Your itinerary is empty. Add your first item to get started!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expense Tracker Section -->
+        <section class="expense-section-container">
+            <div class="section-header">
+                <h2>Expense Tracker</h2>
+                <button id="add-expense-btn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </div>
+
+            <div class="expenses-summary" id="expenses-summary">
+                <!-- Summary like total cost will go here -->
+                <div class="loading-spinner"></div>
+            </div>
+
+            <div class="expense-list" id="expense-list">
+                <!-- Expense items will be loaded here -->
+            </div>
+        </section>
 
     </main>
+
+    <!-- Modal for the "Add Itinerary Item" Form -->
+    <div id="item-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Add Itinerary Item</h3>
+                <div id="modal-item-form-content">
+                    <!-- The form from itinerary-form.html will be loaded here by JS -->
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal placeholder for the Expense Form -->
+    <div id="expense-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Add New Expense</h3>
+                <div id="modal-expense-form-content">
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet.js JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Leaflet Routing Machine JS -->
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -42,7 +120,7 @@
 
     <!-- Your Config and Page Logic -->
     <script src="js/firebase-config.js"></script>
-    <script src="js/trip.js"></script>
+    <script type="module" src="js/trip.js"></script>
 
 </body>
 
