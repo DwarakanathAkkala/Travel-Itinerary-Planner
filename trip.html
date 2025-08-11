@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <!-- Page-Specific Stylesheets -->
     <link rel="stylesheet" href="assets/css/trip.css">
+    <!-- Link to the expense-specific stylesheet -->
+    <link rel="stylesheet" href="assets/css/expense.css">
     <link rel="stylesheet" href="assets/css/trip-form.css"> <!-- Crucial: Link to the modal/form styles -->
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -57,6 +59,25 @@
             </div>
         </section>
 
+        <!-- Expense Tracker Section -->
+        <section class="expense-section-container">
+            <div class="section-header">
+                <h2>Expense Tracker</h2>
+                <button id="add-expense-btn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </div>
+
+            <div class="expenses-summary" id="expenses-summary">
+                <!-- Summary like total cost will go here -->
+                <div class="loading-spinner"></div>
+            </div>
+
+            <div class="expense-list" id="expense-list">
+                <!-- Expense items will be loaded here -->
+            </div>
+        </section>
+
     </main>
 
     <!-- Modal for the "Add Itinerary Item" Form -->
@@ -67,6 +88,19 @@
                 <h3>Add Itinerary Item</h3>
                 <div id="modal-item-form-content">
                     <!-- The form from itinerary-form.html will be loaded here by JS -->
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal placeholder for the Expense Form -->
+    <div id="expense-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Add New Expense</h3>
+                <div id="modal-expense-form-content">
                     <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
                 </div>
             </div>
