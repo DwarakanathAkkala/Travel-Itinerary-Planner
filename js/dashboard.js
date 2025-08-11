@@ -3,10 +3,108 @@
 // Global references to modal elements
 const modalContainer = document.getElementById('trip-modal-container');
 const modalFormContent = document.getElementById('modal-form-content');
-
 // js/dashboard.js
 
-// ... (keep all the existing code above this line) ...
+// ... (keep global variables and the new code below) ...
+const tripList = document.getElementById('trip-list');
+
+// --- FIREBASE AUTH LISTENER ---
+// This is the main entry point for loading user-specific data.
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        // User is signed in.
+        console.log("User signed in, fetching trips for UID:", user.uid);
+        fetchUserTrips(user.uid);
+    } else {
+        // User is signed out.
+        console.log("User is signed out.");
+        // Optionally, redirect to login page or clear the UI.
+        // For now, we'll just clear the list and show an empty state.
+        renderTrips([]);
+    }
+});
+
+
+/**
+ * Fetches trips from Firebase for a specific user.
+ * @param {string} userId The UID of the currently logged-in user.
+ */
+function fetchUserTrips(userId) {
+    const tripsRef = firebase.database().ref('trips');
+
+    // Query the database for trips where 'userId' matches the current user's UID.
+    // We also order them by creation date.
+    tripsRef.orderByChild('userId').equalTo(userId).on('value', snapshot => {
+        const tripsData = snapshot.val();
+        const tripsArray = tripsData ? Object.keys(tripsData).map(key => ({
+            id: key,
+            ...tripsData[key]
+        })) : [];
+
+        // Sort trips by start date, newest first
+        tripsArray.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+
+        console.log("Fetched Trips:", tripsArray);
+        renderTrips(tripsArray);
+    }, error => {
+        console.error("Error fetching trips:", error);
+        tripList.innerHTML = `<p class="error-message">Could not load trips. Please check your connection.</p>`;
+    });
+}
+
+/**
+ * Renders an array of trip objects into the DOM.
+ * @param {Array} trips An array of trip objects.
+ */
+function renderTrips(trips) {
+    // Clear current list and spinner
+    tripList.innerHTML = '';
+
+    if (trips.length === 0) {
+        // Display a helpful message if there are no trips
+        tripList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-suitcase-rolling"></i>
+                <h3>No Trips Yet</h3>
+                <p>Click "Add Trip" to start planning your next adventure!</p>
+            </div>
+        `;
+        return;
+    }
+
+    trips.forEach(trip => {
+        const tripCard = createTripCard(trip);
+        tripList.appendChild(tripCard);
+    });
+}
+
+/**
+ * Creates an HTML element for a single trip card.
+ * @param {Object} tripData The data for a single trip.
+ * @returns {HTMLElement} A div element representing the trip card.
+ */
+function createTripCard(tripData) {
+    const card = document.createElement('div');
+    card.className = 'trip-card';
+    card.setAttribute('data-trip-id', tripData.id);
+
+    // Format dates for display
+    const startDate = new Date(tripData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const endDate = new Date(tripData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    card.innerHTML = `
+        <div class="trip-card-image" style="background-image: url('https://source.unsplash.com/random/400x300/?${encodeURIComponent(tripData.destination)}')"></div>
+        <div class="trip-card-content">
+            <h4>${tripData.name}</h4>
+            <p><i class="fas fa-map-marker-alt"></i> ${tripData.destination}</p>
+            <div class="trip-card-footer">
+                <span><i class="fas fa-calendar-alt"></i> ${startDate} - ${endDate}</span>
+                <a href="#" class="link">View Details</a>
+            </div>
+        </div>
+    `;
+    return card;
+}
 
 /**
  * Handles the form submission for creating a new trip.
