@@ -76,6 +76,9 @@ function fetchTripDetails(tripId) {
             const tripData = snapshot.val();
             console.log("Trip data fetched:", tripData);
             renderTripDetails(tripData);
+
+            // Fetch Itinerary Items
+            fetchItineraryItems(tripId);
         } else {
             console.error("Trip data does not exist for this ID.");
             tripDetailsContent.innerHTML = '<h2>Trip Not Found</h2><p>The requested trip does not exist or may have been deleted.</p>';
@@ -210,4 +213,107 @@ function setButtonLoadingState(button, isLoading) {
         btnText.style.display = 'inline-block';
         spinner.style.display = 'none';
     }
+}
+
+/**
+ * Fetches and listens for real-time updates on itinerary items for a trip.
+ * @param {string} tripId The unique ID of the current trip.
+ */
+function fetchItineraryItems(tripId) {
+    const itineraryRef = firebase.database().ref(`trips/${tripId}/itinerary`);
+    const itineraryList = document.getElementById('itinerary-list');
+
+    // Listen for changes on the itinerary data
+    itineraryRef.orderByChild('date').on('value', snapshot => {
+        itineraryList.innerHTML = ''; // Clear the list before rendering
+
+        if (!snapshot.exists()) {
+            itineraryList.innerHTML = `
+                <div class="itinerary-item-empty">
+                    <p>Your itinerary is empty. Add your first item to get started!</p>
+                </div>`;
+            return;
+        }
+
+        const items = [];
+        snapshot.forEach(childSnapshot => {
+            items.push({
+                id: childSnapshot.key,
+                ...childSnapshot.val()
+            });
+        });
+
+        // Group items by date
+        const groupedByDate = items.reduce((acc, item) => {
+            const date = item.date;
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            // Sort items by time within each day
+            acc[date].push(item);
+            acc[date].sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+            return acc;
+        }, {});
+
+        // Render the grouped items
+        for (const date in groupedByDate) {
+            const dayGroup = document.createElement('div');
+            dayGroup.className = 'itinerary-day-group';
+
+            const formattedDate = new Date(date).toLocaleDateString(undefined, {
+                weekday: 'long', month: 'long', day: 'numeric'
+            });
+
+            dayGroup.innerHTML = `<h4 class="itinerary-day-header"><i class="fas fa-calendar-day"></i> ${formattedDate}</h4>`;
+
+            groupedByDate[date].forEach(item => {
+                dayGroup.appendChild(createItineraryItemCard(item));
+            });
+
+            itineraryList.appendChild(dayGroup);
+        }
+    });
+}
+
+/**
+ * Creates an HTML element for a single itinerary item.
+ * @param {Object} itemData The data for a single itinerary item.
+ * @returns {HTMLElement} A div element representing the itinerary item card.
+ */
+function createItineraryItemCard(itemData) {
+    const card = document.createElement('div');
+    card.className = 'itinerary-item';
+    card.setAttribute('data-item-id', itemData.id);
+    card.setAttribute('data-category', itemData.category);
+
+    const icons = {
+        flight: 'fas fa-plane-departure',
+        lodging: 'fas fa-hotel',
+        transport: 'fas fa-car',
+        dining: 'fas fa-utensils',
+        activity: 'fas fa-ticket-alt',
+        other: 'fas fa-map-pin'
+    };
+
+    // Format time for display
+    let formattedTime = '';
+    if (itemData.time) {
+        const [hours, minutes] = itemData.time.split(':');
+        const dateForTime = new Date();
+        dateForTime.setHours(hours, minutes);
+        formattedTime = dateForTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    card.innerHTML = `
+        <div class="item-icon">
+            <i class="${icons[itemData.category] || icons.other}"></i>
+        </div>
+        <div class="item-details">
+            <h5>${itemData.title}</h5>
+            ${formattedTime ? `<div class="time">${formattedTime}</div>` : ''}
+            ${itemData.notes ? `<div class="notes">${itemData.notes}</div>` : ''}
+        </div>
+    `;
+
+    return card;
 }
