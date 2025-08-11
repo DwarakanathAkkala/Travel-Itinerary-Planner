@@ -9,6 +9,7 @@ L.Icon.Default.mergeOptions({
 });
 
 let mapMarkers = []; // This will store our marker objects
+let routingControl = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const tripDetailsContent = document.getElementById('trip-details-content');
@@ -294,13 +295,18 @@ function createItineraryItemCard(itemData) {
         other: 'fas fa-map-pin'
     };
 
-    // Format time for display
+    // Format time for display, if it exists
     let formattedTime = '';
     if (itemData.time) {
-        const [hours, minutes] = itemData.time.split(':');
-        const dateForTime = new Date();
-        dateForTime.setHours(hours, minutes);
-        formattedTime = dateForTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        try {
+            const [hours, minutes] = itemData.time.split(':');
+            const dateForTime = new Date();
+            dateForTime.setHours(hours, minutes);
+            formattedTime = dateForTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } catch (error) {
+            console.error("Could not format time:", itemData.time, error);
+            // formattedTime remains an empty string
+        }
     }
 
     card.innerHTML = `
@@ -308,11 +314,26 @@ function createItineraryItemCard(itemData) {
             <i class="${icons[itemData.category] || icons.other}"></i>
         </div>
         <div class="item-details">
-            <h5>${itemData.title}</h5>
+            <h5>${itemData.title || 'Untitled Item'}</h5>
             ${formattedTime ? `<div class="time">${formattedTime}</div>` : ''}
             ${itemData.notes ? `<div class="notes">${itemData.notes}</div>` : ''}
-        </div>
 
+            <!-- Location with Google Maps Link AND Directions Button -->
+            ${itemData.location ? `
+                <div class="location-details">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>${itemData.location}</span>
+                    <div class="location-actions">
+                        <button class="btn-get-directions" title="Get Directions to this location">
+                            <i class="fas fa-route"></i>
+                        </button>
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(itemData.location)}" target="_blank" class="gmaps-link" title="View on Google Maps">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            ` : ''}
+        </div>
         <div class="item-actions">
             <button class="btn-edit-item" title="Edit Item">
                 <i class="fas fa-pencil-alt"></i>
@@ -335,35 +356,47 @@ function createItineraryItemCard(itemData) {
 function handleItineraryListClick(e) {
     const editButton = e.target.closest('.btn-edit-item');
     const deleteButton = e.target.closest('.btn-delete-item');
+    const directionsButton = e.target.closest('.btn-get-directions');
+
+    // --- HANDLE DIRECTIONS ---
+    if (directionsButton) {
+        const itemCard = directionsButton.closest('.itinerary-item');
+        const locationName = itemCard.querySelector('.location-details span').textContent;
+
+        // Geocode the location name to get coordinates
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    const { lat, lon } = data[0];
+                    getDirectionsTo({ lat, lng: lon }, locationName);
+                } else {
+                    alert("Could not find coordinates for this location.");
+                }
+            })
+            .catch(err => console.error("Directions geocoding error:", err));
+    }
 
     // --- HANDLE EDIT ---
     if (editButton) {
+        // ... (This logic remains the same)
         const itemCard = editButton.closest('.itinerary-item');
         const itemId = itemCard.getAttribute('data-item-id');
         const params = new URLSearchParams(window.location.search);
         const tripId = params.get('id');
-
-        // Fetch the specific item's data from Firebase
         const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${itemId}`);
-        itemRef.once('value', snapshot => {
-            if (snapshot.exists()) {
-                const itemData = snapshot.val();
-                openItemModalForEdit(itemId, itemData); // Open modal and pass data
-            }
-        });
+        itemRef.once('value', snapshot => { if (snapshot.exists()) { openItemModalForEdit(itemId, snapshot.val()); } });
     }
 
     // --- HANDLE DELETE ---
     if (deleteButton) {
-        // ... (The existing delete logic remains unchanged here) ...
+        // ... (This logic remains the same)
         const itemCard = deleteButton.closest('.itinerary-item');
         const itemId = itemCard.getAttribute('data-item-id');
         const params = new URLSearchParams(window.location.search);
         const tripId = params.get('id');
-
         if (!tripId || !itemId) { alert("Error: Missing ID for deletion."); return; }
-        const isConfirmed = confirm("Are you sure you want to delete this itinerary item?");
-        if (isConfirmed) {
+        if (confirm("Are you sure you want to delete this itinerary item?")) {
             const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${itemId}`);
             itemRef.remove();
         }
@@ -553,4 +586,58 @@ async function setMapViewToDestination(destination) {
             console.error("Could not set map view to destination:", error);
         }
     }
+}
+
+/**
+ * Calculates and displays a route on the map from the user's current
+ * location to a specified destination.
+ * @param {object} destinationCoords The latitude/longitude of the destination.
+ * @param {string} destinationName The name of the destination for the plan.
+ */
+function getDirectionsTo(destinationCoords, destinationName) {
+    if (!window.mapInstance) {
+        alert("Map is not initialized yet.");
+        return;
+    }
+
+    // First, get the user's current location
+    navigator.geolocation.getCurrentPosition(position => {
+        const startCoords = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+
+        // If a routing control already exists, remove it
+        if (routingControl) {
+            window.mapInstance.removeControl(routingControl);
+        }
+
+        // Create a new routing control
+        routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(startCoords.lat, startCoords.lng),
+                L.latLng(destinationCoords.lat, destinationCoords.lng)
+            ],
+            routeWhileDragging: true,
+            createMarker: function (i, waypoint, n) {
+                // Use custom markers for start and end points
+                const markerIcon = L.divIcon({
+                    className: 'leaflet-div-icon',
+                    html: `<div class="custom-marker marker-color-${i === 0 ? 'blue' : 'green'}">
+                               <i class="fas ${i === 0 ? 'fa-user' : 'fa-flag-checkered'}"></i>
+                           </div>`,
+                    iconSize: [35, 35],
+                    iconAnchor: [17, 35]
+                });
+                return L.marker(waypoint.latLng, { icon: markerIcon });
+            }
+        }).addTo(window.mapInstance);
+
+        // Hide the default itinerary list while directions are shown
+        document.querySelector('.leaflet-routing-container').style.display = 'block';
+
+    }, error => {
+        console.error("Geolocation error:", error);
+        alert("Could not get your current location. Please ensure you have granted location permissions.");
+    });
 }

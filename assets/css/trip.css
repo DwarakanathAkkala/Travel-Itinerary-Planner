@@ -467,6 +467,28 @@ body {
     font-size: 0.9rem;
 }
 
+/* Location Actions */
+.location-actions {
+    margin-left: auto; /* Pushes buttons to the right */
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-get-directions {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 1rem; /* Adjust size as needed */
+    transition: color 0.2s;
+    padding: 2px;
+}
+
+.btn-get-directions:hover {
+    color: var(--primary);
+}
+
 
 @media (max-width: 768px) {
 
