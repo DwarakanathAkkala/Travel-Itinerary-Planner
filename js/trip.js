@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemModalContainer = document.getElementById('item-modal-container');
     const modalItemFormContent = document.getElementById('modal-item-form-content');
 
+    // Add Itinerary
     document.getElementById('add-item-btn').addEventListener('click', () => {
         // Fetch form content if it's not already loaded
         if (modalItemFormContent.getAttribute('data-loaded') !== 'true') {
@@ -38,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         itemModalContainer.classList.add('show');
     });
+
+    // --- NEW: Attach listener for delete buttons ---
+    const itineraryList = document.getElementById('itinerary-list');
+    itineraryList.addEventListener('click', handleItineraryListClick);
 
     // Function to close the itinerary modal
     function closeItemModal() {
@@ -313,7 +318,53 @@ function createItineraryItemCard(itemData) {
             ${formattedTime ? `<div class="time">${formattedTime}</div>` : ''}
             ${itemData.notes ? `<div class="notes">${itemData.notes}</div>` : ''}
         </div>
+
+        <div class="item-actions">
+            <button class="btn-delete-item" title="Delete Item">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
     `;
 
     return card;
+}
+
+
+/**
+ * Handles clicks on the itinerary list for event delegation,
+ * specifically looking for clicks on delete buttons.
+ * @param {Event} e The click event.
+ */
+function handleItineraryListClick(e) {
+    // Check if the clicked element (or its parent) is a delete button
+    const deleteButton = e.target.closest('.btn-delete-item');
+
+    if (deleteButton) {
+        const itemCard = deleteButton.closest('.itinerary-item');
+        const itemId = itemCard.getAttribute('data-item-id');
+        const params = new URLSearchParams(window.location.search);
+        const tripId = params.get('id');
+
+        if (!tripId || !itemId) {
+            alert("Error: Missing ID for deletion.");
+            return;
+        }
+
+        // Ask for confirmation before deleting
+        const isConfirmed = confirm("Are you sure you want to delete this itinerary item?");
+
+        if (isConfirmed) {
+            // Remove the item from Firebase
+            const itemRef = firebase.database().ref(`trips/${tripId}/itinerary/${itemId}`);
+            itemRef.remove()
+                .then(() => {
+                    console.log("Item deleted successfully.");
+                    // No need to remove from UI manually, the realtime listener will handle it!
+                })
+                .catch(error => {
+                    console.error("Error deleting item:", error);
+                    alert("There was an error deleting the item.");
+                });
+        }
+    }
 }

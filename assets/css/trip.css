@@ -349,6 +349,35 @@ body {
     word-break: break-word;
 }
 
+/* --- Itinerary Item Actions (Delete Button) --- */
+
+.item-actions {
+    margin-left: auto; /* Pushes the button to the far right */
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-delete-item {
+    background: transparent;
+    border: none;
+    color: #ccc; /* Make it light grey by default */
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-delete-item:hover {
+    color: #e74c3c; /* Red on hover */
+    background-color: #fce8e6; /* A very light red background */
+    transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
 
     .trip-image-banner {
