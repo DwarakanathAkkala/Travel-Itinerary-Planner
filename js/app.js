@@ -1,26 +1,40 @@
-// Initialize Firebase
-const dbUrl = `https://travel-planner-dwaraka-default-rtdb.firebaseio.com/trips.json`;
+// js/app.js
+// This script is intended to be used ONLY on the public landing page (index.html).
+// Its primary purpose is to check the user's authentication state.
 
-// DOM Elements
-const tripList = document.getElementById('tripList');
+/**
+ * Initializes the landing page logic.
+ */
+function initializeLandingPage() {
+    console.log("Landing page script loaded.");
 
-// Fetch Trips
-async function fetchTrips() {
-    const response = await fetch(dbUrl);
-    const trips = await response.json();
+    // Use the Firebase Auth state observer to check if a user is already logged in.
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // --- USER IS ALREADY LOGGED IN ---
+            // If we are on the landing page (index.html), we should not stay here.
+            // Redirect the user straight to their dashboard.
+            console.log("User is already signed in. Redirecting to dashboard...");
+            window.location.href = 'dashboard.html';
 
-    tripList.innerHTML = '';
+        } else {
+            // --- USER IS NOT LOGGED IN ---
+            // This is the expected state for a new visitor on the landing page.
+            // We do nothing and let them see the page so they can sign up or log in.
+            console.log("No user is signed in. Displaying landing page.");
+        }
+    });
 
-    for (const [id, trip] of Object.entries(trips || {})) {
-        const tripEl = document.createElement('div');
-        tripEl.className = 'trip-card';
-        tripEl.innerHTML = `
-      <h3>${trip.title}</h3>
-      <p>${trip.startDate} to ${trip.endDate}</p>
-    `;
-        tripList.appendChild(tripEl);
+    // You can add any other landing-page-specific logic here,
+    // for example, for the "Get Started" button.
+    const getStartedBtn = document.querySelector('.hero .btn-primary');
+    if (getStartedBtn) {
+        getStartedBtn.addEventListener('click', () => {
+            // When "Get Started" is clicked, take the user to the signup page.
+            window.location.href = 'signup.html';
+        });
     }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', fetchTrips);
+// Initialize the logic when the page content has loaded.
+document.addEventListener('DOMContentLoaded', initializeLandingPage);
