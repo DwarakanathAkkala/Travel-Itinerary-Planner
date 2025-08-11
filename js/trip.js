@@ -1,5 +1,15 @@
 // js/trip.js
 
+// --- FIX FOR MISSING LEAFLET MARKER ICONS ---
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
+let mapMarkers = []; // This will store our marker objects
+
 document.addEventListener('DOMContentLoaded', () => {
     const tripDetailsContent = document.getElementById('trip-details-content');
     const params = new URLSearchParams(window.location.search);
@@ -131,6 +141,8 @@ function renderTripDetails(tripData) {
 
     // --- Initialize the map after details are rendered ---
     initializeMap();
+
+    setMapViewToDestination(tripData.destination);
 }
 
 /**
@@ -151,6 +163,7 @@ function handleItineraryFormSubmit(e) {
     const itemData = {
         title: form.querySelector('#item-title').value,
         category: form.querySelector('#item-category').value,
+        location: form.querySelector('#item-location').value,
         date: form.querySelector('#item-date').value,
         time: form.querySelector('#item-time').value,
         notes: form.querySelector('#item-notes').value
@@ -226,6 +239,8 @@ function fetchItineraryItems(tripId) {
                 ...childSnapshot.val()
             });
         });
+
+        addMarkersToMap(items);
 
         // Group items by date
         const groupedByDate = items.reduce((acc, item) => {
@@ -366,6 +381,7 @@ function populateItineraryForm(itemData) {
 
     form.querySelector('#item-title').value = itemData.title || '';
     form.querySelector('#item-category').value = itemData.category || 'other';
+    form.querySelector('#item-location').value = itemData.location || '';
     form.querySelector('#item-date').value = itemData.date || '';
     form.querySelector('#item-time').value = itemData.time || '';
     form.querySelector('#item-notes').value = itemData.notes || '';
@@ -450,4 +466,63 @@ function initializeMap() {
     }).addTo(window.mapInstance);
 
     return window.mapInstance;
+}
+
+/**
+ * Clears existing markers and adds new ones based on itinerary items.
+ * It will geocode the location string for each item.
+ * @param {Array<object>} items An array of itinerary items.
+ */
+async function addMarkersToMap(items) {
+    // 1. Clear any existing markers from the map
+    mapMarkers.forEach(marker => marker.remove());
+    mapMarkers = [];
+
+    // 2. Process each item with a location
+    for (const item of items) {
+        if (item.location && item.location.trim() !== '') {
+            try {
+                // 3. Use a free geocoding API to get coordinates
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.location)}&format=json&limit=1`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    const { lat, lon } = data[0]; // Note: It's 'lat' and 'lon' here
+
+                    const marker = L.marker([lat, lon]) // Use lat, lon
+                        .addTo(window.mapInstance)
+                        .bindPopup(`<b>${item.title}</b><br>${item.location}`);
+
+                    mapMarkers.push(marker);
+                }
+            } catch (error) {
+                console.error("Geocoding error for:", item.location, error);
+            }
+        }
+    }
+
+    // 5. Adjust map view to fit all markers
+    if (mapMarkers.length > 0) {
+        const featureGroup = L.featureGroup(mapMarkers);
+        window.mapInstance.fitBounds(featureGroup.getBounds().pad(0.1)); // pad adds a nice margin
+    }
+}
+
+/**
+ * Overrides the default map view if a trip has a destination set.
+ * @param {string} destination The destination string from the trip details.
+ */
+async function setMapViewToDestination(destination) {
+    if (destination && destination.trim() !== '') {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(destination)}&format=json&limit=1`);
+            const data = await response.json();
+            if (data && data.length > 0) {
+                const { lat, lon } = data[0]; // Note: It's 'lat' and 'lon' here
+                window.mapInstance.setView([lat, lon], 13); // Use lat, lon
+            }
+        } catch (error) {
+            console.error("Could not set map view to destination:", error);
+        }
+    }
 }
