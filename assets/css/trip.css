@@ -398,6 +398,22 @@ body {
     transform: scale(1.1);
 }
 
+/* --- INTERACTIVE MAP STYLING --- */
+.map-section-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+#map {
+    height: 400px; /* Define the height of the map */
+    width: 100%;
+    background-color: #e9ecef; /* Fallback color while map tiles load */
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    z-index: 1; /* Ensures it sits correctly in the layout */
+}
+
 @media (max-width: 768px) {
 
     .trip-image-banner {
@@ -509,5 +525,28 @@ body {
 
     .item-details h5 {
         font-size: 1.1rem;
+    }
+}
+
+/* --- Responsive for Map Section --- */
+@media (max-width: 768px) {
+    .map-section-container {
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+    }
+
+    #map {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    #map {
+        height: 300px;
+        border-radius: 0; /* Edge-to-edge map on mobile */
+    }
+    .map-section-container {
+        padding: 0;
+        margin: 1rem 0;
     }
 }

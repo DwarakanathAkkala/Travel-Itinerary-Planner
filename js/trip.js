@@ -128,6 +128,9 @@ function renderTripDetails(tripData) {
             <p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
         </div>
     `;
+
+    // --- Initialize the map after details are rendered ---
+    initializeMap();
 }
 
 /**
@@ -425,4 +428,26 @@ function loadAndShowForm(callback) {
             })
             .catch(error => console.error('Error loading itinerary form:', error));
     }
+}
+
+/**
+ * Initializes an interactive map using Leaflet.js.
+ * For now, it will be centered on a default location.
+ * @returns {object} The Leaflet map instance.
+ */
+function initializeMap() {
+    // Check if map is already initialized
+    if (window.mapInstance) {
+        window.mapInstance.remove();
+    }
+
+    // Create a map instance in the 'map' div, set initial view
+    window.mapInstance = L.map('map').setView([13.6288, 79.4192], 13); // Default to Tirupati, Andhra Pradesh
+
+    // Add a tile layer from OpenStreetMap (free to use)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(window.mapInstance);
+
+    return window.mapInstance;
 }
