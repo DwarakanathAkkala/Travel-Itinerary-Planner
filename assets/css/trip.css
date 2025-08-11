@@ -446,6 +446,28 @@ body {
 .marker-color-green  { background-color: #2ecc71; }
 .marker-color-gray   { background-color: #95a5a6; }
 
+
+/* --- LEAFLET ROUTING MACHINE STYLING --- */
+.leaflet-routing-container {
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+}
+
+.leaflet-routing-alt {
+    padding: 10px;
+}
+
+.leaflet-routing-alt h2 {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.leaflet-routing-alt table {
+    font-size: 0.9rem;
+}
+
+
 @media (max-width: 768px) {
 
     .trip-image-banner {
