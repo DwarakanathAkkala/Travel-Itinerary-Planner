@@ -11,8 +11,7 @@ Wanderlust is a dynamic, client-side web application designed to simplify the tr
 Frontend | Serverless Backend (Firebase)
 
 ## Deployed App
-**Live Site:** [https://dapper-cendol-12345a.netlify.app](https://dapper-cendol-12345a.netlify.app)  
-*(Replace with your actual Netlify URL)*
+**Live Site:** [https://travel-itinerary-planner-dwaraka.netlify.app/](https://dapper-cendol-12345a.netlify.app)
 
 **Database:** The project uses Google's Firebase Realtime Database, which can be viewed in the [Firebase Console](https://console.firebase.google.com/) (requires project access).
 
@@ -74,7 +73,7 @@ This is a client-side application and does not require a build step or package m
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/DwarakanathAkkala/Travel-Itinerary-Planner
     cd your-repo-name
     ```
 2.  **Set up Firebase:**
@@ -107,8 +106,8 @@ This is a client-side application and does not require a build step or package m
 ## Credentials
 To review the authenticated pages, you can use the following credentials or sign up for a new account:
 
--   **Email:** `lucy@example.com`
--   **Password:** `travel123`
+-   **Email:** `dwaraka@example.com`
+-   **Password:** `dwarakatest`
 
 ## APIs Used
 -   **Firebase Authentication:** For user sign-up and login.
