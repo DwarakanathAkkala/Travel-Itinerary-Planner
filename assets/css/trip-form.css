@@ -1,111 +1,144 @@
 /* assets/css/trip-form.css */
+
+/* --- Main Modal Structure --- */
+
 #trip-modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 25, 47, 0.7); /* A darker, more professional overlay */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#trip-modal-container.show {
+    opacity: 1;
+    pointer-events: all;
 }
 
 .trip-modal {
-  background: white;
-  border-radius: 12px;
-  padding: 25px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  animation: modalFadeIn 0.3s ease-out;
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+#trip-modal-container.show .trip-modal {
+    transform: scale(1);
 }
 
-.trip-modal h3 {
-  margin-top: 0;
-  color: #2c3e50;
+.modal-content {
+    padding: 2rem 2.5rem;
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    background: var(--bg-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+    transform: rotate(90deg);
+}
+
+
+/* --- Form Element Styling --- */
+
+.trip-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.trip-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 .trip-form input,
 .trip-form textarea {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.trip-form input::placeholder,
+.trip-form textarea::placeholder {
+    color: #aaa;
 }
 
 .trip-form input:focus,
 .trip-form textarea:focus {
-  border-color: #6C63FF;
-  outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+    outline: none;
+}
+
+/* Make date inputs look consistent */
+.trip-form input[type="date"] {
+    color: #666;
 }
 
 .date-group {
-  display: flex;
-  gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
-.date-group input {
-  flex: 1;
+/* Style the submit button specifically for this form */
+.trip-form button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
 }
 
-.close-modal {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #777;
-}
-
-/* Loading state */
-.form-loading .btn-text {
-  visibility: hidden;
-}
-
-.form-loading .spinner {
-  display: inline-block;
-}
-
-/* Add these to your trip-form.css */
-#trip-modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-#trip-modal-container.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.trip-modal {
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
-}
-
-#trip-modal-container.show .trip-modal {
-  transform: translateY(0);
+.spinner {
+    display: none;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-left-color: white;
+    animation: spin 1s ease infinite;
 }
