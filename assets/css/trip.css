@@ -1,58 +1,253 @@
 /* assets/css/trip.css */
 
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f7fa; /* A softer, cooler background */
 }
 
+/* --- HEADER --- */
 .trip-header {
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background: transparent; /* Make header transparent to see the body background */
+    position: absolute; /* Position it over the banner */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.trip-header nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
 }
 
 .trip-header .back-to-dash {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--primary);
+    color: white; /* Make text white to show on the banner */
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: color 0.2s;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 
 .trip-header .back-to-dash:hover {
-    color: var(--secondary);
+    background: rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
+/* --- MAIN CONTAINER --- */
 .trip-detail-container {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto; /* Remove top margin as banner is now at the top */
+    padding: 0; /* Remove padding, content will handle its own */
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #trip-details-content {
-    min-height: 200px;
+    min-height: 300px;
     position: relative;
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    background: transparent; /* Main container is transparent */
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
-/* Re-using the spinner from the dashboard */
-.loading-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border-left-color: var(--primary);
-    animation: spin 1s ease infinite;
+#trip-details-content.loaded {
+    padding: 0;
+}
+
+/* --- BANNER & HEADER SECTION --- */
+.trip-main-header {
+    /* This is now the main visual block */
+}
+
+.trip-image-banner {
+    width: 100%;
+    min-height: 280px; /* Taller banner */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+    position: relative;
+    color: white;
+    border-radius: 0 0 24px 24px; /* Rounded bottom corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.trip-image-banner::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* The VIBRANT GRADIENT OVERLAY */
+    background: linear-gradient(to top, rgba(108, 99, 255, 0.7) 0%, rgba(255, 101, 132, 0.4) 100%);
+    border-radius: 0 0 24px 24px;
+    opacity: 0.8;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.trip-image-banner h1 {
+    margin: 0;
+    font-size: 3rem; /* Larger font size */
+    font-weight: 700;
+    position: relative;
+    text-shadow: 1px 2px 8px rgba(0,0,0,0.3);
+    line-height: 1.2;
+}
+
+/* --- INFO BAR --- */
+.trip-info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem 3rem;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    /* Pull it up to overlap the banner slightly */
+    margin: -35px 2rem 0 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    color: #495057;
+}
+
+.info-item i {
+    font-size: 1.5rem; /* Larger icons */
+    color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- NOTES SECTION --- */
+.trip-notes {
+    padding: 2rem 3rem;
+    margin: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.trip-notes h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trip-notes h3::before {
+    content: '📝'; /* Emoji icon */
+    font-size: 1.5rem;
+}
+
+.trip-notes p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    white-space: pre-wrap;
+    padding-left: 2.5rem; /* Indent notes text */
+    border-left: 3px solid var(--primary-light, #e0e0ff);
+}
+
+@media (max-width: 768px) {
+
+    .trip-image-banner {
+        min-height: 250px; /* Further reduce banner height on tablets */
+        padding: 2rem; /* Adjust padding */
+        border-radius: 0; /* Full width banner looks better on mobile */
+    }
+
+    .trip-image-banner::before {
+        border-radius: 0;
+    }
+
+    .trip-image-banner h1 {
+        font-size: 2.5rem; /* Reduce title font size */
+    }
+
+    .trip-header nav {
+        padding: 1rem;
+    }
+
+    .trip-info-bar {
+        margin: -50px 1rem 0 1rem; /* Reduce side margin */
+        padding: 1.5rem;
+        gap: 1.5rem;
+        flex-direction: column; /* Stack info items vertically */
+        align-items: flex-start;
+    }
+
+    .trip-notes {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+
+/* For Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+
+    .trip-image-banner {
+        min-height: 200px; /* Even smaller banner for phones */
+        display: flex;
+        align-items: center;  /* Center title vertically */
+        justify-content: center; /* Center title horizontally */
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .trip-image-banner h1 {
+        font-size: 2rem; /* Further reduce font size */
+        line-height: 1.3;
+        /* NEW: Prevent long words from overflowing */
+        word-break: break-word;
+        hyphens: auto;
+    }
+
+    .trip-header .back-to-dash {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .info-item {
+        font-size: 1rem;
+    }
+
+    .info-item i {
+        font-size: 1.2rem;
+    }
+
+    .trip-notes {
+        padding: 1rem;
+    }
+    
+    .trip-notes p {
+        padding-left: 1.5rem;
+        border-left-width: 2px;
+    }
 }

@@ -1,3 +1,11 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 :root {
   --primary: #6C63FF;
   --secondary: #FF6584;
