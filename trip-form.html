@@ -1,0 +1,30 @@
+<!-- trip-form.html -->
+
+<form id="trip-form" class="trip-form">
+    <div class="form-group">
+        <label for="trip-name">Trip Name</label>
+        <input type="text" id="trip-name" required placeholder="e.g., Italian Summer">
+    </div>
+    <div class="form-group">
+        <label for="trip-destination">Destination</label>
+        <input type="text" id="trip-destination" required placeholder="e.g., Rome, Italy">
+    </div>
+    <div class="date-group">
+        <div class="form-group">
+            <label for="start-date">Start Date</label>
+            <input type="date" id="start-date" required>
+        </div>
+        <div class="form-group">
+            <label for="end-date">End Date</label>
+            <input type="date" id="end-date" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="trip-notes">Notes</label>
+        <textarea id="trip-notes" rows="3" placeholder="e.g., Book Colosseum tickets, visit the Vatican..."></textarea>
+    </div>
+    <button type="submit" class="btn-primary">
+        <span class="btn-text">Create Trip</span>
+        <div class="spinner"></div>
+    </button>
+</form>

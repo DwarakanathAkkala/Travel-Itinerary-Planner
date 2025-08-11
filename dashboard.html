@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <!-- Styles -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/trip-form.css" id="trip-form-css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -48,11 +49,29 @@
                 </div>
 
                 <div class="trip-list" id="trip-list">
-                    <!-- Trips will be loaded here dynamically -->
+                    <!-- Loading spinner (already there) -->
                     <div class="loading-spinner"></div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Modal Container - The dark background overlay -->
+    <div id="trip-modal-container">
+        <!-- The actual modal window -->
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Plan New Trip</h3>
+
+                <!-- The form will be dynamically loaded here -->
+                <div id="modal-form-content">
+                    <!-- A simple loading state for the form itself -->
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- Firebase Config -->
