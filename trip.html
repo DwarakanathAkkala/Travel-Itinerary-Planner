@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Details | Wanderlust</title>
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Page-Specific Styles -->
+    <link rel="stylesheet" href="assets/css/trip.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header trip-header">
+        <nav>
+            <a href="dashboard.html" class="back-to-dash"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            <div class="auth-buttons">
+                <!-- We can add user info or logout here later -->
+            </div>
+        </nav>
+    </header>
+
+    <main class="trip-detail-container">
+        <!-- Trip information will be loaded here -->
+        <div id="trip-details-content">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Future sections for Itinerary, Expenses, etc. will go here -->
+
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- Your Config and Page Logic -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/trip.js"></script>
+
+</body>
+
+</html>

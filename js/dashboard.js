@@ -99,7 +99,7 @@ function createTripCard(tripData) {
             <p><i class="fas fa-map-marker-alt"></i> ${tripData.destination}</p>
             <div class="trip-card-footer">
                 <span><i class="fas fa-calendar-alt"></i> ${startDate} - ${endDate}</span>
-                <a href="#" class="link">View Details</a>
+                <a href="trip.html?id=${tripData.id}" class="link">View Details</a>
             </div>
         </div>
     `;
