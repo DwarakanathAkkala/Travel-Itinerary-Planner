@@ -5,7 +5,7 @@
 // --- MODULE IMPORTS ---
 import { initializeMap, setMapViewToDestination, getDirectionsTo } from './trip-map.js';
 import { fetchItineraryItems, handleItineraryListClick } from './trip-itinerary.js';
-import { initializeExpenseListeners } from './trip-expenses.js';
+import { initializeExpenseListeners, fetchAndDisplayExpenses } from './trip-expenses.js';
 
 // --- DOM EVENT LISTENERS ---
 // These are the main entry points for the page.
@@ -66,6 +66,7 @@ function fetchTripDetails(tripId) {
             const tripData = snapshot.val();
             renderTripDetails(tripData);
             fetchItineraryItems(tripId); // After rendering trip, fetch its itinerary
+            fetchAndDisplayExpenses(tripId); // Fetch and display expenses
         } else {
             displayError('<h2>Trip Not Found</h2><p>The requested trip does not exist or may have been deleted.</p>');
         }

@@ -48,6 +48,77 @@
     gap: 1rem;
 }
 
+/* --- EXPENSE ITEM STYLING --- */
+
+.expense-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 5px solid #3498db; /* Default border color */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.expense-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.expense-icon {
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #3498db; /* Default icon background */
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expense-details {
+    flex-grow: 1;
+}
+
+.expense-details p {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+}
+
+.expense-details span {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.expense-amount {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Category-specific colors */
+.expense-card[data-category="food"] { border-left-color: #e74c3c; }
+.expense-card[data-category="food"] .expense-icon { background-color: #e74c3c; }
+
+.expense-card[data-category="transport"] { border-left-color: #f1c40f; }
+.expense-card[data-category="transport"] .expense-icon { background-color: #f1c40f; }
+
+.expense-card[data-category="lodging"] { border-left-color: #9b59b6; }
+.expense-card[data-category="lodging"] .expense-icon { background-color: #9b59b6; }
+
+.expense-card[data-category="activities"] { border-left-color: #2ecc71; }
+.expense-card[data-category="activities"] .expense-icon { background-color: #2ecc71; }
+
+.expense-card[data-category="shopping"] { border-left-color: #3498db; }
+.expense-card[data-category="shopping"] .expense-icon { background-color: #3498db; }
+
+.expense-card[data-category="other"] { border-left-color: #95a5a6; }
+.expense-card[data-category="other"] .expense-icon { background-color: #95a5a6; }
+
 /* --- Responsive for Expense Section --- */
 @media (max-width: 768px) {
     .expense-section-container {
