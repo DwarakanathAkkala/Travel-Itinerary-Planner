@@ -66,7 +66,7 @@ function fetchTripDetails(tripId) {
             const tripData = snapshot.val();
             renderTripDetails(tripData);
             fetchItineraryItems(tripId); // After rendering trip, fetch its itinerary
-            fetchAndDisplayExpenses(tripId); // Fetch and display expenses
+            fetchAndDisplayExpenses(tripId); // Fetch and display expenses for this trip
         } else {
             displayError('<h2>Trip Not Found</h2><p>The requested trip does not exist or may have been deleted.</p>');
         }

@@ -1,4 +1,4 @@
-/* --- EXPENSE TRACKER SECTION --- */
+/* assets/css/expense.css */
 
 .expense-section-container {
     max-width: 1200px;
@@ -27,7 +27,7 @@
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    min-height: 80px; /* For loading spinner */
+    min-height: 80px;
     position: relative;
     text-align: center;
     font-size: 1.5rem;
@@ -36,10 +36,11 @@
 }
 
 .expenses-summary span {
-    font-size: 1rem;
-    color: #666;
     font-weight: 400;
-    margin-left: 8px;
+    color: #666;
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
 }
 
 .expense-list {
@@ -48,93 +49,144 @@
     gap: 1rem;
 }
 
-/* --- EXPENSE ITEM STYLING --- */
-
 .expense-card {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     background: #fff;
     padding: 1rem 1.5rem;
-    border-radius: 8px;
-    border-left: 5px solid #3498db; /* Default border color */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border-left: 5px solid #6C63FF;
 }
 
 .expense-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
+
+.expense-card[data-category="food"] { border-color: #e74c3c; }
+.expense-card[data-category="transport"] { border-color: #f1c40f; }
+.expense-card[data-category="lodging"] { border-color: #9b59b6; }
+.expense-card[data-category="activities"] { border-color: #2ecc71; }
+.expense-card[data-category="shopping"] { border-color: #3498db; }
+.expense-card[data-category="other"] { border-color: #95a5a6; }
 
 .expense-icon {
     font-size: 1.5rem;
-    color: #fff;
-    background-color: #3498db; /* Default icon background */
     width: 45px;
     height: 45px;
     border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background-color: #f5f7fa;
+    color: var(--primary);
 }
 
-.expense-details {
-    flex-grow: 1;
+.expense-details { flex-grow: 1; }
+.expense-details p { margin: 0 0 4px 0; font-weight: 600; color: #333; }
+.expense-details span { font-size: 0.9rem; color: #777; }
+.expense-amount { font-size: 1.2rem; font-weight: 700; color: #343a40; }
+
+
+/* --- ACTION MENU STYLING --- */
+
+.expense-actions {
+    position: relative;
+    margin-left: 1rem;
 }
 
-.expense-details p {
-    margin: 0;
-    font-weight: 500;
-    color: #333;
-}
-
-.expense-details span {
-    font-size: 0.85rem;
+.btn-expense-actions {
+    background: transparent;
+    border: none;
     color: #888;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: background-color 0.2s;
 }
 
-.expense-amount {
-    font-size: 1.2rem;
-    font-weight: 600;
+.btn-expense-actions:hover {
+    background-color: #f0f0f0;
     color: #333;
 }
 
-/* Category-specific colors */
-.expense-card[data-category="food"] { border-left-color: #e74c3c; }
-.expense-card[data-category="food"] .expense-icon { background-color: #e74c3c; }
+.expense-actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    width: 130px;
+    padding: 0.5rem 0;
+    display: none; /* Hidden by default */
+}
 
-.expense-card[data-category="transport"] { border-left-color: #f1c40f; }
-.expense-card[data-category="transport"] .expense-icon { background-color: #f1c40f; }
+.expense-actions-menu.show {
+    display: block; /* Shown with JS */
+}
 
-.expense-card[data-category="lodging"] { border-left-color: #9b59b6; }
-.expense-card[data-category="lodging"] .expense-icon { background-color: #9b59b6; }
+.expense-actions-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-.expense-card[data-category="activities"] { border-left-color: #2ecc71; }
-.expense-card[data-category="activities"] .expense-icon { background-color: #2ecc71; }
+.expense-actions-menu button i {
+    width: 15px;
+    text-align: center;
+    color: #777;
+}
 
-.expense-card[data-category="shopping"] { border-left-color: #3498db; }
-.expense-card[data-category="shopping"] .expense-icon { background-color: #3498db; }
+.expense-actions-menu .menu-btn-delete:hover {
+    background-color: #fce8e6;
+    color: #e74c3c;
+}
 
-.expense-card[data-category="other"] { border-left-color: #95a5a6; }
-.expense-card[data-category="other"] .expense-icon { background-color: #95a5a6; }
+.expense-actions-menu .menu-btn-delete:hover i {
+    color: #e74c3c;
+}
 
-/* --- Responsive for Expense Section --- */
+.expense-actions-menu .menu-btn-edit:hover {
+    background-color: #eef2ff; /* A light blue */
+    color: #4f46e5; /* A deep blue */
+}
+
+.expense-actions-menu .menu-btn-edit:hover i {
+    color: #4f46e5;
+}
+
+.expense-card.menu-is-open {
+    position: relative;
+    z-index: 5;
+}
+
+/* --- RESPONSIVE STYLES --- */
+
 @media (max-width: 768px) {
-    .expense-section-container {
-        padding: 0 1rem;
-        margin: 1rem auto;
-    }
+    .expense-section-container { padding: 0 1rem; margin: 1rem auto; }
 }
 
 @media (max-width: 480px) {
-    .expense-section-container .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .expense-section-container .section-header h2 {
-        font-size: 1.5rem;
-    }
+    .expense-section-container .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .expense-section-container .section-header h2 { font-size: 1.5rem; }
+    .expense-card { padding: 1rem; gap: 1rem; }
+    .expense-amount { font-size: 1rem; }
 }
