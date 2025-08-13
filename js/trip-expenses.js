@@ -70,7 +70,6 @@ function handleExpenseFormSubmit(e) {
     const form = e.target;
     const submitButton = form.querySelector('button[type="submit"]');
 
-    // THIS IS THE FIX: Use the 'currentTripId' variable we stored earlier.
     if (!currentTripId) {
         alert("Error: Trip ID is missing. Cannot save expense.");
         return;
@@ -108,4 +107,99 @@ function handleExpenseFormSubmit(e) {
         .finally(() => {
             setButtonLoadingState(submitButton, false);
         });
+}
+
+
+/**
+ * Fetches and displays all expenses for the current trip in real-time.
+ * @param {string} tripId The ID of the current trip.
+ */
+export function fetchAndDisplayExpenses(tripId) {
+    const expensesRef = firebase.database().ref(`trips/${tripId}/expenses`);
+    const expenseList = document.getElementById('expense-list');
+
+    expensesRef.orderByChild('date').on('value', snapshot => {
+        expenseList.innerHTML = ''; // Clear previous list
+
+        if (!snapshot.exists()) {
+            renderExpenseSummary(0); // Show 0.00 total
+            expenseList.innerHTML = `<p style="text-align: center; color: #777;">No expenses logged yet.</p>`;
+            return;
+        }
+
+        const expenses = [];
+        let totalAmount = 0;
+        snapshot.forEach(childSnapshot => {
+            const expenseData = {
+                id: childSnapshot.key,
+                ...childSnapshot.val()
+            };
+            expenses.push(expenseData);
+            totalAmount += parseFloat(expenseData.amount) || 0;
+        });
+
+        renderExpenseSummary(totalAmount);
+        expenses.reverse().forEach(expense => {
+            const expenseCard = createExpenseCard(expense);
+            expenseList.appendChild(expenseCard);
+        });
+    });
+}
+
+/**
+ * Renders the total amount in the summary box.
+ * @param {number} totalAmount The total cost of all expenses.
+ */
+function renderExpenseSummary(totalAmount) {
+    const expensesSummary = document.getElementById('expenses-summary');
+    const formattedTotal = totalAmount.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+    });
+    expensesSummary.innerHTML = `<span>Total Spent:</span> ${formattedTotal}`;
+}
+
+/**
+ * Creates an HTML element for a single expense card.
+ * @param {object} expenseData The data for a single expense.
+ * @returns {HTMLElement} A div element representing the expense card.
+ */
+function createExpenseCard(expenseData) {
+    const card = document.createElement('div');
+    card.className = 'expense-card';
+    card.setAttribute('data-expense-id', expenseData.id);
+    card.setAttribute('data-category', expenseData.category);
+
+    const icons = {
+        food: 'fas fa-utensils',
+        transport: 'fas fa-car',
+        lodging: 'fas fa-hotel',
+        activities: 'fas fa-ticket-alt',
+        shopping: 'fas fa-shopping-bag',
+        other: 'fas fa-receipt'
+    };
+
+    const formattedDate = new Date(expenseData.date).toLocaleDateString(undefined, {
+        month: 'short', day: 'numeric', year: 'numeric'
+    });
+
+    const formattedAmount = expenseData.amount.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+    });
+
+    // We will add buttons here in the next step
+    card.innerHTML = `
+        <div class="expense-icon">
+            <i class="${icons[expenseData.category] || icons.other}"></i>
+        </div>
+        <div class="expense-details">
+            <p>${expenseData.description}</p>
+            <span>${formattedDate}</span>
+        </div>
+        <div class="expense-amount">
+            ${formattedAmount}
+        </div>
+    `;
+    return card;
 }

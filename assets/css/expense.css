@@ -1,4 +1,6 @@
-/* --- EXPENSE TRACKER SECTION --- */
+/* assets/css/expense.css */
+
+/* --- EXPENSE TRACKER SECTION (Container & Header) --- */
 
 .expense-section-container {
     max-width: 1200px;
@@ -21,6 +23,8 @@
     color: #343a40;
 }
 
+/* --- EXPENSE SUMMARY BOX (Total Spent) --- */
+
 .expenses-summary {
     background: white;
     border-radius: 12px;
@@ -36,11 +40,14 @@
 }
 
 .expenses-summary span {
-    font-size: 1rem;
-    color: #666;
     font-weight: 400;
-    margin-left: 8px;
+    color: #666;
+    display: block; /* Make it appear on its own line */
+    font-size: 1rem;
+    margin-bottom: 5px;
 }
+
+/* --- EXPENSE LIST CONTAINER --- */
 
 .expense-list {
     display: flex;
@@ -48,7 +55,69 @@
     gap: 1rem;
 }
 
-/* --- Responsive for Expense Section --- */
+/* --- INDIVIDUAL EXPENSE CARD STYLING (NEW) --- */
+
+.expense-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border-left: 5px solid #6C63FF; /* Default border color */
+}
+
+.expense-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Category-specific border colors */
+.expense-card[data-category="food"] { border-color: #e74c3c; }
+.expense-card[data-category="transport"] { border-color: #f1c40f; }
+.expense-card[data-category="lodging"] { border-color: #9b59b6; }
+.expense-card[data-category="activities"] { border-color: #2ecc71; }
+.expense-card[data-category="shopping"] { border-color: #3498db; }
+.expense-card[data-category="other"] { border-color: #95a5a6; }
+
+.expense-icon {
+    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f7fa;
+    color: var(--primary);
+}
+
+.expense-details {
+    flex-grow: 1;
+}
+
+.expense-details p {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    color: #333;
+}
+
+.expense-details span {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.expense-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #343a40;
+    margin-left: auto; /* Pushes amount to the far right */
+}
+
+/* --- RESPONSIVE STYLES --- */
+
 @media (max-width: 768px) {
     .expense-section-container {
         padding: 0 1rem;
@@ -65,5 +134,14 @@
 
     .expense-section-container .section-header h2 {
         font-size: 1.5rem;
+    }
+
+    .expense-card {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .expense-amount {
+        font-size: 1rem;
     }
 }
