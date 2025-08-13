@@ -1,7 +1,5 @@
 /* assets/css/expense.css */
 
-/* --- EXPENSE TRACKER SECTION (Container & Header) --- */
-
 .expense-section-container {
     max-width: 1200px;
     margin: 2rem auto;
@@ -23,15 +21,13 @@
     color: #343a40;
 }
 
-/* --- EXPENSE SUMMARY BOX (Total Spent) --- */
-
 .expenses-summary {
     background: white;
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    min-height: 80px; /* For loading spinner */
+    min-height: 80px;
     position: relative;
     text-align: center;
     font-size: 1.5rem;
@@ -42,20 +38,16 @@
 .expenses-summary span {
     font-weight: 400;
     color: #666;
-    display: block; /* Make it appear on its own line */
+    display: block;
     font-size: 1rem;
     margin-bottom: 5px;
 }
-
-/* --- EXPENSE LIST CONTAINER --- */
 
 .expense-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-
-/* --- INDIVIDUAL EXPENSE CARD STYLING (NEW) --- */
 
 .expense-card {
     display: flex;
@@ -66,7 +58,7 @@
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
-    border-left: 5px solid #6C63FF; /* Default border color */
+    border-left: 5px solid #6C63FF;
 }
 
 .expense-card:hover {
@@ -74,7 +66,6 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-/* Category-specific border colors */
 .expense-card[data-category="food"] { border-color: #e74c3c; }
 .expense-card[data-category="transport"] { border-color: #f1c40f; }
 .expense-card[data-category="lodging"] { border-color: #9b59b6; }
@@ -94,54 +85,95 @@
     color: var(--primary);
 }
 
-.expense-details {
-    flex-grow: 1;
+.expense-details { flex-grow: 1; }
+.expense-details p { margin: 0 0 4px 0; font-weight: 600; color: #333; }
+.expense-details span { font-size: 0.9rem; color: #777; }
+.expense-amount { font-size: 1.2rem; font-weight: 700; color: #343a40; }
+
+
+/* --- ACTION MENU STYLING --- */
+
+.expense-actions {
+    position: relative;
+    margin-left: 1rem;
 }
 
-.expense-details p {
-    margin: 0 0 4px 0;
-    font-weight: 600;
+.btn-expense-actions {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+
+.btn-expense-actions:hover {
+    background-color: #f0f0f0;
     color: #333;
 }
 
-.expense-details span {
-    font-size: 0.9rem;
+.expense-actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    width: 130px;
+    padding: 0.5rem 0;
+    display: none; /* Hidden by default */
+}
+
+.expense-actions-menu.show {
+    display: block; /* Shown with JS */
+}
+
+.expense-actions-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.expense-actions-menu button i {
+    width: 15px;
+    text-align: center;
     color: #777;
 }
 
-.expense-amount {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #343a40;
-    margin-left: auto; /* Pushes amount to the far right */
+.expense-actions-menu .menu-btn-delete:hover {
+    background-color: #fce8e6;
+    color: #e74c3c;
 }
+
+.expense-actions-menu .menu-btn-delete:hover i {
+    color: #e74c3c;
+}
+
 
 /* --- RESPONSIVE STYLES --- */
 
 @media (max-width: 768px) {
-    .expense-section-container {
-        padding: 0 1rem;
-        margin: 1rem auto;
-    }
+    .expense-section-container { padding: 0 1rem; margin: 1rem auto; }
 }
 
 @media (max-width: 480px) {
-    .expense-section-container .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .expense-section-container .section-header h2 {
-        font-size: 1.5rem;
-    }
-
-    .expense-card {
-        padding: 1rem;
-        gap: 1rem;
-    }
-
-    .expense-amount {
-        font-size: 1rem;
-    }
+    .expense-section-container .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .expense-section-container .section-header h2 { font-size: 1.5rem; }
+    .expense-card { padding: 1rem; gap: 1rem; }
+    .expense-amount { font-size: 1rem; }
 }
