@@ -164,6 +164,19 @@
     color: #e74c3c;
 }
 
+.expense-actions-menu .menu-btn-edit:hover {
+    background-color: #eef2ff; /* A light blue */
+    color: #4f46e5; /* A deep blue */
+}
+
+.expense-actions-menu .menu-btn-edit:hover i {
+    color: #4f46e5;
+}
+
+.expense-card.menu-is-open {
+    position: relative;
+    z-index: 5;
+}
 
 /* --- RESPONSIVE STYLES --- */
 
