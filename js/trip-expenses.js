@@ -45,17 +45,37 @@ function openExpenseModal(editId = null, existingData = null) {
         const form = modalExpenseFormContent.querySelector('#expense-form');
         const h3 = expenseModalContainer.querySelector('h3');
         const submitBtnText = form.querySelector('.btn-text');
+
+        form.reset();
+
         if (editId && existingData) {
+            // --- EDIT MODE ---
             h3.textContent = 'Edit Expense';
             submitBtnText.textContent = 'Save Changes';
             form.setAttribute('data-edit-id', editId);
             populateExpenseForm(form, existingData);
+
         } else {
+            // --- CREATE MODE ---
             h3.textContent = 'Add New Expense';
             submitBtnText.textContent = 'Add Expense';
             form.removeAttribute('data-edit-id');
-            form.reset();
+
+            // NEW: Calculate and set the date specifically for IST (UTC+5:30)
+            const now = new Date();
+            const istOffset = 330; // 5 hours and 30 minutes in minutes
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const istDate = new Date(utc + (istOffset * 60000));
+
+            // Format the date into YYYY-MM-DD for the input field
+            const year = istDate.getFullYear();
+            const month = String(istDate.getMonth() + 1).padStart(2, '0');
+            const day = String(istDate.getDate()).padStart(2, '0');
+            const istDateString = `${year}-${month}-${day}`;
+
+            form.querySelector('#expense-date').value = istDateString;
         }
+
         expenseModalContainer.classList.add('show');
     });
 }
@@ -158,9 +178,6 @@ function createExpenseCard(expenseData) {
     return card;
 }
 
-/**
- * UPDATED: Now adds/removes a class to the parent card to control stacking context.
- */
 function handleExpenseListClick(e) {
     const menuButton = e.target.closest('.btn-expense-actions');
     const editButton = e.target.closest('.menu-btn-edit');
@@ -172,14 +189,10 @@ function handleExpenseListClick(e) {
         const card = menuButton.closest('.expense-card');
         const menu = menuButton.nextElementSibling;
         const isOpening = !menu.classList.contains('show');
-
-        // Close all other menus first
         closeAllActionMenus();
-
-        // If we are opening a new menu, toggle the classes
         if (isOpening) {
             menu.classList.add('show');
-            card.classList.add('menu-is-open'); // Add class to parent card
+            card.classList.add('menu-is-open');
         }
     } else if (editButton) {
         const card = editButton.closest('.expense-card');
@@ -198,15 +211,12 @@ function handleExpenseListClick(e) {
     }
 }
 
-/**
- * UPDATED: Now also removes the .menu-is-open class from the card.
- */
 function closeAllActionMenus() {
     document.querySelectorAll('.expense-actions-menu.show').forEach(menu => {
         menu.classList.remove('show');
         const card = menu.closest('.expense-card');
         if (card) {
-            card.classList.remove('menu-is-open'); // Remove class from parent card
+            card.classList.remove('menu-is-open');
         }
     });
 }
