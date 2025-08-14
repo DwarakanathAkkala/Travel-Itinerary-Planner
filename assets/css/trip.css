@@ -307,12 +307,20 @@ body {
 }
 
 /* Category-specific border colors */
-.itinerary-item[data-category="flight"] { border-left-color: #3498db; }
-.itinerary-item[data-category="lodging"] { border-left-color: #9b59b6; }
-.itinerary-item[data-category="transport"] { border-left-color: #f1c40f; }
-.itinerary-item[data-category="dining"] { border-left-color: #e74c3c; }
-.itinerary-item[data-category="activity"] { border-left-color: #2ecc71; }
-.itinerary-item[data-category="other"] { border-left-color: #95a5a6; }
+.itinerary-item[data-category="flight"] { border-left: 5px solid #3498db; }
+.itinerary-item[data-category="lodging"] { border-left: 5px solid #9b59b6; }
+.itinerary-item[data-category="transport"] { border-left: 5px solid #f1c40f; }
+.itinerary-item[data-category="dining"] { border-left: 5px solid #e74c3c; }
+.itinerary-item[data-category="activity"] { border-left: 5px solid #2ecc71; }
+.itinerary-item[data-category="other"] { border-left: 5px solid #95a5a6; }
+
+/* Set Icon Color */
+.itinerary-item[data-category="flight"] .item-icon { color: #3498db; }
+.itinerary-item[data-category="lodging"] .item-icon { color: #9b59b6; }
+.itinerary-item[data-category="transport"] .item-icon { color: #f1c40f; }
+.itinerary-item[data-category="dining"] .item-icon { color: #e74c3c; }
+.itinerary-item[data-category="activity"] .item-icon { color: #2ecc71; }
+.itinerary-item[data-category="other"] .item-icon { color: #95a5a6; }
 
 .item-details .item-meta {
     font-size: 0.95rem;
