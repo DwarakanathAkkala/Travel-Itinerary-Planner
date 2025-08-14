@@ -489,6 +489,85 @@ body {
     color: var(--primary);
 }
 
+/* Style for the Share button and its container */
+.btn-secondary {
+    background: #f0f0f0;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+    border-color: #ccc;
+    transform: translateY(-2px);
+}
+
+.itinerary-section-container .section-header div {
+    display: flex;
+    gap: 10px; /* Adds space between the buttons */
+}
+
+/* Styles for the share modal content */
+#share-modal-container p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.share-link-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-link-container input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f5f7fa;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+#copy-link-btn {
+    padding: 10px;
+    font-size: 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#copy-link-btn:hover {
+    background-color: #5a52d6;
+}
+
+/* Hide the fallback container by default */
+#fallback-share-container {
+    display: none;
+}
+
+/* Style for the new native share button */
+.btn-share-native {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    display: none; /* Hidden by default, shown by JS */
+    justify-content: center; /* Center the content */
+    gap: 10px; /* Adds space between icon and text */
+}
+
 
 @media (max-width: 768px) {
 
