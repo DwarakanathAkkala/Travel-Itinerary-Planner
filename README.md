@@ -1,17 +1,21 @@
-Of course. Here is the complete README file in Markdown format, ready to be copied and pasted.
+Of course. It's crucial to keep the documentation updated with the project's progress.
+
+Here is the complete, updated `README.md` file. I have incorporated the new **Seamless Trip Sharing** feature, added the new files to the directory structure, and updated the usage instructions.
+
+You can replace the entire content of your existing `README.md` with this new version.
 
 ---
 
 # Wanderlust - A Travel Itinerary Planner
 
 ## Introduction
-Wanderlust is a dynamic, client-side web application designed to simplify the trip-planning process. It provides travelers like Lucy with a comprehensive, single-page platform to organize all their travel details in one place. From building a day-by-day itinerary and visualizing destinations on an interactive map to tracking expenses, Wanderlust aims to make travel planning structured, enjoyable, and stress-free. This project leverages the power of Firebase for its backend services, including authentication and a real-time database, to create a seamless and responsive user experience.
+Wanderlust is a dynamic, client-side web application designed to simplify the trip-planning process. It provides travelers like Lucy with a comprehensive, single-page platform to organize all their travel details in one place. From building a day-by-day itinerary and visualizing destinations on an interactive map to tracking expenses and sharing plans with others, Wanderlust aims to make travel planning structured, enjoyable, and stress-free. This project leverages the power of Firebase for its backend services, including authentication and a real-time database, to create a seamless and responsive user experience.
 
 ## Project Type
 Frontend | Serverless Backend (Firebase)
 
 ## Deployed App
-**Live Site:** [https://travel-itinerary-planner-dwaraka.netlify.app/](https://dapper-cendol-12345a.netlify.app)
+**Live Site:** [https://travel-itinerary-planner-dwaraka.netlify.app/]
 
 **Database:** The project uses Google's Firebase Realtime Database, which can be viewed in the [Firebase Console](https://console.firebase.google.com/) (requires project access).
 
@@ -22,6 +26,7 @@ Wanderlust/
 │   ├── css/
 │   │   ├── dashboard.css
 │   │   ├── expense.css
+│   │   ├── share.css
 │   │   ├── trip.css
 │   │   └── trip-form.css
 │   └── images/
@@ -29,15 +34,18 @@ Wanderlust/
 ├── js/
 │   ├── auth.js
 │   ├── dashboard.js
+│   ├── share.js
 │   ├── trip.js
 │   ├── trip-expenses.js
 │   ├── trip-itinerary.js
-│   └── trip-map.js
+│   ├── trip-map.js
+│   └── trip-share.js
 │
 ├── index.html          (Landing Page)
 ├── login.html
 ├── signup.html
 ├── dashboard.html      (Main user dashboard)
+├── share.html          (Public, read-only trip page)
 ├── trip.html           (Trip detail page)
 ├── trip-form.html
 ├── itinerary-form.html
@@ -57,16 +65,16 @@ Wanderlust/
 - **Intuitive Itinerary Builder:** For any trip, users can add, edit, and delete itinerary items (flights, lodging, activities, etc.), which are automatically sorted by date and time.
 - **Interactive Map Integration:** Displays all itinerary items with a location as custom, color-coded markers on an interactive Leaflet map. The map automatically adjusts its view to fit all markers.
 - **Real-Time Directions:** Users can get real-time driving directions from their current location to any itinerary item directly on the map.
-- **Google Maps Integration:** A quick-link on each itinerary item opens the location in a new Google Maps tab for more details.
-- **Comprehensive Expense Tracker:** Users can log, categorize, and manage trip-specific expenses to monitor their budget in real-time. (Note: Displaying expenses is the next feature to be implemented).
+- **Comprehensive Expense Tracker:** Users can add, edit, delete, and categorize trip-specific expenses to monitor their budget in real-time.
+- **Seamless Trip Sharing:** Users can generate a unique, read-only link for their trip to share with friends and family. The feature uses the native Web Share API on supported devices for a seamless experience and provides a copy-to-clipboard fallback for others.
 - **Responsive Design:** The entire application is fully responsive and provides a seamless experience on desktop, tablet, and mobile devices.
 
 ## Design Decisions or Assumptions
 - **Serverless Architecture:** I chose Firebase for all backend services (Auth, Realtime Database) to create a powerful application without needing to manage my own server. This simplifies deployment and scaling.
-- **Modular JavaScript:** As the application grew, the `trip.js` file was refactored into smaller, feature-specific modules (`trip-map.js`, `trip-itinerary.js`, `trip-expenses.js`) to improve code organization, maintainability, and separation of concerns.
+- **Modular JavaScript:** As the application grew, the `trip.js` file was refactored into smaller, feature-specific modules (`trip-map.js`, `trip-itinerary.js`, `trip-expenses.js`, `trip-share.js`) to improve code organization, maintainability, and separation of concerns.
 - **Client-Side Rendering:** All HTML is rendered dynamically in the browser using data fetched from Firebase. This creates a fast, single-page application feel.
 - **Free-Tier APIs:** For the map features, I opted for Leaflet.js with the free Nominatim geocoding service and OpenStreetMap tiles to deliver full functionality without incurring API costs.
-- **Security through Firebase Rules:** Instead of hiding API keys with environment variables (which is not possible in this static-site setup), security is enforced through robust Firebase Security Rules and Google Cloud API key restrictions, which is the recommended approach for client-side applications.
+- **Security through Firebase Rules:** Instead of hiding API keys with environment variables (which is not possible in this static-site setup), security is enforced through robust Firebase Security Rules and Google Cloud API key restrictions, which is the recommended approach for client-side applications. Read access for shared trips is explicitly controlled by an `isShared` flag in the database.
 
 ## Installation & Getting started
 This is a client-side application and does not require a build step or package manager. To run it locally, you can use any simple local server. Python's built-in server is a great option.
@@ -75,12 +83,14 @@ This is a client-side application and does not require a build step or package m
     ```bash
     git clone https://github.com/DwarakanathAkkala/Travel-Itinerary-Planner
     cd your-repo-name
-    ```
+
 2.  **Set up Firebase:**
     - You will need to create your own project on [Firebase](https://firebase.google.com/).
     - Enable Authentication (Email/Password and Google providers).
     - Enable the Realtime Database.
     - Copy your project's Firebase configuration object into `js/firebase-config.js`.
+    - **Crucially, update your Realtime Database Security Rules** with the rules provided in this project to enable secure sharing.
+
 3.  **Run a local server:**
     If you have Python 3 installed:
     ```bash
@@ -99,9 +109,9 @@ This is a client-side application and does not require a build step or package m
 3.  On the dashboard, click "Add Trip" to create your first trip.
 4.  Once a trip is created, click "View Details".
 5.  On the trip detail page, you can:
-    - Click "Add Item" to add itinerary events. Be sure to include a location to see it on the map.
-    - Click the route icon on an item to get directions.
+    - Click "Add Item" to add itinerary events.
     - Click "Add Expense" to log your spending.
+    - Click "Share Trip" to get a read-only link to send to others.
 
 ## Credentials
 To review the authenticated pages, you can use the following credentials or sign up for a new account:
@@ -115,6 +125,7 @@ To review the authenticated pages, you can use the following credentials or sign
 -   **Leaflet.js:** Open-source library for the interactive map display.
 -   **OpenStreetMap:** Provides the free map tile layers for Leaflet.
 -   **Nominatim API:** A free geocoding service from OpenStreetMap to convert location names into latitude/longitude coordinates.
+-   **Web Share API:** A browser API for accessing a device's native sharing capabilities.
 -   **Leaflet Routing Machine:** Plugin for Leaflet to calculate and display routes on the map.
 
 ## API Endpoints
