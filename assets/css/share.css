@@ -1,0 +1,49 @@
+/* assets/css/share.css */
+
+/* Make the main container's background visible */
+body {
+    background-color: #f5f7fa;
+}
+
+/* Public Header Styling */
+.share-header {
+    padding: 1rem 5%;
+    background: white;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.share-header .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* Public Footer Styling */
+.share-footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: #999;
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+/* Error Message Styling */
+.share-error-container {
+    text-align: center;
+    padding: 4rem;
+    margin: 2rem;
+    background: white;
+    border-radius: 12px;
+}
+
+.share-error-container h2 {
+    color: #e74c3c;
+}
+
+/* Ensure itinerary cards on the share page are not interactive */
+.itinerary-item:hover {
+    transform: none; /* Disable lift effect */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Reset shadow */
+}

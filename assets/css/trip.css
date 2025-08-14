@@ -307,12 +307,43 @@ body {
 }
 
 /* Category-specific border colors */
-.itinerary-item[data-category="flight"] { border-color: #3498db; }
-.itinerary-item[data-category="lodging"] { border-color: #9b59b6; }
-.itinerary-item[data-category="transport"] { border-color: #f1c40f; }
-.itinerary-item[data-category="dining"] { border-color: #e74c3c; }
-.itinerary-item[data-category="activity"] { border-color: #2ecc71; }
-.itinerary-item[data-category="other"] { border-color: #95a5a6; }
+.itinerary-item[data-category="flight"] { border-left: 5px solid #3498db; }
+.itinerary-item[data-category="lodging"] { border-left: 5px solid #9b59b6; }
+.itinerary-item[data-category="transport"] { border-left: 5px solid #f1c40f; }
+.itinerary-item[data-category="dining"] { border-left: 5px solid #e74c3c; }
+.itinerary-item[data-category="activity"] { border-left: 5px solid #2ecc71; }
+.itinerary-item[data-category="other"] { border-left: 5px solid #95a5a6; }
+
+/* Set Icon Color */
+.itinerary-item[data-category="flight"] .item-icon { color: #3498db; }
+.itinerary-item[data-category="lodging"] .item-icon { color: #9b59b6; }
+.itinerary-item[data-category="transport"] .item-icon { color: #f1c40f; }
+.itinerary-item[data-category="dining"] .item-icon { color: #e74c3c; }
+.itinerary-item[data-category="activity"] .item-icon { color: #2ecc71; }
+.itinerary-item[data-category="other"] .item-icon { color: #95a5a6; }
+
+.item-details .item-meta {
+    font-size: 0.95rem;
+    /* color: #555; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 15px; /* Row and column gap */
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.item-details .item-meta i {
+    color: #888;
+}
+
+.item-details .notes {
+    font-size: 0.95rem;
+    /* color: #666; */
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-top: 10px;
+}
 
 
 .item-icon {
@@ -487,6 +518,85 @@ body {
 
 .btn-get-directions:hover {
     color: var(--primary);
+}
+
+/* Style for the Share button and its container */
+.btn-secondary {
+    background: #f0f0f0;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+    border-color: #ccc;
+    transform: translateY(-2px);
+}
+
+.itinerary-section-container .section-header div {
+    display: flex;
+    gap: 10px; /* Adds space between the buttons */
+}
+
+/* Styles for the share modal content */
+#share-modal-container p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.share-link-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-link-container input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f5f7fa;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+#copy-link-btn {
+    padding: 10px;
+    font-size: 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#copy-link-btn:hover {
+    background-color: #5a52d6;
+}
+
+/* Hide the fallback container by default */
+#fallback-share-container {
+    display: none;
+}
+
+/* Style for the new native share button */
+.btn-share-native {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    display: none; /* Hidden by default, shown by JS */
+    justify-content: center; /* Center the content */
+    gap: 10px; /* Adds space between icon and text */
 }
 
 

@@ -49,6 +49,9 @@
                 <button id="add-item-btn" class="btn-primary">
                     <i class="fas fa-plus"></i> Add Item
                 </button>
+                <button id="share-trip-btn" class="btn-secondary">
+                    <i class="fas fa-share-alt"></i> Share Trip
+                </button>
             </div>
 
             <div class="itinerary-list" id="itinerary-list">
@@ -80,6 +83,30 @@
 
     </main>
 
+    <!-- MODAL for sharing trip details -->
+    <div id="share-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Share Your Trip</h3>
+                <p>Anyone with this link can view a read-only version of your itinerary.</p>
+
+                <!-- This button will be shown if native sharing is supported -->
+                <button id="native-share-btn" class="btn-primary btn-share-native">
+                    <i class="fas fa-share-alt"></i> Share via...
+                </button>
+
+                <!-- This container is the fallback for older browsers -->
+                <div id="fallback-share-container" class="share-link-container">
+                    <input type="text" id="share-link-input" readonly>
+                    <button id="copy-link-btn" title="Copy to clipboard">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for the "Add Itinerary Item" Form -->
     <div id="item-modal-container" class="modal-container">
         <div class="trip-modal">
@@ -106,6 +133,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Leaflet.js JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

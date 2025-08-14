@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Itinerary | Wanderlust</title>
+
+    <!-- IMPORTANT: Link to BOTH stylesheets -->
+    <!-- 1. trip.css is loaded first to get all the common styles -->
+    <link rel="stylesheet" href="assets/css/trip.css">
+
+    <!-- 2. share.css is loaded second to add its unique styles -->
+    <link rel="stylesheet" href="assets/css/share.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- A simple public-facing header -->
+    <header class="share-header">
+        <a href="index.html" class="logo">Wanderlust</a>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="trip-detail-container" id="share-page-content">
+        <!-- All content will be dynamically loaded here by JS -->
+        <div class="loading-spinner"></div>
+    </main>
+
+    <!-- A simple footer -->
+    <footer class="share-footer">
+        <p>Powered by Wanderlust Travel Planner</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- Your Config and Page Logic -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/share.js"></script>
+
+</body>
+
+</html>
