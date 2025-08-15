@@ -1,0 +1,98 @@
+/* assets/css/weather.css */
+
+.weather-section-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.weather-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.weather-controls label {
+    font-weight: 600;
+    color: #333;
+}
+
+#weather-location-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    background-color: white;
+    min-width: 250px;
+}
+
+.weather-forecast-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    position: relative;
+    min-height: 100px; /* For loading spinner */
+}
+
+.weather-prompt {
+    grid-column: 1 / -1; /* Span all columns */
+    text-align: center;
+    color: #777;
+    font-size: 1.1rem;
+    padding: 2rem;
+}
+
+.weather-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid #eee;
+}
+
+.weather-card .day {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.weather-card .date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.weather-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.weather-card .temps {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.weather-card .temps span {
+    color: #777;
+}
+
+.weather-card .detail {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.weather-card .advice {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    margin-top: 10px;
+}
