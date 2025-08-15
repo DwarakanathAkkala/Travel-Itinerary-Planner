@@ -4,6 +4,10 @@ body {
     background-color: #f5f7fa; /* A softer, cooler background */
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lora', serif;
+}
+
 /* --- HEADER --- */
 .trip-header {
     background: transparent; /* Make header transparent to see the body background */
@@ -522,22 +526,32 @@ body {
 
 /* Style for the Share button and its container */
 .btn-secondary {
-    background: #f0f0f0;
-    color: #555;
-    border: 1px solid #ddd;
+    background: white; /* Start with a white background */
+    color: #6C63FF; /* Set text color to the primary theme color */
+    border: 2px solid #6C63FF; /* A solid border as a fallback */
     border-radius: 6px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-weight: 600; /* Make the text slightly bolder */
 }
 
 .btn-secondary:hover {
-    background: #e0e0e0;
-    border-color: #ccc;
+    background: #6C63FF; /* Fill with the primary color on hover */
+    color: white; /* Make text white on hover */
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+}
+
+.btn-secondary i {
+    transition: color 0.3s ease;
+}
+
+.btn-secondary:hover i {
+    color: white;
 }
 
 .itinerary-section-container .section-header div {
