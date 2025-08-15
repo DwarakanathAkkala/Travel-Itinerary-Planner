@@ -51,12 +51,11 @@ export async function setMapViewToDestination(destination) {
  */
 // In js/trip.js, REPLACE the entire function
 
-export async function addMarkersToMap(items) {
-    // 1. Clear existing markers
+export function addMarkersToMap(items) {
+    // 1. Clear existing markers from the map and from our array
     mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 
-    // 2. Define settings for each category
     const categorySettings = {
         flight: { color: 'blue', icon: 'fa-plane' },
         lodging: { color: 'purple', icon: 'fa-hotel' },
@@ -66,52 +65,57 @@ export async function addMarkersToMap(items) {
         other: { color: 'gray', icon: 'fa-map-pin' }
     };
 
-    // 3. Process each item
-    for (const item of items) {
+    // 2. Create an array of promises for all the geocoding fetch calls
+    const geocodingPromises = items.map(item => {
         if (item.location && item.location.trim() !== '') {
-            try {
-                // Using Nominatim for geocoding
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.location)}&format=json&limit=1`);
-                const data = await response.json();
-
-                if (data && data.length > 0) {
-                    const { lat, lon } = data[0];
-
-                    // 4. Get the correct setting, defaulting to 'other'
-                    const setting = categorySettings[item.category] || categorySettings.other;
-
-                    // 5. Create a custom HTML marker using L.divIcon
-                    const customIcon = L.divIcon({
-                        className: 'leaflet-div-icon', // Required by Leaflet
-                        html: `<div class="custom-marker marker-color-${setting.color}">
-                                   <i class="fas ${setting.icon}"></i>
-                               </div>`,
-                        iconSize: [35, 35],
-                        iconAnchor: [17, 35], // Point of the icon which will correspond to marker's location
-                        popupAnchor: [0, -35] // Point from which the popup should open relative to the iconAnchor
-                    });
-
-                    // 6. Add marker to the map
-                    const marker = L.marker([lat, lon], { icon: customIcon })
-                        .addTo(window.mapInstance)
-                        .bindPopup(`<b>${item.title}</b><br>${item.location}`);
-
-                    mapMarkers.push(marker);
-                }
-            } catch (error) {
-                // This will now only catch errors from the network fetch or JSON parsing
-                console.error("Geocoding error for:", item.location, error);
-            }
+            return fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.location)}&format=json&limit=1`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        // Return the processed marker data if successful
+                        return { item, coords: { lat: data[0].lat, lon: data[0].lon } };
+                    }
+                    return null; // Return null if geocoding fails for this item
+                })
+                .catch(error => {
+                    console.error("Geocoding error for:", item.location, error);
+                    return null; // Return null on error
+                });
         }
-    }
+        return Promise.resolve(null); // Resolve immediately for items with no location
+    });
 
-    // 7. Adjust map view
-    if (mapMarkers.length > 0) {
-        const featureGroup = L.featureGroup(mapMarkers);
-        window.mapInstance.fitBounds(featureGroup.getBounds().pad(0.2));
-    }
+    // 3. Wait for ALL promises to settle (either succeed or fail)
+    Promise.all(geocodingPromises).then(results => {
+        // Filter out any results that failed (were null)
+        const validResults = results.filter(r => r !== null);
+
+        // 4. Now, loop through the successful results and create the markers
+        validResults.forEach(result => {
+            const { item, coords } = result;
+            const setting = categorySettings[item.category] || categorySettings.other;
+            const customIcon = L.divIcon({
+                className: 'leaflet-div-icon',
+                html: `<div class="custom-marker marker-color-${setting.color}"><i class="fas ${setting.icon}"></i></div>`,
+                iconSize: [35, 35],
+                iconAnchor: [17, 35],
+                popupAnchor: [0, -35]
+            });
+
+            const marker = L.marker([coords.lat, coords.lon], { icon: customIcon })
+                .addTo(window.mapInstance)
+                .bindPopup(`<b>${item.title}</b><br>${item.location}`);
+
+            mapMarkers.push(marker); // Add the created marker to our array
+        });
+
+        // 5. AFTER all markers have been created, adjust the map view ONCE
+        if (mapMarkers.length > 0) {
+            const featureGroup = L.featureGroup(mapMarkers);
+            window.mapInstance.fitBounds(featureGroup.getBounds().pad(0.2));
+        }
+    });
 }
-
 
 /**
  * Calculates and displays a route on the map from the user's current

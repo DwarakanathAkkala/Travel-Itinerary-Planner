@@ -17,6 +17,7 @@
     <!-- Link to the expense-specific stylesheet -->
     <link rel="stylesheet" href="assets/css/expense.css">
     <link rel="stylesheet" href="assets/css/trip-form.css"> <!-- Crucial: Link to the modal/form styles -->
+    <link rel="stylesheet" href="assets/css/weather.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +46,24 @@
         <!-- Interactive Map Section -->
         <section class="map-section-container">
             <div id="map"></div>
+        </section>
+
+        <!-- Weather Forecast Section -->
+        <section class="weather-section-container">
+            <div class="section-header">
+                <h2>Weather Forecast</h2>
+            </div>
+            <div class="weather-controls">
+                <label for="weather-location-select">Select a Location:</label>
+                <select id="weather-location-select">
+                    <!-- Options will be populated by JS -->
+                </select>
+            </div>
+            <div class="weather-forecast-display" id="weather-forecast-display">
+                <!-- Forecast will be rendered here by JS -->
+                <p class="weather-prompt">Select a location from the dropdown to see its 7-day forecast.</p>
+            </div>
+            <div id="weather-spinner-container"></div>
         </section>
 
         <!-- Section for the itinerary list -->
