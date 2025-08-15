@@ -4,6 +4,10 @@ body {
     background-color: #f5f7fa; /* A softer, cooler background */
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lora', serif;
+}
+
 /* --- HEADER --- */
 .trip-header {
     background: transparent; /* Make header transparent to see the body background */
