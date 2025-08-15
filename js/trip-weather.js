@@ -13,24 +13,36 @@ export function initializeWeatherFeature(tripData) {
     locationSelect.innerHTML = '';
     forecastDisplay.innerHTML = '<p class="weather-prompt">Select a location to see its forecast.</p>';
 
-    const locations = new Set();
-    if (tripData.destination) locations.add(tripData.destination);
+    const locationMap = new Map(); // Use a Map to store location and its first date
+
+    // Add the main destination with the trip's start date
+    if (tripData.destination) {
+        locationMap.set(tripData.destination, tripData.startDate);
+    }
+    // Add itinerary items, overwriting date only if it's new
     if (tripData.itinerary) {
         Object.values(tripData.itinerary).forEach(item => {
-            if (item.location) locations.add(item.location);
+            if (item.location && !locationMap.has(item.location)) {
+                locationMap.set(item.location, item.date);
+            }
         });
     }
 
-    locations.forEach(location => {
+    // Populate the dropdown
+    locationMap.forEach((date, location) => {
         const option = document.createElement('option');
         option.value = location;
         option.textContent = location;
+        // Add the date as a data attribute
+        if (date) {
+            option.dataset.date = date;
+        }
         locationSelect.appendChild(option);
     });
 
     locationSelect.addEventListener('change', handleLocationChange);
 
-    if (locations.size > 0) {
+    if (locationMap.size > 0) {
         locationSelect.dispatchEvent(new Event('change'));
     }
 }
@@ -40,16 +52,23 @@ export function initializeWeatherFeature(tripData) {
  * @param {Event} e - The change event.
  */
 async function handleLocationChange(e) {
-    const locationName = e.target.value;
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const locationName = selectedOption.value;
+    // Get the date from the option's data attribute
+    const itemDate = selectedOption.dataset.date;
+
     if (!locationName) return;
 
     forecastDisplay.innerHTML = '<div class="loading-spinner"></div>';
 
     try {
         const coords = await getCoordinatesForLocation(locationName);
-        if (!coords) throw new Error('Coordinates not found');
+        if (!coords) {
+            throw new Error('Coordinates not found');
+        }
 
-        const weatherData = await fetchWeatherForCoordinates(coords);
+        // Pass the itemDate to the weather fetching function
+        const weatherData = await fetchWeatherForCoordinates(coords, itemDate);
         renderWeatherForecast(weatherData);
 
     } catch (error) {
@@ -70,9 +89,31 @@ async function getCoordinatesForLocation(locationName) {
     return null;
 }
 
-async function fetchWeatherForCoordinates(coords) {
-    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max&timezone=auto`;
+async function fetchWeatherForCoordinates(coords, itemDateStr) {
+    // --- DATE CALCULATION LOGIC ---
+    const targetDate = itemDateStr ? new Date(itemDateStr) : new Date();
+
+    // Go back 3 days from the target date
+    const startDate = new Date(targetDate);
+    startDate.setDate(targetDate.getDate() - 3);
+
+    // Go forward 3 days from the target date
+    const endDate = new Date(targetDate);
+    endDate.setDate(targetDate.getDate() + 3);
+
+    // Format dates into YYYY-MM-DD strings for the API
+    const formatDate = (d) => d.toISOString().split('T')[0];
+    const startDateStr = formatDate(startDate);
+    const endDateStr = formatDate(endDate);
+
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max&start_date=${startDateStr}&end_date=${endDateStr}&timezone=auto`;
+
+    console.log("Fetching weather from URL:", apiUrl); // For debugging
+
     const response = await fetch(apiUrl);
+    if (!response.ok) {
+        throw new Error(`Weather API failed with status ${response.status}`);
+    }
     const data = await response.json();
     return data.daily;
 }
