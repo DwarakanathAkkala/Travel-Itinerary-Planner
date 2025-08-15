@@ -3,10 +3,11 @@
 // It initializes all features and coordinates between different modules.
 
 // --- MODULE IMPORTS ---
-import { initializeMap, setMapViewToDestination, getDirectionsTo } from './trip-map.js';
+import { initializeMap, setMapViewToDestination, getDirectionsTo, addMarkersToMap } from './trip-map.js';
 import { fetchItineraryItems, handleItineraryListClick } from './trip-itinerary.js';
 import { initializeExpenseListeners, fetchAndDisplayExpenses } from './trip-expenses.js';
 import { initializeShareFeature } from './trip-share.js';
+import { initializeWeatherFeature } from './trip-weather.js';
 
 // --- DOM EVENT LISTENERS ---
 // These are the main entry points for the page.
@@ -17,6 +18,8 @@ document.addEventListener('getDirections', (e) => getDirectionsTo(e.detail));
 const tripDetailsContent = document.getElementById('trip-details-content');
 const modalContainer = document.getElementById('item-modal-container');
 const modalFormContent = document.getElementById('modal-item-form-content');
+
+let locationCoordinatesCache = {};
 
 /**
  * Main function to initialize the page. It attaches static listeners
@@ -63,12 +66,14 @@ function initializePage() {
  */
 function fetchTripDetails(tripId) {
     const tripRef = firebase.database().ref(`trips/${tripId}`);
-    tripRef.on('value', (snapshot) => {
+    tripRef.once('value', (snapshot) => {
         if (snapshot.exists()) {
             const tripData = snapshot.val();
+
             renderTripDetails(tripData);
-            fetchItineraryItems(tripId); // After rendering trip, fetch its itinerary
-            fetchAndDisplayExpenses(tripId); // Fetch and display expenses for this trip
+            fetchItineraryItems(tripId);
+            fetchAndDisplayExpenses(tripId);
+            initializeWeatherFeature(tripData);
         } else {
             displayError('<h2>Trip Not Found</h2><p>The requested trip does not exist or may have been deleted.</p>');
         }
@@ -84,8 +89,6 @@ function fetchTripDetails(tripId) {
  */
 function renderTripDetails(tripData) {
     tripDetailsContent.classList.add('loaded');
-
-    // Safely format dates
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     let dateString = "Dates not specified";
     if (tripData.startDate && tripData.endDate) {
@@ -95,8 +98,6 @@ function renderTripDetails(tripData) {
             dateString = `${startDate} to ${endDate}`;
         }
     }
-
-    // Update the page title and render HTML
     document.title = `${tripData.name || 'Trip Details'} | Wanderlust`;
     tripDetailsContent.innerHTML = `
         <div class="trip-image-banner" style="background-image: url('https://source.unsplash.com/random/1200x400/?${encodeURIComponent(tripData.destination || 'travel')},travel')">
@@ -110,7 +111,6 @@ function renderTripDetails(tripData) {
             <h3>Trip Notes</h3><p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
         </div>`;
 
-    // Initialize map features after rendering the trip details
     initializeMap();
     setMapViewToDestination(tripData.destination);
 }
@@ -219,5 +219,23 @@ export function setButtonLoadingState(button, isLoading) {
         button.disabled = false;
         btnText.style.display = 'inline-block';
         spinner.style.display = 'none';
+    }
+}
+
+/**
+ * Initializes the map and fetches coordinates for all itinerary items,
+ * populating the central cache.
+ * @param {object} tripData - The full data object for the current trip.
+ */
+async function initializeMapAndMarkers(tripData) {
+    initializeMap();
+    setMapViewToDestination(tripData.destination);
+
+    // This function will now be responsible for geocoding and populating the cache.
+    // We will modify trip-map.js to export a function that does this.
+    if (tripData.itinerary) {
+        const items = Object.values(tripData.itinerary);
+        // We pass our cache object to the map module to be filled.
+        await addMarkersToMap(items, locationCoordinatesCache);
     }
 }
