@@ -113,16 +113,17 @@ h1, h2, h3, h4, h5, h6 {
 /* --- INFO BAR --- */
 .trip-info-bar {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 2rem 3rem;
-    background-color: #ffffff; /* White background for contrast */
+    flex-wrap: wrap; /* Allows items to stack on smaller screens */
+    gap: 1rem 2.5rem; /* Row and column gap */
+    padding: 1.5rem 2rem;
+    background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    /* Pull it up to overlap the banner slightly */
     margin: -35px 2rem 0 2rem;
     position: relative;
     z-index: 5;
+    justify-content: space-between; /* Pushes the info to the left and the button to the right */
+    align-items: center; /* Vertically aligns them */
 }
 
 .info-item {
@@ -608,6 +609,33 @@ h1, h2, h3, h4, h5, h6 {
     display: none; /* Hidden by default, shown by JS */
     justify-content: center; /* Center the content */
     gap: 10px; /* Adds space between icon and text */
+}
+
+/* Travel Journal Styling */
+/* Aligns the journal button to the right on larger screens */
+.info-item-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem; /* Spacing between location and date */
+}
+
+#open-journal-btn {
+    text-decoration: none;
+    white-space: nowrap; /* Prevents button text from wrapping */
+}
+
+/* On smaller screens, stack them vertically */
+@media (max-width: 900px) {
+    .trip-info-bar {
+        flex-direction: column;
+        align-items: stretch; /* Make items full-width */
+        gap: 1.5rem;
+    }
+
+    #open-journal-btn {
+        width: 100%;
+        justify-content: center; /* Center the button content */
+    }
 }
 
 

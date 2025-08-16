@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Journal | Wanderlust</title>
+
+    <!-- Reusing the same styles for consistency -->
+    <link rel="stylesheet" href="assets/css/trip.css">
+    <link rel="stylesheet" href="assets/css/journal.css"> <!-- We will create this next -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- A simple header with a back button -->
+    <header class="trip-header">
+        <nav>
+            <a href="#" id="back-to-trip-btn" class="back-to-dash"><i class="fas fa-arrow-left"></i> Back to Trip</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="trip-detail-container">
+        <!-- The trip banner and info will be loaded here by JS -->
+        <div id="trip-details-content">
+            <div class="loading-spinner" style="min-height: 250px;"></div>
+        </div>
+
+        <!-- The main journal content will be loaded here -->
+        <section class="journal-section-container">
+            <div class="section-header">
+                <h2>Travel Journal</h2>
+            </div>
+            <div id="journal-entry-list">
+                <div class="loading-spinner"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> <!-- Storage SDK -->
+
+    <!-- Your Config and Page Logic -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/travel-journal.js"></script>
+
+</body>
+
+</html>
