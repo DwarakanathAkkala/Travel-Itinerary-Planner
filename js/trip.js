@@ -118,7 +118,7 @@ function renderTripDetails(tripData) {
             </div>
         </div>
         <div class="trip-notes">
-            <h3>Trip Notes</h3><p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
+            <h3><i class="fas fa-clipboard-list"></i> Trip Notes</h3><p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
         </div>`;
 
     initializeMap();
