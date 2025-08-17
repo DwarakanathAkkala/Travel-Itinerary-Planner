@@ -1,0 +1,72 @@
+/* assets/css/experience-form.css */
+
+/* --- New Modal Header Styling --- */
+.modal-header {
+    text-align: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h4 {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #888;
+    font-size: 1rem;
+}
+
+.modal-header h3 {
+    margin: 5px 0 0 0;
+    font-size: 1.8rem;
+    background: var(--bg-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+
+/* --- Star Rating Styling --- */
+.star-rating-container {
+    display: flex;
+    gap: 10px;
+    font-size: 2rem;
+    color: #ffc107; /* Gold color for stars */
+    cursor: pointer;
+    justify-content: center; /* Center the stars */
+    margin-top: 10px;
+}
+
+.star-rating-container i.fas {
+    font-weight: 900;
+}
+
+.star-rating-container i {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-rating-container:hover i {
+    transform: scale(1.1);
+}
+
+
+/* --- Delete Button Styling --- */
+.btn-danger {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: none; /* Hidden by default, shown by JS when editing */
+}
+
+.btn-danger:hover {
+    background: #e74c3c;
+    color: white;
+}

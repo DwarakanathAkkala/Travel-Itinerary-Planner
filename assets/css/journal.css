@@ -1,6 +1,11 @@
-/* assets/css/journal.css */
+/* assets/css/journal.css (DEFINITIVE & FORMATTED VERSION) */
 
-/* --- New Header Styles --- */
+/* --- GAP FIX --- */
+#trip-details-content {
+    min-height: 0 !important;
+}
+
+/* --- HEADER STYLES --- */
 .journal-header {
     display: flex;
     justify-content: space-between;
@@ -41,8 +46,7 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* --- Journal Section & Card Styles --- */
-
+/* --- JOURNAL SECTION --- */
 .journal-section-container {
     max-width: 900px;
     margin: 2rem auto;
@@ -60,26 +64,31 @@
     position: relative;
     min-height: 200px;
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
-/* --- VIBRANT CARD STYLING --- */
-
+/* --- ROBUST JOURNAL CARD LAYOUT --- */
 .journal-entry-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    border-left: 5px solid var(--primary);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 1.5rem 2rem;
+    border-left: 5px solid #ccc;
+    transition: all 0.3s ease;
 }
 
 .journal-entry-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.entry-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .entry-icon {
@@ -91,109 +100,106 @@
     align-items: center;
     justify-content: center;
     background-color: #f5f7fa;
+    flex-shrink: 0;
 }
 
 .entry-details {
     flex-grow: 1;
+    min-width: 0;
 }
 
 .entry-details h5 {
     margin: 0 0 0.5rem 0;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #333; /* Default color */
+    line-height: 1.4;
+    word-break: break-word;
 }
 
 .entry-details p {
     margin: 0;
-    color: #777;
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif; /* EXPLICIT FONT FIX */
+    font-family: 'Poppins', sans-serif;
 }
 
-.entry-actions {
-    margin-left: auto;
+.btn-edit-experience {
+    background: #f5f7fa;
+    border: 1px solid #eee;
+    color: #aaa;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-left: 1rem;
+    transition: all 0.2s ease-in-out;
 }
 
-.entry-actions .btn-add-exp {
-    background: transparent;
-    border: 2px solid #ddd;
-    color: #888;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
+.btn-edit-experience:hover {
+    background-color: #e9ecef;
+    color: var(--primary);
+    transform: scale(1.1);
 }
 
-.journal-entry-card:hover .btn-add-exp {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-    transform: scale(1.05);
+/* --- JOURNAL CONTENT --- */
+.entry-content .entry-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #ffc107;
+    margin-bottom: 1rem;
 }
 
-/* Category-specific border and icon colors */
+.entry-content .entry-journal-text {
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    margin: auto;
+    line-height: 1.7;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.entry-content .entry-empty-state {
+    font-style: italic;
+    color: #999;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* --- CATEGORY COLORS (COMPLETE) --- */
 .journal-entry-card[data-category="flight"] { border-color: #3498db; }
+.journal-entry-card[data-category="flight"] .entry-icon, .journal-entry-card[data-category="flight"] h5 { color: #3498db; }
+.journal-entry-card[data-category="flight"] .entry-details p, .journal-entry-card[data-category="flight"] .entry-details p i { color: #2c7bb1; }
+
 .journal-entry-card[data-category="lodging"] { border-color: #9b59b6; }
+.journal-entry-card[data-category="lodging"] .entry-icon, .journal-entry-card[data-category="lodging"] h5 { color: #9b59b6; }
+.journal-entry-card[data-category="lodging"] .entry-details p, .journal-entry-card[data-category="lodging"] .entry-details p i { color: #804a99; }
+
 .journal-entry-card[data-category="transport"] { border-color: #f1c40f; }
+.journal-entry-card[data-category="transport"] .entry-icon, .journal-entry-card[data-category="transport"] h5 { color: #f1c40f; }
+.journal-entry-card[data-category="transport"] .entry-details p, .journal-entry-card[data-category="transport"] .entry-details p i { color: #c8a10d; }
+
 .journal-entry-card[data-category="dining"] { border-color: #e74c3c; }
+.journal-entry-card[data-category="dining"] .entry-icon, .journal-entry-card[data-category="dining"] h5 { color: #e74c3c; }
+.journal-entry-card[data-category="dining"] .entry-details p, .journal-entry-card[data-category="dining"] .entry-details p i { color: #c0392b; }
+
 .journal-entry-card[data-category="activity"] { border-color: #2ecc71; }
+.journal-entry-card[data-category="activity"] .entry-icon, .journal-entry-card[data-category="activity"] h5 { color: #2ecc71; }
+.journal-entry-card[data-category="activity"] .entry-details p, .journal-entry-card[data-category="activity"] .entry-details p i { color: #25a25a; }
+
 .journal-entry-card[data-category="other"] { border-color: #95a5a6; }
+.journal-entry-card[data-category="other"] .entry-icon, .journal-entry-card[data-category="other"] h5 { color: #95a5a6; }
+.journal-entry-card[data-category="other"] .entry-details p, .journal-entry-card[data-category="other"] .entry-details p i { color: #7f8c8d; }
 
-.journal-entry-card[data-category="flight"] .entry-icon { color: #3498db; }
-.journal-entry-card[data-category="lodging"] .entry-icon { color: #9b59b6; }
-.journal-entry-card[data-category="transport"] .entry-icon { color: #f1c40f; }
-.journal-entry-card[data-category="dining"] .entry-icon { color: #e74c3c; }
-.journal-entry-card[data-category="activity"] .entry-icon { color: #2ecc71; }
-.journal-entry-card[data-category="other"] .entry-icon { color: #95a5a6; }
-
-/* Category-specific button colors on hover */
-.journal-entry-card:hover[data-category="flight"] .btn-add-exp { background: #3498db; border-color: #3498db; }
-.journal-entry-card:hover[data-category="lodging"] .btn-add-exp { background: #9b59b6; border-color: #9b59b6; }
-.journal-entry-card:hover[data-category="transport"] .btn-add-exp { background: #f1c40f; border-color: #f1c40f; }
-.journal-entry-card:hover[data-category="dining"] .btn-add-exp { background: #e74c3c; border-color: #e74c3c; }
-.journal-entry-card:hover[data-category="activity"] .btn-add-exp { background: #2ecc71; border-color: #2ecc71; }
-.journal-entry-card:hover[data-category="other"] .btn-add-exp { background: #95a5a6; border-color: #95a5a6; }
-
-/* Category-specific HEADING colors */
-.journal-entry-card[data-category="flight"] h5 { color: #3498db; }
-.journal-entry-card[data-category="lodging"] h5 { color: #9b59b6; }
-.journal-entry-card[data-category="transport"] h5 { color: #f1c40f; }
-.journal-entry-card[data-category="dining"] h5 { color: #e74c3c; }
-.journal-entry-card[data-category="activity"] h5 { color: #2ecc71; }
-.journal-entry-card[data-category="other"] h5 { color: #95a5a6; }
-
-/* Category-specific PARAGRAPH and ICON colors */
-.journal-entry-card[data-category="flight"] .entry-details p,
-.journal-entry-card[data-category="flight"] .entry-details p i { color: #2c7bb1; }
-
-.journal-entry-card[data-category="lodging"] .entry-details p,
-.journal-entry-card[data-category="lodging"] .entry-details p i { color: #804a99; }
-
-.journal-entry-card[data-category="transport"] .entry-details p,
-.journal-entry-card[data-category="transport"] .entry-details p i { color: #c8a10d; }
-
-.journal-entry-card[data-category="dining"] .entry-details p,
-.journal-entry-card[data-category="dining"] .entry-details p i { color: #c0392b; }
-
-.journal-entry-card[data-category="activity"] .entry-details p,
-.journal-entry-card[data-category="activity"] .entry-details p i { color: #25a25a; }
-
-.journal-entry-card[data-category="other"] .entry-details p,
-.journal-entry-card[data-category="other"] .entry-details p i { color: #7f8c8d; }
-
-
+/* --- RESPONSIVE STYLES --- */
 @media (max-width: 600px) {
-    .journal-section-container { padding: 0 1rem; }
-    .journal-entry-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
+    .journal-section-container {
+        padding: 0 1rem;
     }
-    .entry-details p { justify-content: center; }
-    .entry-actions { margin-left: 0; }
 }

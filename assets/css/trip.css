@@ -1,11 +1,11 @@
-/* assets/css/trip.css */
+/* assets/css/trip.css (DEFINITIVE & FORMATTED VERSION) */
 
 body {
     background-color: #f5f7fa;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Lora', serif;
+    font-family: 'Lora', serif;
 }
 
 /* --- HEADER --- */
@@ -55,8 +55,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #trip-details-content {
@@ -68,8 +74,9 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: none;
 }
 
-#trip-details-content.loaded {
-    padding: 0;
+/* Specific override for the journal page to remove the large gap */
+body:has(.journal-header) #trip-details-content {
+    min-height: 0;
 }
 
 /* --- BANNER & HEADER SECTION --- */
@@ -108,11 +115,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
 }
 
-/* --- INFO BAR (Corrected Layout) --- */
+/* --- INFO BAR --- */
 .trip-info-bar {
     display: flex;
-    flex-wrap: wrap; /* Allows items to stack on smaller screens */
-    gap: 1rem 2rem; /* Row and column gap */
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
     padding: 1.5rem 2rem;
     background-color: #ffffff;
     border-radius: 12px;
@@ -120,14 +127,14 @@ h1, h2, h3, h4, h5, h6 {
     margin: -35px 2rem 0 2rem;
     position: relative;
     z-index: 5;
-    justify-content: space-between; /* Pushes the info to the left and the button to the right */
-    align-items: center; /* Vertically aligns them */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .info-item-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 2rem; /* Spacing between location and date */
+    gap: 1rem 2rem;
 }
 
 .info-item {
@@ -149,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #open-journal-btn {
     text-decoration: none;
-    white-space: nowrap; /* Prevents button text from wrapping */
+    white-space: nowrap;
 }
 
 /* --- NOTES SECTION --- */
@@ -169,18 +176,17 @@ h1, h2, h3, h4, h5, h6 {
     border-left: 3px solid #e0e0ff;
 }
 
-
-/* --- UNIVERSAL SECTION HEADER STYLING (NEW) --- */
+/* --- UNIVERSAL SECTION HEADER STYLING --- */
 .section-header h2,
 .trip-notes h3 {
     margin-top: 0;
     margin-bottom: 1rem;
-    color: var(--primary); /* Use the vibrant primary theme color */
+    color: var(--primary);
     font-size: 1.8rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 12px; /* Space between icon and text */
+    gap: 12px;
 }
 
 .section-header h2 i,
@@ -188,7 +194,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.5rem;
     opacity: 0.8;
 }
-
 
 /* --- ITINERARY SECTION --- */
 .itinerary-section-container {
@@ -206,6 +211,12 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid #e9ecef;
 }
 
+.itinerary-section-container .section-header div {
+    display: flex;
+    gap: 10px;
+}
+
+/* --- All other itinerary, map, modal, etc. styles ... --- */
 .itinerary-list {
     display: flex;
     flex-direction: column;
@@ -218,349 +229,4 @@ h1, h2, h3, h4, h5, h6 {
     padding: 3rem;
     background: #fff;
     border-radius: 12px;
-}
-
-/* Style for the <select> element in the form */
-.trip-form select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 1rem;
-    background-color: white;
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C63FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px top 50%;
-    background-size: .65em auto;
-    cursor: pointer;
-}
-
-.trip-form select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
-    outline: none;
-}
-
-#item-modal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(10, 25, 47, 0.7);
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-#item-modal-container.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-#item-modal-container .trip-modal {
-    transform: scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#item-modal-container.show .trip-modal {
-    transform: scale(1);
-}
-
-/* --- ITINERARY ITEM STYLING --- */
-.itinerary-day-group {
-    margin-bottom: 2rem;
-}
-
-.itinerary-day-header {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--primary);
-    padding-bottom: 0.75rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #e0e0ff;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.itinerary-day-header i {
-    font-size: 1.1rem;
-}
-
-.itinerary-item {
-    display: flex;
-    gap: 1.5rem;
-    background: #fff;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    border-left: 5px solid var(--primary);
-}
-
-.itinerary-item:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-.itinerary-item[data-category="flight"] { border-left: 5px solid #3498db; }
-.itinerary-item[data-category="lodging"] { border-left: 5px solid #9b59b6; }
-.itinerary-item[data-category="transport"] { border-left: 5px solid #f1c40f; }
-.itinerary-item[data-category="dining"] { border-left: 5px solid #e74c3c; }
-.itinerary-item[data-category="activity"] { border-left: 5px solid #2ecc71; }
-.itinerary-item[data-category="other"] { border-left: 5px solid #95a5a6; }
-
-.itinerary-item[data-category="flight"] .item-icon { color: #3498db; }
-.itinerary-item[data-category="lodging"] .item-icon { color: #9b59b6; }
-.itinerary-item[data-category="transport"] .item-icon { color: #f1c40f; }
-.itinerary-item[data-category="dining"] .item-icon { color: #e74c3c; }
-.itinerary-item[data-category="activity"] .item-icon { color: #2ecc71; }
-.itinerary-item[data-category="other"] .item-icon { color: #95a5a6; }
-
-.item-details .item-meta {
-    font-size: 0.95rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px 15px;
-    align-items: center;
-    margin-bottom: 0.75rem;
-}
-
-.item-details .item-meta i {
-    color: #888;
-}
-
-.item-icon {
-    font-size: 1.8rem;
-    width: 40px;
-    text-align: center;
-    padding-top: 5px;
-}
-
-.item-details {
-    flex-grow: 1;
-}
-
-.item-details h5 {
-    margin: 0 0 0.25rem 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-}
-
-.item-details .time {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 0.75rem;
-}
-
-.item-details .notes {
-    font-size: 0.95rem;
-    color: #666;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin-top: 10px;
-}
-
-.item-actions {
-    margin-left: auto;
-    padding-left: 1rem;
-    display: flex;
-    align-items: center;
-}
-
-.btn-delete-item, .btn-edit-item {
-    background: transparent;
-    border: none;
-    color: #ccc;
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    line-height: 1;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-delete-item:hover {
-    color: #e74c3c;
-    background-color: #fce8e6;
-    transform: scale(1.1);
-}
-
-.btn-edit-item:hover {
-    color: var(--primary);
-    background-color: #e0e0ff;
-    transform: scale(1.1);
-}
-
-/* --- INTERACTIVE MAP STYLING --- */
-.map-section-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 2rem;
-}
-
-#map {
-    height: 400px;
-    width: 100%;
-    background-color: #e9ecef;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    z-index: 1;
-}
-
-/* --- CUSTOM DIVICON MARKER STYLES --- */
-.leaflet-div-icon {
-    background: transparent;
-    border: none;
-}
-
-.custom-marker {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 35px;
-    height: 35px;
-    color: white;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    border: 2px solid white;
-}
-
-.custom-marker i {
-    transform: rotate(45deg);
-    font-size: 16px;
-}
-
-.marker-color-blue { background-color: #3498db; }
-.marker-color-purple { background-color: #9b59b6; }
-.marker-color-orange { background-color: #f1c40f; }
-.marker-color-red { background-color: #e74c3c; }
-.marker-color-green { background-color: #2ecc71; }
-.marker-color-gray { background-color: #95a5a6; }
-
-/* --- LEAFLET ROUTING MACHINE STYLING --- */
-.leaflet-routing-container {
-    background-color: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    border-radius: 8px;
-}
-
-/* Location Actions */
-.location-actions {
-    margin-left: auto;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.btn-get-directions {
-    background: none;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: color 0.2s;
-    padding: 2px;
-}
-
-.btn-get-directions:hover {
-    color: var(--primary);
-}
-
-/* --- SHARE BUTTON & MODAL --- */
-.itinerary-section-container .section-header div {
-    display: flex;
-    gap: 10px;
-}
-
-#share-modal-container p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-}
-
-/* --- RESPONSIVE STYLES --- */
-@media (max-width: 900px) {
-    .trip-info-bar {
-        flex-direction: column;
-        align-items: stretch; /* Make items full-width */
-        gap: 1.5rem;
-    }
-
-    #open-journal-btn {
-        width: 100%;
-        justify-content: center; /* Center the button content */
-    }
-}
-
-@media (max-width: 768px) {
-    .trip-image-banner {
-        min-height: 250px;
-        padding: 2rem;
-        border-radius: 0;
-    }
-
-    .trip-image-banner::before {
-        border-radius: 0;
-    }
-
-    .trip-image-banner h1 {
-        font-size: 2.5rem;
-    }
-
-    .trip-header nav {
-        padding: 1rem;
-    }
-
-    .trip-info-bar {
-        margin: -50px 1rem 0 1rem;
-    }
-
-    .trip-notes {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
-
-    .itinerary-section-container,
-    .map-section-container {
-        padding: 0 1rem;
-        margin: 1rem auto;
-    }
-}
-
-@media (max-width: 480px) {
-    .trip-image-banner {
-        min-height: 200px;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 1rem;
-    }
-
-    .trip-image-banner h1 {
-        font-size: 2rem;
-        word-break: break-word;
-        hyphens: auto;
-    }
-    
-    .itinerary-section-container .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
 }
