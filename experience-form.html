@@ -16,6 +16,18 @@
         <label for="journal-entry">Journal Entry / Notes</label>
         <textarea id="journal-entry" rows="6"
             placeholder="e.g., The views were incredible, but the queue was long..."></textarea>
+
+        <div class="form-group">
+            <label for="photo-upload">Add Photos</label>
+            <!-- This is a standard trick: the input is hidden, and we style the label like a button -->
+            <input type="file" id="photo-upload" multiple accept="image/*" class="hidden-file-input">
+            <label for="photo-upload" class="btn-secondary-styled">
+                <i class="fas fa-camera"></i> Choose Images...
+            </label>
+            <div id="photo-previews" class="photo-previews-container">
+                <!-- Image previews will be added here by JavaScript -->
+            </div>
+        </div>
     </div>
 
     <button type="submit" class="btn-primary">
