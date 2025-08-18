@@ -50,7 +50,7 @@
 
         <!-- Weather Forecast Section -->
         <section class="weather-section-container">
-            <div class="section-header">
+            <div class="section-header weather-header" id="weather-header">
                 <h2>Weather Forecast</h2>
             </div>
             <div class="weather-controls">
@@ -59,6 +59,11 @@
                     <!-- Options will be populated by JS -->
                 </select>
             </div>
+
+            <div class="section-header forecast-header">
+                <h2><i class="fas fa-cloud-sun-rain"></i> 7-Day Forecast</h2>
+            </div>
+
             <div class="weather-forecast-display" id="weather-forecast-display">
                 <!-- Forecast will be rendered here by JS -->
                 <p class="weather-prompt">Select a location from the dropdown to see its 7-day forecast.</p>
@@ -69,7 +74,7 @@
         <!-- Section for the itinerary list -->
         <section class="itinerary-section-container">
             <div class="section-header">
-                <h2><i class="fas fa-list-alt"></i> Your Itinerary</h2>
+                <h2 data-icon="🗺️">Your Itinerary</h2>
                 <button id="add-item-btn" class="btn-primary">
                     <i class="fas fa-plus"></i> Add Item
                 </button>
@@ -89,7 +94,7 @@
         <!-- Expense Tracker Section -->
         <section class="expense-section-container">
             <div class="section-header">
-                <h2><i class="fas fa-wallet"></i> Expense Tracker</h2>
+                <h2 data-icon="💳">Expense Tracker</h2>
                 <button id="add-expense-btn" class="btn-primary">
                     <i class="fas fa-plus"></i> Add Expense
                 </button>

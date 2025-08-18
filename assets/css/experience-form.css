@@ -1,6 +1,6 @@
 /* assets/css/experience-form.css */
 
-/* --- New Modal Header Styling --- */
+/* --- Modal Header Styling --- */
 .modal-header {
     text-align: center;
     padding-bottom: 1rem;
@@ -25,15 +25,14 @@
     color: transparent;
 }
 
-
 /* --- Star Rating Styling --- */
 .star-rating-container {
     display: flex;
     gap: 10px;
     font-size: 2rem;
-    color: #ffc107; /* Gold color for stars */
+    color: #ffc107;
     cursor: pointer;
-    justify-content: center; /* Center the stars */
+    justify-content: center;
     margin-top: 10px;
 }
 
@@ -63,7 +62,7 @@
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: none; /* Hidden by default, shown by JS when editing */
+    display: none;
 }
 
 .btn-danger:hover {

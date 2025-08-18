@@ -16,11 +16,23 @@
     margin-bottom: 2rem;
     text-align: center;
     font-size: 2rem;
-    background: linear-gradient(135deg, #2E73E8, #7B4FE8);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
+
+.weather-header h2 {
+    background: linear-gradient(135deg, #2E73E8, #7B4FE8);
+}
+
+.forecast-header h2 {
+    background: linear-gradient(135deg, #5c97ff, #a98eff);
+}
+
 
 .weather-controls {
     margin-bottom: 2rem;
@@ -117,7 +129,7 @@
 /* --- ERROR MESSAGE STYLE --- */
 .weather-error-message {
     width: 100%;
-    text-align: center;
+    text-align: center; 
     padding: 2rem;
     background-color: #fff7f7;
     border: 1px solid #f8d7da;

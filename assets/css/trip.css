@@ -1,17 +1,17 @@
-/* assets/css/trip.css (DEFINITIVE & FORMATTED VERSION) */
+/* assets/css/trip.css */
 
 body {
-    background-color: #f5f7fa;
+    background-color: #f5f7fa; /* A softer, cooler background */
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lora', serif;
+  font-family: 'Lora', serif;
 }
 
 /* --- HEADER --- */
 .trip-header {
-    background: transparent;
-    position: absolute;
+    background: transparent; /* Make header transparent to see the body background */
+    position: absolute; /* Position it over the banner */
     width: 100%;
     top: 0;
     left: 0;
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 .trip-header .back-to-dash {
     font-size: 1rem;
     font-weight: 600;
-    color: white;
+    color: white; /* Make text white to show on the banner */
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -49,40 +49,38 @@ h1, h2, h3, h4, h5, h6 {
 .trip-detail-container {
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
-    padding: 0;
+    margin: 0 auto; /* Remove top margin as banner is now at the top */
+    padding: 0; /* Remove padding, content will handle its own */
     animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #trip-details-content {
     min-height: 300px;
     position: relative;
-    background: transparent;
+    background: transparent; /* Main container is transparent */
     border-radius: 0;
     padding: 0;
     box-shadow: none;
 }
 
-/* Specific override for the journal page to remove the large gap */
+#trip-details-content.loaded {
+    padding: 0;
+}
+
 body:has(.journal-header) #trip-details-content {
     min-height: 0;
 }
 
 /* --- BANNER & HEADER SECTION --- */
+
 .trip-image-banner {
     width: 100%;
-    min-height: 280px;
+    min-height: 280px; /* Taller banner */
     background-size: cover;
     background-position: center;
     display: flex;
@@ -90,7 +88,7 @@ body:has(.journal-header) #trip-details-content {
     padding: 3rem;
     position: relative;
     color: white;
-    border-radius: 0 0 24px 24px;
+    border-radius: 0 0 24px 24px; /* Rounded bottom corners */
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
@@ -101,6 +99,7 @@ body:has(.journal-header) #trip-details-content {
     left: 0;
     right: 0;
     bottom: 0;
+    /* The VIBRANT GRADIENT OVERLAY */
     background: linear-gradient(to top, rgba(108, 99, 255, 0.7) 0%, rgba(255, 101, 132, 0.4) 100%);
     border-radius: 0 0 24px 24px;
     opacity: 0.8;
@@ -108,7 +107,7 @@ body:has(.journal-header) #trip-details-content {
 
 .trip-image-banner h1 {
     margin: 0;
-    font-size: 3rem;
+    font-size: 3rem; /* Larger font size */
     font-weight: 700;
     position: relative;
     text-shadow: 1px 2px 8px rgba(0,0,0,0.3);
@@ -118,8 +117,8 @@ body:has(.journal-header) #trip-details-content {
 /* --- INFO BAR --- */
 .trip-info-bar {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2rem;
+    flex-wrap: wrap; /* Allows stacking on smaller screens */
+    gap: 1.5rem 2rem; /* Vertical and horizontal gap */
     padding: 1.5rem 2rem;
     background-color: #ffffff;
     border-radius: 12px;
@@ -127,14 +126,15 @@ body:has(.journal-header) #trip-details-content {
     margin: -35px 2rem 0 2rem;
     position: relative;
     z-index: 5;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Vertically align all items in the center */
 }
 
 .info-item-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 2rem;
+    align-items: center;
+    gap: 1.5rem 2rem; /* Same gap for consistency */
+    flex-grow: 1; /* Allows this group to take up available space */
 }
 
 .info-item {
@@ -154,9 +154,13 @@ body:has(.journal-header) #trip-details-content {
     -webkit-text-fill-color: transparent;
 }
 
+.info-item-action {
+    margin-left: auto; /* Pushes the button to the far right */
+}
+
 #open-journal-btn {
     text-decoration: none;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevents the button text from wrapping */
 }
 
 /* --- NOTES SECTION --- */
@@ -167,35 +171,28 @@ body:has(.journal-header) #trip-details-content {
     border-radius: 12px;
 }
 
+.trip-notes h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .trip-notes p {
     font-size: 1rem;
     line-height: 1.7;
     color: #555;
     white-space: pre-wrap;
-    padding-left: 2.5rem;
-    border-left: 3px solid #e0e0ff;
-}
-
-/* --- UNIVERSAL SECTION HEADER STYLING --- */
-.section-header h2,
-.trip-notes h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--primary);
-    font-size: 1.8rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.section-header h2 i,
-.trip-notes h3 i {
-    font-size: 1.5rem;
-    opacity: 0.8;
+    padding-left: 2.5rem; /* Indent notes text */
+    border-left: 3px solid var(--primary-light, #e0e0ff);
 }
 
 /* --- ITINERARY SECTION --- */
+
 .itinerary-section-container {
     max-width: 1200px;
     margin: 2rem auto;
@@ -211,12 +208,19 @@ body:has(.journal-header) #trip-details-content {
     border-bottom: 1px solid #e9ecef;
 }
 
-.itinerary-section-container .section-header div {
-    display: flex;
-    gap: 10px;
+.itinerary-section-container .section-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #343a40;
 }
 
-/* --- All other itinerary, map, modal, etc. styles ... --- */
+/* This new rule adds the emoji icons */
+.section-header h2::before,
+.trip-notes h3::before {
+    content: attr(data-icon); /* Use the content from the data-icon attribute */
+    font-size: 1.5rem;
+}
+
 .itinerary-list {
     display: flex;
     flex-direction: column;
@@ -229,4 +233,558 @@ body:has(.journal-header) #trip-details-content {
     padding: 3rem;
     background: #fff;
     border-radius: 12px;
+}
+
+/* Style for the <select> element in the form */
+.trip-form select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C63FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: .65em auto;
+    cursor: pointer;
+}
+
+.trip-form select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+    outline: none;
+}
+
+#item-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 25, 47, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#item-modal-container.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#item-modal-container .trip-modal {
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#item-modal-container.show .trip-modal {
+    transform: scale(1);
+}
+
+/* --- ITINERARY ITEM STYLING --- */
+
+.itinerary-day-group {
+    margin-bottom: 2rem;
+}
+
+.itinerary-day-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e0e0ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.itinerary-day-header i {
+    font-size: 1.1rem;
+}
+
+.itinerary-item {
+    display: flex;
+    gap: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border-left: 5px solid var(--primary); /* Default border color */
+}
+
+.itinerary-item:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* Category-specific border colors */
+.itinerary-item[data-category="flight"] { border-left: 5px solid #3498db; }
+.itinerary-item[data-category="lodging"] { border-left: 5px solid #9b59b6; }
+.itinerary-item[data-category="transport"] { border-left: 5px solid #f1c40f; }
+.itinerary-item[data-category="dining"] { border-left: 5px solid #e74c3c; }
+.itinerary-item[data-category="activity"] { border-left: 5px solid #2ecc71; }
+.itinerary-item[data-category="other"] { border-left: 5px solid #95a5a6; }
+
+/* Set Icon Color */
+.itinerary-item[data-category="flight"] .item-icon { color: #3498db; }
+.itinerary-item[data-category="lodging"] .item-icon { color: #9b59b6; }
+.itinerary-item[data-category="transport"] .item-icon { color: #f1c40f; }
+.itinerary-item[data-category="dining"] .item-icon { color: #e74c3c; }
+.itinerary-item[data-category="activity"] .item-icon { color: #2ecc71; }
+.itinerary-item[data-category="other"] .item-icon { color: #95a5a6; }
+
+.item-details .item-meta {
+    font-size: 0.95rem;
+    /* color: #555; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 15px; /* Row and column gap */
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.item-details .item-meta i {
+    color: #888;
+}
+
+.item-details .notes {
+    font-size: 0.95rem;
+    /* color: #666; */
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-top: 10px;
+}
+
+
+.item-icon {
+    font-size: 1.8rem;
+    width: 40px;
+    text-align: center;
+    color: #555;
+    padding-top: 5px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-details h5 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.item-details .time {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+
+.item-details .notes {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* --- Itinerary Item Actions (Delete Button) --- */
+
+.item-actions {
+    margin-left: auto; /* Pushes the button to the far right */
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-delete-item {
+    background: transparent;
+    border: none;
+    color: #ccc; /* Make it light grey by default */
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-delete-item:hover {
+    color: #e74c3c; /* Red on hover */
+    background-color: #fce8e6; /* A very light red background */
+    transform: scale(1.1);
+}
+
+.btn-edit-item {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    line-height: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-edit-item:hover {
+    color: var(--primary); /* Blue on hover */
+    background-color: #e0e0ff; /* A very light blue background */
+    transform: scale(1.1);
+}
+
+/* --- INTERACTIVE MAP STYLING --- */
+.map-section-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+#map {
+    height: 400px; /* Define the height of the map */
+    width: 100%;
+    background-color: #e9ecef; /* Fallback color while map tiles load */
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    z-index: 1; /* Ensures it sits correctly in the layout */
+}
+
+/* --- CUSTOM DIVICON MARKER STYLES --- */
+.leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.custom-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    color: white;
+    border-radius: 50% 50% 50% 0; /* Teardrop shape */
+    transform: rotate(-45deg); /* Point the teardrop down */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 2px solid white;
+}
+
+.custom-marker i {
+    transform: rotate(45deg); /* Counter-rotate the icon to be upright */
+    font-size: 16px;
+}
+
+/* Category-specific background colors */
+.marker-color-blue   { background-color: #3498db; }
+.marker-color-purple { background-color: #9b59b6; }
+.marker-color-orange { background-color: #f1c40f; }
+.marker-color-red    { background-color: #e74c3c; }
+.marker-color-green  { background-color: #2ecc71; }
+.marker-color-gray   { background-color: #95a5a6; }
+
+
+/* --- LEAFLET ROUTING MACHINE STYLING --- */
+.leaflet-routing-container {
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+}
+
+.leaflet-routing-alt {
+    padding: 10px;
+}
+
+.leaflet-routing-alt h2 {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.leaflet-routing-alt table {
+    font-size: 0.9rem;
+}
+
+/* Location Actions */
+.location-actions {
+    margin-left: auto; /* Pushes buttons to the right */
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-get-directions {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 1rem; /* Adjust size as needed */
+    transition: color 0.2s;
+    padding: 2px;
+}
+
+.btn-get-directions:hover {
+    color: var(--primary);
+}
+
+/* Style for the Share button and its container */
+.btn-secondary {
+    background: white; /* Start with a white background */
+    color: #6C63FF; /* Set text color to the primary theme color */
+    border: 2px solid #6C63FF; /* A solid border as a fallback */
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600; /* Make the text slightly bolder */
+}
+
+.btn-secondary:hover {
+    background: #6C63FF; /* Fill with the primary color on hover */
+    color: white; /* Make text white on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+}
+
+.btn-secondary i {
+    transition: color 0.3s ease;
+}
+
+.btn-secondary:hover i {
+    color: white;
+}
+
+.itinerary-section-container .section-header div {
+    display: flex;
+    gap: 10px; /* Adds space between the buttons */
+}
+
+/* Styles for the share modal content */
+#share-modal-container p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.share-link-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-link-container input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f5f7fa;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+#copy-link-btn {
+    padding: 10px;
+    font-size: 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#copy-link-btn:hover {
+    background-color: #5a52d6;
+}
+
+/* Hide the fallback container by default */
+#fallback-share-container {
+    display: none;
+}
+
+/* Style for the new native share button */
+.btn-share-native {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    display: none; /* Hidden by default, shown by JS */
+    justify-content: center; /* Center the content */
+    gap: 10px; /* Adds space between icon and text */
+}
+
+
+@media (max-width: 768px) {
+
+    .trip-image-banner {
+        min-height: 250px; /* Further reduce banner height on tablets */
+        padding: 2rem; /* Adjust padding */
+        border-radius: 0; /* Full width banner looks better on mobile */
+    }
+
+    .trip-image-banner::before {
+        border-radius: 0;
+    }
+
+    .trip-image-banner h1 {
+        font-size: 2.5rem; /* Reduce title font size */
+    }
+
+    .trip-header nav {
+        padding: 1rem;
+    }
+
+    .trip-info-bar {
+        margin: -50px 1rem 0 1rem; /* Reduce side margin */
+        padding: 1.5rem;
+        gap: 1.5rem;
+        flex-direction: column; /* Stack info items vertically */
+        align-items: flex-start;
+    }
+
+    .trip-notes {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+
+/* For Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+
+    .trip-image-banner {
+        min-height: 200px; /* Even smaller banner for phones */
+        display: flex;
+        align-items: center;  /* Center title vertically */
+        justify-content: center; /* Center title horizontally */
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .trip-image-banner h1 {
+        font-size: 2rem; /* Further reduce font size */
+        line-height: 1.3;
+        /* NEW: Prevent long words from overflowing */
+        word-break: break-word;
+        hyphens: auto;
+    }
+
+    .trip-header .back-to-dash {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .info-item {
+        font-size: 1rem;
+    }
+
+    .info-item i {
+        font-size: 1.2rem;
+    }
+
+    .trip-notes {
+        padding: 1rem;
+    }
+    
+    .trip-notes p {
+        padding-left: 1.5rem;
+        border-left-width: 2px;
+    }
+}
+
+/* --- Responsive for Itinerary Section --- */
+@media (max-width: 768px) {
+    .itinerary-section-container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .itinerary-section-container .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .itinerary-section-container .section-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- Responsive for Itinerary Items --- */
+@media (max-width: 480px) {
+    .itinerary-item {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .item-icon {
+        font-size: 1.5rem;
+    }
+
+    .item-details h5 {
+        font-size: 1.1rem;
+    }
+}
+
+/* --- Responsive for Map Section --- */
+@media (max-width: 768px) {
+    .map-section-container {
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+    }
+
+    #map {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    #map {
+        height: 300px;
+        border-radius: 0; /* Edge-to-edge map on mobile */
+    }
+    .map-section-container {
+        padding: 0;
+        margin: 1rem 0;
+    }
+}
+
+
+/* --- Responsive Stacking for Mobile --- */
+@media (max-width: 900px) {
+    .trip-info-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .info-item-action {
+        margin-left: 0; /* Remove the left margin when stacked */
+    }
+
+    #open-journal-btn {
+        width: 100%;
+        justify-content: center; /* Center the button content */
+    }
 }
