@@ -1,6 +1,5 @@
-/* assets/css/journal.css (DEFINITIVE & FORMATTED VERSION) */
+/* assets/css/journal.css (DEFINITIVE, COMPLETE & FORMATTED VERSION) */
 
-/* --- GAP FIX --- */
 #trip-details-content {
     min-height: 0 !important;
 }
@@ -159,7 +158,6 @@
 .entry-content .entry-journal-text {
     font-family: 'Lora', serif;
     font-size: 1.1rem;
-    margin: auto;
     line-height: 1.7;
     color: #333;
     white-space: pre-wrap;
@@ -172,12 +170,16 @@
     padding: 1rem 0;
 }
 
-/* --- Photo Gallery Styling --- */
+/* --- PHOTO GALLERY STYLING --- */
 .entry-photo-gallery {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 1.5rem; /* Add space between text and photos */
+    margin-top: 1.5rem;
+}
+
+.gallery-thumbnail-wrapper {
+    position: relative;
 }
 
 .gallery-thumbnail {
@@ -195,7 +197,32 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* --- CATEGORY COLORS (COMPLETE) --- */
+.btn-delete-photo {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    background: #333;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.gallery-thumbnail-wrapper:hover .btn-delete-photo {
+    opacity: 1;
+}
+
+/* --- CATEGORY COLORS --- */
 .journal-entry-card[data-category="flight"] { border-color: #3498db; }
 .journal-entry-card[data-category="flight"] .entry-icon, .journal-entry-card[data-category="flight"] h5 { color: #3498db; }
 .journal-entry-card[data-category="flight"] .entry-details p, .journal-entry-card[data-category="flight"] .entry-details p i { color: #2c7bb1; }
