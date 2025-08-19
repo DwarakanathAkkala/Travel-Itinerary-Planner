@@ -8,8 +8,5 @@
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
 
-# This is the CRUCIAL NEW PART.
-# It tells Netlify to make these specific secrets available to
-# the runtime environment of ALL functions.
 [functions."*"]
-  environment = ["IMGBB_API_KEY", "IMGBB_ALBUM_ID", "NOMINATIM_GEOCODE_URL"]
+  environment = ["IMGBB_API_KEY", "NOMINATIM_GEOCODE_URL"]
