@@ -1,5 +1,15 @@
-[functions]
-directory = "netlify/functions"
+# netlify.toml (Final and Correct Version with Environment variable mapping)
 
+# This tells Netlify where your functions live.
+[functions]
+  directory = "netlify/functions"
+
+# This plugin ensures `npm install` is run inside the functions directory.
 [[plugins]]
-package = "@netlify/plugin-functions-install-core"
+  package = "@netlify/plugin-functions-install-core"
+
+# This is the CRUCIAL NEW PART.
+# It tells Netlify to make these specific secrets available to
+# the runtime environment of ALL functions.
+[functions."*"]
+  environment = ["IMGBB_API_KEY", "IMGBB_ALBUM_ID", "NOMINATIM_GEOCODE_URL"]
