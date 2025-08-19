@@ -1,6 +1,7 @@
 // js/travel-journal.js (FINAL, CLEAN VERSION)
 
 let currentTripId = null;
+let filesToUpload = [];
 
 document.addEventListener('DOMContentLoaded', initializeJournalPage);
 
@@ -142,12 +143,15 @@ function setupForm(itemId) {
     const deleteBtn = document.getElementById('delete-experience-btn');
     form.dataset.itemId = itemId;
     form.reset();
+    filesToUpload = []; // Clear the file list for each new opening
+    document.getElementById('photo-previews').innerHTML = ''; // Clear previews
     document.getElementById('rating-value').value = '0';
     updateStars(0);
     if (deleteBtn) {
         deleteBtn.style.display = 'none';
         deleteBtn.onclick = () => handleDeleteExperience(itemId);
     }
+
     const expRef = firebase.database().ref(`trips/${currentTripId}/itinerary/${itemId}/experience`);
     expRef.once('value', snapshot => {
         if (snapshot.exists()) {
@@ -161,6 +165,11 @@ function setupForm(itemId) {
             }
         }
     });
+
+    // --- PHOTO PREVIEW LOGIC ---
+    const photoInput = document.getElementById('photo-upload');
+    photoInput.addEventListener('change', handlePhotoSelection);
+
     const stars = form.querySelectorAll('.star-rating-container i');
     stars.forEach(star => {
         star.onclick = () => {
@@ -213,4 +222,51 @@ function displayError(html) {
     const contentContainer = document.getElementById('trip-details-content');
     contentContainer.innerHTML = `<div style="text-align:center; padding: 4rem;">${html}</div>`;
     document.getElementById('journal-entry-list').innerHTML = '';
+}
+
+function handlePhotoSelection(event) {
+    const previewsContainer = document.getElementById('photo-previews');
+    const selectedFiles = Array.from(event.target.files);
+
+    selectedFiles.forEach(file => {
+        // Prevent adding the same file twice
+        if (filesToUpload.some(existingFile => existingFile.name === file.name)) {
+            return; // Skip this file if it's already in the list
+        }
+
+        // Add the new file to our array for later upload
+        filesToUpload.push(file);
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'preview-image-wrapper';
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'preview-image';
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-preview-btn';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.title = 'Remove this image';
+
+            removeBtn.onclick = () => {
+                wrapper.remove();
+                // Remove the file from our upload array by finding its unique instance
+                const fileIndex = filesToUpload.indexOf(file);
+                if (fileIndex > -1) {
+                    filesToUpload.splice(fileIndex, 1);
+                }
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+            previewsContainer.appendChild(wrapper);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Clear the input value to allow selecting the same file again if it was removed
+    event.target.value = '';
 }

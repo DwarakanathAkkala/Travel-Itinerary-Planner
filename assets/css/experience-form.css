@@ -1,4 +1,23 @@
-/* assets/css/experience-form.css */
+/* assets/css/experience-form.css (with modal scroll fix) */
+
+/* --- Modal Overflow Fix --- */
+.modal-container .trip-modal {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Apply scrolling to the form itself */
+#experience-form {
+    overflow-y: auto;
+    max-height: 65vh; /* Give the form a max height to scroll within */
+    padding-right: 15px; /* Add padding to make space for the scrollbar */
+    margin-right: -15px; /* Pull the element back to counteract the padding */
+}
+
+#experience-form::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary); /* Use the main theme color on hover */
+}
 
 /* --- Modal Header Styling --- */
 .modal-header {
@@ -129,4 +148,27 @@
 .btn-danger:hover {
     background: #e74c3c;
     color: white;
+}
+
+/* --- Custom Scrollbar Styling for the Modal --- */
+/* This targets the scrollbar track (the background) */
+#experience-form::-webkit-scrollbar-track {
+    background-color: #f5f7fa; /* A very light grey, almost invisible */
+    border-radius: 10px;
+}
+
+/* This targets the scrollbar itself */
+#experience-form::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* This targets the handle of the scrollbar (the part you drag) */
+#experience-form::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+    border: 2px solid #f5f7fa; /* Creates a nice padding effect */
+}
+
+#experience-form::-webkit-scrollbar-thumb:hover {
+    background-color: #5c97ff;
 }
