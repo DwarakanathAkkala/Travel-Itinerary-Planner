@@ -1,4 +1,4 @@
-// netlify/functions/uploadImage.js (FINAL, SECURE VERSION)
+// netlify/functions/uploadImage.js (FINAL, CLEAN VERSION)
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
@@ -8,18 +8,14 @@ exports.handler = async function (event) {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    // Securely get both the key and the album ID from environment variables
     const { IMGBB_API_KEY, IMGBB_ALBUM_ID } = process.env;
 
     if (!IMGBB_API_KEY) {
         return { statusCode: 500, body: JSON.stringify({ error: 'API key is not configured.' }) };
     }
 
-    // Construct the API URL. If no album ID is configured, it will be ignored.
-    let apiUrl = `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`;
-    if (IMGBB_ALBUM_ID) {
-        apiUrl += `&album=${IMGBB_ALBUM_ID}`;
-    }
+    // We no longer need to build the URL here, we will send the album ID in the form data
+    const apiUrl = `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`;
 
     try {
         const { image, name } = JSON.parse(event.body);
@@ -28,8 +24,16 @@ exports.handler = async function (event) {
         }
 
         const imageBuffer = Buffer.from(image, 'base64');
+
         const formData = new FormData();
         formData.append('image', imageBuffer, { filename: name || 'upload.jpg' });
+
+        // --- THIS IS THE CRITICAL FIX ---
+        // Add the album ID to the form data if it exists
+        if (IMGBB_ALBUM_ID) {
+            formData.append('album', IMGBB_ALBUM_ID);
+        }
+        // --------------------------------
 
         const response = await fetch(apiUrl, {
             method: 'POST',
