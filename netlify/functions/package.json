@@ -2,7 +2,7 @@
     "name": "netlify-functions",
     "version": "1.0.0",
     "dependencies": {
-        "form-data": "^4.0.0",
+        "cloudinary": "^1.30.0",
         "node-fetch": "^2.6.7"
     }
 }
