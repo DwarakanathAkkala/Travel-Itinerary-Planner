@@ -1,4 +1,4 @@
-// netlify/functions/uploadImage.js
+// netlify/functions/deleteImage.js
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
@@ -12,18 +12,15 @@ exports.handler = async function (event) {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
     try {
-        const { image, tripId, itemId } = JSON.parse(event.body);
-        const result = await cloudinary.uploader.upload(`data:image/jpeg;base64,${image}`, {
-            folder: `wanderlust/${tripId}/${itemId}`,
-            public_id: `${Date.now()}`
-        });
+        const { public_id } = JSON.parse(event.body);
+        if (!public_id) {
+            return { statusCode: 400, body: JSON.stringify({ error: 'public_id is required.' }) };
+        }
+        await cloudinary.uploader.destroy(public_id);
         return {
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify({
-                url: result.secure_url,
-                public_id: result.public_id // Essential for deletion
-            })
+            body: JSON.stringify({ success: true, message: 'Image deleted.' })
         };
     } catch (error) {
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
