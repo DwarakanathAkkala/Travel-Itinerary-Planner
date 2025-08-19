@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Journal | Wanderlust</title>
+
+    <!-- Reusing the same styles for consistency -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/trip.css">
+    <link rel="stylesheet" href="assets/css/journal.css">
+    <link rel="stylesheet" href="assets/css/trip-form.css">
+    <link rel="stylesheet" href="assets/css/experience-form.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- A simple header with a back button -->
+    <header class="journal-header">
+        <a href="#" id="back-to-trip-btn" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Trip</a>
+        <a href="index.html" class="logo">Wanderlust</a>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="trip-detail-container">
+        <!-- The trip banner and info will be loaded here by JS -->
+        <div id="trip-details-content">
+            <div class="loading-spinner" style="min-height: 250px;"></div>
+        </div>
+
+        <!-- The main journal content will be loaded here -->
+        <section class="journal-section-container">
+            <div class="section-header">
+                <h2><i class="fas fa-feather-alt"></i> Travel Journal</h2>
+            </div>
+            <div id="journal-entry-list">
+                <div class="loading-spinner"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="experience-modal-container" class="modal-container">
+        <div class="trip-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+
+                <div class="modal-header">
+                    <h4>My Experience at</h4>
+                    <h3 id="modal-item-title">Itinerary Item Title</h3>
+                </div>
+
+                <div id="modal-experience-form-content">
+                    <div class="loading-spinner" style="position: static; margin: 40px auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> <!-- Storage SDK -->
+
+    <!-- Your Config and Page Logic -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/travel-journal.js"></script>
+
+</body>
+
+</html>

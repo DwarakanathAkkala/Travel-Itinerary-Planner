@@ -72,6 +72,10 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 }
 
+body:has(.journal-header) #trip-details-content {
+    min-height: 0;
+}
+
 /* --- BANNER & HEADER SECTION --- */
 
 .trip-image-banner {
@@ -113,16 +117,24 @@ h1, h2, h3, h4, h5, h6 {
 /* --- INFO BAR --- */
 .trip-info-bar {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 2rem 3rem;
-    background-color: #ffffff; /* White background for contrast */
+    flex-wrap: wrap; /* Allows stacking on smaller screens */
+    gap: 1.5rem 2rem; /* Vertical and horizontal gap */
+    padding: 1.5rem 2rem;
+    background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    /* Pull it up to overlap the banner slightly */
     margin: -35px 2rem 0 2rem;
     position: relative;
     z-index: 5;
+    align-items: center; /* Vertically align all items in the center */
+}
+
+.info-item-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem; /* Same gap for consistency */
+    flex-grow: 1; /* Allows this group to take up available space */
 }
 
 .info-item {
@@ -134,12 +146,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .info-item i {
-    font-size: 1.5rem; /* Larger icons */
+    font-size: 1.5rem;
     color: var(--primary);
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.info-item-action {
+    margin-left: auto; /* Pushes the button to the far right */
+}
+
+#open-journal-btn {
+    text-decoration: none;
+    white-space: nowrap; /* Prevents the button text from wrapping */
 }
 
 /* --- NOTES SECTION --- */
@@ -159,11 +180,6 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.trip-notes h3::before {
-    content: '📝'; /* Emoji icon */
-    font-size: 1.5rem;
 }
 
 .trip-notes p {
@@ -196,6 +212,13 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     font-size: 1.8rem;
     color: #343a40;
+}
+
+/* This new rule adds the emoji icons */
+.section-header h2::before,
+.trip-notes h3::before {
+    content: attr(data-icon); /* Use the content from the data-icon attribute */
+    font-size: 1.5rem;
 }
 
 .itinerary-list {
@@ -745,5 +768,23 @@ h1, h2, h3, h4, h5, h6 {
     .map-section-container {
         padding: 0;
         margin: 1rem 0;
+    }
+}
+
+
+/* --- Responsive Stacking for Mobile --- */
+@media (max-width: 900px) {
+    .trip-info-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .info-item-action {
+        margin-left: 0; /* Remove the left margin when stacked */
+    }
+
+    #open-journal-btn {
+        width: 100%;
+        justify-content: center; /* Center the button content */
     }
 }

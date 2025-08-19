@@ -99,20 +99,32 @@ function renderTripDetails(tripData) {
         }
     }
     document.title = `${tripData.name || 'Trip Details'} | Wanderlust`;
+
     tripDetailsContent.innerHTML = `
         <div class="trip-image-banner" style="background-image: url('https://source.unsplash.com/random/1200x400/?${encodeURIComponent(tripData.destination || 'travel')},travel')">
             <h1>${tripData.name || 'Unnamed Trip'}</h1>
         </div>
         <div class="trip-info-bar">
-            <div class="info-item"><i class="fas fa-map-marked-alt"></i><span>${tripData.destination || 'No destination set'}</span></div>
-            <div class="info-item"><i class="fas fa-calendar-check"></i><span>${dateString}</span></div>
+            <!-- Grouping the info items -->
+            <div class="info-item-group">
+                <div class="info-item"><i class="fas fa-map-marked-alt"></i><span>${tripData.destination || 'No destination set'}</span></div>
+                <div class="info-item"><i class="fas fa-calendar-check"></i><span>${dateString}</span></div>
+            </div>
+            
+            <div class="info-item-action">
+                <a href="#" id="open-journal-btn" class="btn-primary">
+                    <i class="fas fa-book-open"></i> Open Travel Journal
+                </a>
+            </div>
         </div>
         <div class="trip-notes">
-            <h3>Trip Notes</h3><p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
+            <h3 data-icon="📝">Trip Notes</h3><p>${tripData.notes || 'No notes have been added for this trip yet.'}</p>
         </div>`;
 
     initializeMap();
     setMapViewToDestination(tripData.destination);
+
+    document.getElementById('open-journal-btn').href = `travel-journal.html?id=${new URLSearchParams(window.location.search).get('id')}`;
 }
 
 /**

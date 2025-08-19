@@ -26,3 +26,15 @@ yarn-error.log*
 
 # Environment files (local configs)
 /.env.*
+
+# Local Netlify folder
+.netlify
+
+# Ignore the local environment file
+.env
+
+# Ignore all node_modules folders, including the one in netlify/functions
+node_modules/
+
+# You can also add system files if you see them
+.DS_Store

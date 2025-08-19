@@ -1,0 +1,42 @@
+<!-- experience-form.html -->
+<form id="experience-form" class="trip-form" novalidate>
+    <div class="form-group">
+        <label>Your Rating</label>
+        <div class="star-rating-container">
+            <i class="far fa-star" data-value="1"></i>
+            <i class="far fa-star" data-value="2"></i>
+            <i class="far fa-star" data-value="3"></i>
+            <i class="far fa-star" data-value="4"></i>
+            <i class="far fa-star" data-value="5"></i>
+            <input type="hidden" id="rating-value" name="rating" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="journal-entry">Journal Entry / Notes</label>
+        <textarea id="journal-entry" rows="6"
+            placeholder="e.g., The views were incredible, but the queue was long..."></textarea>
+
+        <div class="form-group">
+            <label for="photo-upload">Add Photos</label>
+            <!-- This is a standard trick: the input is hidden, and we style the label like a button -->
+            <input type="file" id="photo-upload" multiple accept="image/*" class="hidden-file-input">
+            <label for="photo-upload" class="btn-secondary-styled">
+                <i class="fas fa-camera"></i> Choose Images...
+            </label>
+            <div id="photo-previews" class="photo-previews-container">
+                <!-- Image previews will be added here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        <span class="btn-text">Save Experience</span>
+        <div class="spinner"></div>
+    </button>
+
+    <!-- THIS BUTTON WAS LIKELY MISSING -->
+    <button type="button" id="delete-experience-btn" class="btn-danger">
+        Delete Experience
+    </button>
+</form>

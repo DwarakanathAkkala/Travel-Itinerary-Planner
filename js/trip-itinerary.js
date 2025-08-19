@@ -151,20 +151,12 @@ export function handleItineraryListClick(e) {
         const itemCard = directionsButton.closest('.itinerary-item');
         const locationName = itemCard.querySelector('.location-details span').textContent;
 
-        // This function is still in trip-map.js, so we need to call it from there.
-        // We'll need to import it into trip.js and pass it down.
-        // For now, let's assume it's available globally or refactor later.
-        // A simple temporary fix is to just call it, assuming trip.js makes it available.
-
-        // Geocode the location name to get coordinates
-        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`)
+        // Call our own serverless function
+        fetch(`/.netlify/functions/geocode?location=${encodeURIComponent(locationName)}`)
             .then(res => res.json())
             .then(data => {
                 if (data && data.length > 0) {
                     const { lat, lon } = data[0];
-                    // The function getDirectionsTo is in trip-map.js
-                    // This creates a dependency issue we need to solve.
-                    // For now, we will solve it by dispatching a custom event.
                     document.dispatchEvent(new CustomEvent('getDirections', { detail: { lat, lng: lon } }));
                 } else {
                     alert("Could not find coordinates for this location.");
