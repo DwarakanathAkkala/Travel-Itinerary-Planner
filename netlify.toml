@@ -1,4 +1,4 @@
-# netlify.toml (Final and Correct Version with Environment variable mapping)
+# netlify.toml
 
 # This tells Netlify where your functions live.
 [functions]
@@ -9,4 +9,4 @@
   package = "@netlify/plugin-functions-install-core"
 
 [functions."*"]
-  environment = ["IMGBB_API_KEY", "NOMINATIM_GEOCODE_URL"]
+  environment = ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET", "NOMINATIM_GEOCODE_URL"]
