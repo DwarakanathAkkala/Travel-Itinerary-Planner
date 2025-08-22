@@ -70,21 +70,20 @@ h1, h2, h3, h4, h5, h6 {
 .user-display-name {
     font-weight: 700; /* Bolder name */
     font-size: 1.1rem;
-    /* THEMED COLOR for the user name */
     color: #f5648b;
 }
 
 .user-email {
-    color: #777;
+    color: #f5648b;
     font-size: 0.9rem;
 }
 
 .btn-logout {
-    background: #f8f9fa;
+    background: #0074d9;
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 8px 15px;
-    color: #555;
+    color: #f0f0f0;
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
@@ -303,15 +302,6 @@ h1, h2, h3, h4, h5, h6 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.user-display-name {
-    font-weight: 600;
-    color: #333;
-}
-.user-email {
-    color: #777;
-    font-size: 0.9rem;
 }
 
 @keyframes spin {
