@@ -18,7 +18,7 @@ body {
   background: #f9f9f9;
 }
 
-.header {
+.header nav {
   padding: 1rem 5%;
   display: flex;
   justify-content: space-between;
@@ -26,9 +26,18 @@ body {
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--primary);
+    display: inline-block; /* Ensures the link behaves correctly */
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05); /* A subtle hover effect */
+}
+
+.logo img {
+    height: 45px; /* Control the logo size by its height */
+    width: auto;  /* Let the width adjust automatically */
+    vertical-align: middle; /* Helps align it with other nav items */
 }
 
 h1, h2, h3, h4, h5, h6 {
