@@ -61,7 +61,7 @@
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s ease;
     padding: 0 2rem;
-    min-height: 250px;
+    min-height: 0px;
 }
 
 .packing-list-section.open .packing-list-content {
@@ -75,7 +75,7 @@
     /* 1. Set a maximum height for the list area. */
     /* 40vh means it will take up at most 40% of the viewport's height. */
     /* This is a good responsive value. */
-    max-height: 40vh;
+    max-height: 100vh;
 
     /* 2. Add a vertical scrollbar ONLY if the content is taller than max-height. */
     overflow-y: auto;

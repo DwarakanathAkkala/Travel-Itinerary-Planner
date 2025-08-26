@@ -1,3 +1,4 @@
+// js/packing-list.js (DEFINITIVE, FUNCTIONAL VERSION)
 import { createCustomDropdown } from './dropdown.js';
 
 let currentTripId = null;
@@ -7,8 +8,11 @@ export function initializePackingList(tripId) {
     currentTripId = tripId;
     const packingListSection = document.querySelector('.packing-list-section');
     if (!packingListSection) return;
+
     const header = packingListSection.querySelector('.packing-list-header');
     header.addEventListener('click', () => packingListSection.classList.toggle('open'));
+    packingListSection.addEventListener('click', handleListInteraction);
+
     renderAddItemForm();
     fetchPackingList();
 }
@@ -52,11 +56,10 @@ function handleAddItemSubmit(event) {
 function fetchPackingList() {
     const packingListRef = firebase.database().ref(`trips/${currentTripId}/packingList`);
     packingListRef.on('value', (snapshot) => {
-        const listItemsContainer = document.getElementById('packing-list-items');
-        if (!listItemsContainer) return;
         if (!snapshot.exists()) {
-            listItemsContainer.innerHTML = '<p class="empty-list-message">Your packing list is empty.</p>';
-            updateCategorySuggestions([]);
+            currentCategories = new Set();
+            renderPackingList({});
+            updateProgress(0, 0);
             return;
         }
         renderPackingList(snapshot.val());
@@ -66,20 +69,34 @@ function fetchPackingList() {
 function renderPackingList(items) {
     const container = document.getElementById('packing-list-items');
     container.innerHTML = '';
-    const groupedItems = {}, categories = new Set();
+    const groupedItems = {};
+    const categories = new Set();
+    let totalItems = 0;
+    let packedItems = 0;
+
     for (const key in items) {
+        totalItems++;
         const item = { id: key, ...items[key] };
+        if (item.packed) packedItems++;
         const category = item.category || 'other';
-        categories.add(category);
-        if (!groupedItems[category]) groupedItems[category] = [];
-        groupedItems[category].push(item);
+        const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+        categories.add(capitalizedCategory);
+        if (!groupedItems[capitalizedCategory]) groupedItems[capitalizedCategory] = [];
+        groupedItems[capitalizedCategory].push(item);
     }
-    updateCategorySuggestions(Array.from(categories));
-    const sortedCategories = Object.keys(groupedItems).sort();
-    sortedCategories.forEach(category => {
+
+    currentCategories = categories;
+    updateProgress(packedItems, totalItems);
+
+    if (Object.keys(groupedItems).length === 0) {
+        container.innerHTML = '<p class="empty-list-message">Your packing list is empty.</p>';
+        return;
+    }
+
+    Object.keys(groupedItems).sort().forEach(category => {
         const groupEl = document.createElement('div');
         groupEl.className = 'packing-category-group';
-        groupEl.innerHTML = `<h4 class="category-title">${category.charAt(0).toUpperCase() + category.slice(1)}</h4>`;
+        groupEl.innerHTML = `<h4 class="category-title">${category}</h4>`;
         const itemListEl = document.createElement('ul');
         itemListEl.className = 'packing-item-list';
         groupedItems[category].forEach(item => {
@@ -87,7 +104,7 @@ function renderPackingList(items) {
             itemEl.className = 'packing-item';
             itemEl.innerHTML = `
                 <label>
-                    <input type="checkbox" data-item-id="${item.id}" ${item.packed ? 'checked' : ''}>
+                    <input type="checkbox" class="packing-checkbox" data-item-id="${item.id}" ${item.packed ? 'checked' : ''}>
                     <span class="checkbox-custom"></span>
                     <span class="item-name">${item.name}</span>
                 </label>
@@ -99,15 +116,28 @@ function renderPackingList(items) {
     });
 }
 
-function updateCategorySuggestions(categories) {
-    const datalist = document.getElementById('category-suggestions');
-    if (!datalist) return;
-    datalist.innerHTML = '';
-    const defaultCategories = ['clothing', 'documents', 'toiletries', 'gadgets', 'other'];
-    const allSuggestions = new Set([...defaultCategories, ...categories]);
-    allSuggestions.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.charAt(0).toUpperCase() + category.slice(1);
-        datalist.appendChild(option);
-    });
+function handleListInteraction(event) {
+    const target = event.target;
+    // Handle checkbox clicks (delegated from the main section)
+    if (target.classList.contains('packing-checkbox')) {
+        const itemId = target.dataset.itemId;
+        const isPacked = target.checked;
+        const itemRef = firebase.database().ref(`trips/${currentTripId}/packingList/${itemId}/packed`);
+        itemRef.set(isPacked);
+    }
+    // Handle delete button clicks (delegated from the main section)
+    if (target.classList.contains('btn-delete-item')) {
+        const itemId = target.dataset.itemId;
+        if (confirm("Are you sure you want to delete this item?")) {
+            const itemRef = firebase.database().ref(`trips/${currentTripId}/packingList/${itemId}`);
+            itemRef.remove();
+        }
+    }
+}
+
+function updateProgress(packedCount, totalCount) {
+    const summaryEl = document.querySelector('.packing-list-summary');
+    if (summaryEl) {
+        summaryEl.textContent = `${packedCount} of ${totalCount} items packed`;
+    }
 }
