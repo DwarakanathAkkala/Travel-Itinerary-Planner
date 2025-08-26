@@ -21,6 +21,7 @@
 
 .packing-list-header:hover {
     background-color: #fcfaff;
+    border-radius: 12px;
 }
 
 .packing-list-header h3 {
@@ -39,7 +40,7 @@
 
 .packing-list-summary {
     font-family: 'Poppins', sans-serif;
-    color: #777;
+    color: var(--secondary);
     font-weight: 500;
     margin-left: 1rem;
 }
@@ -152,7 +153,6 @@
 
 /* --- Packing List Styles --- */
 #packing-list-items {
-    max-height: 40vh;
     overflow-y: auto;
     padding-right: 10px;
 }
