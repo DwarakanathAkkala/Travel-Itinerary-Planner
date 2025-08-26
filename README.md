@@ -26,31 +26,45 @@ Wanderlust/
 │   ├── css/
 │   │   ├── dashboard.css
 │   │   ├── expense.css
+│   │   ├── packing-list.css
+│   │   ├── journal.css
+│   │   ├── experience-form.css
 │   │   ├── share.css
 │   │   ├── trip.css
-│   │   └── trip-form.css
+│   │   ├── trip-form.css
+│   │   └── weather.css
 │   └── images/
+│       └── logo.png
 │
 ├── js/
+│   ├── app.js
 │   ├── auth.js
 │   ├── dashboard.js
+│   ├── dropdown.js
+│   ├── firebase-config.js
+│   ├── packing-list.js
 │   ├── share.js
+│   ├── travel-journal.js
 │   ├── trip.js
+│   ├── trip-form.js
 │   ├── trip-expenses.js
 │   ├── trip-itinerary.js
 │   ├── trip-map.js
-│   └── trip-share.js
+│   ├── trip-share.js
+│   └── trip-weather.js
 │
 ├── index.html          (Landing Page)
 ├── login.html
 ├── signup.html
 ├── dashboard.html      (Main user dashboard)
+├── expense-form.html
+├── experience-form.html
 ├── share.html          (Public, read-only trip page)
 ├── trip.html           (Trip detail page)
 ├── trip-form.html
 ├── itinerary-form.html
 ├── expense-form.html
-└── firebase-messaging-sw.js
+└── styles.css
 ```
 
 ## Video Walkthrough of the project
@@ -67,6 +81,7 @@ Wanderlust/
 - **Real-Time Directions:** Users can get real-time driving directions from their current location to any itinerary item directly on the map.
 - **Comprehensive Expense Tracker:** Users can add, edit, delete, and categorize trip-specific expenses to monitor their budget in real-time.
 - **Seamless Trip Sharing:** Users can generate a unique, read-only link for their trip to share with friends and family. The feature uses the native Web Share API on supported devices for a seamless experience and provides a copy-to-clipboard fallback for others.
+- **Custom Packing List Generator:** A collapsible, interactive checklist for each trip. Users can add items, group them into default or custom categories, and track their progress with a visual progress bar as they check items off.
 - **Responsive Design:** The entire application is fully responsive and provides a seamless experience on desktop, tablet, and mobile devices.
 
 ## Design Decisions or Assumptions
