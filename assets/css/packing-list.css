@@ -33,11 +33,6 @@
     font-size: 1.5rem;
 }
 
-.packing-list-header h3 i {
-    font-size: 1.3rem;
-    opacity: 0.8;
-}
-
 .packing-list-summary {
     font-family: 'Poppins', sans-serif;
     color: var(--secondary);
