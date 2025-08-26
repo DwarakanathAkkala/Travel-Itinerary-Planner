@@ -16,8 +16,10 @@
     <link rel="stylesheet" href="assets/css/trip.css">
     <!-- Link to the expense-specific stylesheet -->
     <link rel="stylesheet" href="assets/css/expense.css">
-    <link rel="stylesheet" href="assets/css/trip-form.css"> <!-- Crucial: Link to the modal/form styles -->
+    <link rel="stylesheet" href="assets/css/trip-form.css">
     <link rel="stylesheet" href="assets/css/weather.css">
+    <link rel="stylesheet" href="assets/css/packing-list.css">
+
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,6 +44,18 @@
         <div id="trip-details-content">
             <div class="loading-spinner"></div>
         </div>
+
+        <section class="packing-list-section">
+            <div class="packing-list-header">
+                <h3><i class="fas fa-suitcase-rolling"></i> Packing List</h3>
+                <span class="packing-list-summary">0 of 0 items packed</span>
+                <i class="fas fa-chevron-down packing-list-chevron"></i>
+            </div>
+            <div class="packing-list-content">
+                <!-- The form and list will be added here in the next task -->
+                <p>Loading your packing list...</p>
+            </div>
+        </section>
 
         <!-- Interactive Map Section -->
         <section class="map-section-container">

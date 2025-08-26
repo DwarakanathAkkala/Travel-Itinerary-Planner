@@ -1,0 +1,70 @@
+/* assets/css/packing-list.css */
+
+.packing-list-section {
+    background: white;
+    border-radius: 12px;
+    margin: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    overflow: hidden; /* Important for the collapse animation */
+}
+
+.packing-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    user-select: none; /* Prevents text selection on click */
+    transition: background-color 0.2s ease;
+}
+
+.packing-list-header:hover {
+    background-color: #f9f9f9;
+}
+
+.packing-list-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.packing-list-header h3 i {
+    font-size: 1.3rem;
+    opacity: 0.8;
+}
+
+.packing-list-summary {
+    font-family: 'Poppins', sans-serif;
+    color: #777;
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+.packing-list-chevron {
+    font-size: 1.2rem;
+    color: #aaa;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Style for when the section is expanded */
+.packing-list-section.open .packing-list-chevron {
+    transform: rotate(180deg);
+}
+
+.packing-list-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s ease;
+    padding: 0 2rem; /* No vertical padding when closed */
+}
+
+/* Style for when the section is expanded */
+.packing-list-section.open .packing-list-content {
+    /* A large value to ensure it can contain a long list */
+    max-height: 2000px; 
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #f0f0f0;
+}
