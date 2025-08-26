@@ -8,6 +8,7 @@ import { fetchItineraryItems, handleItineraryListClick } from './trip-itinerary.
 import { initializeExpenseListeners, fetchAndDisplayExpenses } from './trip-expenses.js';
 import { initializeShareFeature } from './trip-share.js';
 import { initializeWeatherFeature } from './trip-weather.js';
+import { initializePackingList } from './packing-list.js';
 
 // --- DOM EVENT LISTENERS ---
 // These are the main entry points for the page.
@@ -51,6 +52,7 @@ function initializePage() {
             console.log("User is signed in. Fetching data for trip:", tripId);
             initializeExpenseListeners(tripId);
             initializeShareFeature();
+            initializePackingList(tripId);
             fetchTripDetails(tripId);
         } else {
             console.log("User is not signed in.");
