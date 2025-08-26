@@ -61,12 +61,28 @@
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s ease;
     padding: 0 2rem;
+    min-height: 250px;
 }
 
 .packing-list-section.open .packing-list-content {
     max-height: 2000px;
     padding: 1.5rem 2rem;
     border-top: 1px solid #f0f0f0;
+    overflow: visible;
+}
+
+#packing-list-items {
+    /* 1. Set a maximum height for the list area. */
+    /* 40vh means it will take up at most 40% of the viewport's height. */
+    /* This is a good responsive value. */
+    max-height: 40vh;
+
+    /* 2. Add a vertical scrollbar ONLY if the content is taller than max-height. */
+    overflow-y: auto;
+
+    /* 3. Add a little padding on the right to prevent the scrollbar */
+    /* from touching the delete buttons. */
+    padding-right: 10px;
 }
 
 /* --- Add Item Form Styles --- */
@@ -75,6 +91,8 @@
     gap: 10px;
     margin-bottom: 2rem;
     align-items: flex-start;
+    position: relative;
+    z-index: 2;
 }
 
 .add-item-form input[type="text"] {
@@ -116,21 +134,19 @@
 }
 
 #packing-item-category {
-    padding: 10px 35px 10px 15px;
+    padding-right: 35px; /* Make space for arrow */
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C63FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right 15px top 50%;
     background-size: .65em auto;
-    cursor: pointer;
 }
 
 .category-dropdown-content {
     display: none;
-    position: absolute;
+    position: fixed; /* Use fixed to escape all containers */
     background-color: white;
-    min-width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.15);
+    z-index: 1001;
     border-radius: 6px;
     max-height: 200px;
     overflow-y: auto;
@@ -147,7 +163,7 @@
 }
 
 .category-dropdown-content div:hover {
-    background-color: #f1f1f1;
+    background-color: #f9f9f9;
 }
 
 /* --- Packing List Styles --- */
