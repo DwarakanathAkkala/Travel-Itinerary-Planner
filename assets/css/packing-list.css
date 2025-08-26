@@ -1,4 +1,4 @@
-/* assets/css/packing-list.css (FINAL - WITH CUSTOM DROPDOWN & CLEAN FORMATTING) */
+/* assets/css/packing-list.css (DEFINITIVE & CLEANLY FORMATTED) */
 
 /* --- Main Section Container --- */
 .packing-list-section {
@@ -6,7 +6,6 @@
     border-radius: 12px;
     margin: 2rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-    overflow: hidden;
 }
 
 /* --- Collapsible Header --- */
@@ -61,7 +60,6 @@
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s ease;
     padding: 0 2rem;
-    min-height: 0px;
 }
 
 .packing-list-section.open .packing-list-content {
@@ -69,20 +67,6 @@
     padding: 1.5rem 2rem;
     border-top: 1px solid #f0f0f0;
     overflow: visible;
-}
-
-#packing-list-items {
-    /* 1. Set a maximum height for the list area. */
-    /* 40vh means it will take up at most 40% of the viewport's height. */
-    /* This is a good responsive value. */
-    max-height: 100vh;
-
-    /* 2. Add a vertical scrollbar ONLY if the content is taller than max-height. */
-    overflow-y: auto;
-
-    /* 3. Add a little padding on the right to prevent the scrollbar */
-    /* from touching the delete buttons. */
-    padding-right: 10px;
 }
 
 /* --- Add Item Form Styles --- */
@@ -134,7 +118,7 @@
 }
 
 #packing-item-category {
-    padding-right: 35px; /* Make space for arrow */
+    padding: 10px 35px 10px 15px;
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C63FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right 15px top 50%;
@@ -143,7 +127,7 @@
 
 .category-dropdown-content {
     display: none;
-    position: fixed; /* Use fixed to escape all containers */
+    position: fixed;
     background-color: white;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.15);
     z-index: 1001;
@@ -163,10 +147,16 @@
 }
 
 .category-dropdown-content div:hover {
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
 }
 
 /* --- Packing List Styles --- */
+#packing-list-items {
+    max-height: 40vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
 .packing-category-group {
     margin-bottom: 1.5rem;
 }
@@ -206,6 +196,8 @@
     cursor: pointer;
     font-size: 1rem;
     color: #333;
+    flex-grow: 1;
+    min-width: 0;
 }
 
 .packing-item input[type="checkbox"] {
@@ -220,6 +212,7 @@
     display: inline-block;
     position: relative;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 
 .packing-item input[type="checkbox"]:checked + .checkbox-custom {
@@ -249,14 +242,44 @@
     color: #aaa;
 }
 
+/* --- Item Actions & Edit Styles --- */
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.btn-edit-item {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+.btn-edit-item:hover {
+    color: var(--primary);
+    background-color: #f0f0ff;
+}
+
 .btn-delete-item {
     background: transparent;
     border: none;
     color: #ccc;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
     transition: color 0.2s;
 }
 
@@ -264,11 +287,21 @@
     color: #e74c3c;
 }
 
+.edit-item-input {
+    font-size: 1rem;
+    padding: 4px 8px;
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    outline: none;
+    width: 70%;
+}
+
 .empty-list-message {
     text-align: center;
     color: #888;
     font-style: italic;
-    padding: 1rem 0;
+    padding: 2rem 0;
+    font-size: 1.1rem;
 }
 
 /* --- RESPONSIVE STYLES --- */

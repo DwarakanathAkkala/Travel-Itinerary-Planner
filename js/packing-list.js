@@ -108,7 +108,10 @@ function renderPackingList(items) {
                     <span class="checkbox-custom"></span>
                     <span class="item-name">${item.name}</span>
                 </label>
-                <button class="btn-delete-item" data-item-id="${item.id}">&times;</button>`;
+                <div class="item-actions">
+                    <button class="btn-edit-item" data-item-id="${item.id}" title="Edit item"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="btn-delete-item" data-item-id="${item.id}" title="Delete item">&times;</button>
+                </div>`;
             itemListEl.appendChild(itemEl);
         });
         groupEl.appendChild(itemListEl);
@@ -118,21 +121,54 @@ function renderPackingList(items) {
 
 function handleListInteraction(event) {
     const target = event.target;
-    // Handle checkbox clicks (delegated from the main section)
-    if (target.classList.contains('packing-checkbox')) {
-        const itemId = target.dataset.itemId;
-        const isPacked = target.checked;
+    const checkbox = target.closest('.packing-checkbox');
+    const deleteButton = target.closest('.btn-delete-item');
+    const editButton = target.closest('.btn-edit-item');
+
+    if (checkbox) {
+        const itemId = checkbox.dataset.itemId;
+        const isPacked = checkbox.checked;
         const itemRef = firebase.database().ref(`trips/${currentTripId}/packingList/${itemId}/packed`);
         itemRef.set(isPacked);
     }
-    // Handle delete button clicks (delegated from the main section)
-    if (target.classList.contains('btn-delete-item')) {
-        const itemId = target.dataset.itemId;
+    if (deleteButton) {
+        const itemId = deleteButton.dataset.itemId;
         if (confirm("Are you sure you want to delete this item?")) {
             const itemRef = firebase.database().ref(`trips/${currentTripId}/packingList/${itemId}`);
             itemRef.remove();
         }
     }
+    // Handle clicks on the new edit button
+    if (editButton) {
+        const itemNameSpan = editButton.closest('.packing-item').querySelector('.item-name');
+        makeItemEditable(itemNameSpan);
+    }
+}
+
+
+function makeItemEditable(spanElement) {
+    const currentName = spanElement.textContent;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentName;
+    input.className = 'edit-item-input';
+    spanElement.parentNode.replaceChild(input, spanElement);
+    input.focus();
+    const saveEdit = () => {
+        const newName = input.value.trim();
+        const itemId = input.parentNode.querySelector('.packing-checkbox').dataset.itemId;
+        if (newName && newName !== currentName) {
+            const itemRef = firebase.database().ref(`trips/${currentTripId}/packingList/${itemId}/name`);
+            itemRef.set(newName);
+        } else {
+            const newSpan = document.createElement('span');
+            newSpan.className = 'item-name';
+            newSpan.textContent = currentName;
+            input.parentNode.replaceChild(newSpan, input);
+        }
+    };
+    input.addEventListener('blur', saveEdit);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') input.blur(); });
 }
 
 function updateProgress(packedCount, totalCount) {
