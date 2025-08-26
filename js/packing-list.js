@@ -21,6 +21,9 @@ function renderAddItemForm() {
     const contentArea = document.querySelector('.packing-list-content');
     if (!contentArea) return;
     contentArea.innerHTML = `
+        <div class="progress-bar-container">
+            <div id="packing-progress-bar" class="progress-bar-fill"></div>
+        </div>
         <form id="packing-list-form" class="add-item-form">
             <input type="text" id="packing-item-name" placeholder="Enter an item to pack..." required>
             <input type="text" id="packing-item-category" placeholder="Select or Type Category" required>
@@ -175,5 +178,11 @@ function updateProgress(packedCount, totalCount) {
     const summaryEl = document.querySelector('.packing-list-summary');
     if (summaryEl) {
         summaryEl.textContent = `${packedCount} of ${totalCount} items packed`;
+    }
+
+    const progressBar = document.getElementById('packing-progress-bar');
+    if (progressBar) {
+        const percentage = totalCount > 0 ? (packedCount / totalCount) * 100 : 0;
+        progressBar.style.width = `${percentage}%`;
     }
 }
