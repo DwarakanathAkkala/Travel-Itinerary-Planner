@@ -1,0 +1,55 @@
+/* assets/css/documents.css */
+
+.documents-section {
+    background: white;
+    border-radius: 12px;
+    margin: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+.documents-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.documents-header:hover {
+    background-color: #fcfaff;
+    border-radius: 12px;
+}
+
+.documents-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.documents-chevron {
+    font-size: 1.2rem;
+    color: #aaa;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.documents-section.open .documents-chevron {
+    transform: rotate(180deg);
+}
+
+.documents-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), padding 0.3s ease;
+    padding: 0 2rem;
+}
+
+.documents-section.open .documents-content {
+    max-height: 2000px; 
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #f0f0f0;
+}
