@@ -217,7 +217,8 @@ body:has(.journal-header) #trip-details-content {
 /* This new rule adds the emoji icons */
 .section-header h2::before,
 .trip-notes h3::before,
-.packing-list-header h3::before {
+.packing-list-header h3::before,
+.documents-header h3::before {
     content: attr(data-icon); /* Use the content from the data-icon attribute */
     font-size: 1.5rem;
 }
