@@ -1,11 +1,3 @@
-Of course. It's crucial to keep the documentation updated with the project's progress.
-
-Here is the complete, updated `README.md` file. I have incorporated the new **Seamless Trip Sharing** feature, added the new files to the directory structure, and updated the usage instructions.
-
-You can replace the entire content of your existing `README.md` with this new version.
-
----
-
 # Wanderlust - A Travel Itinerary Planner
 
 ## Introduction
